@@ -1,7 +1,12 @@
 import type { AccountType, TransactionType } from './enums';
 
+export type UserId = string & { readonly __brand: 'UserId' };
+export type AccountId = string & { readonly __brand: 'AccountId' };
+export type CategoryId = string & { readonly __brand: 'CategoryId' };
+export type TransactionId = string & { readonly __brand: 'TransactionId' };
+
 export interface User {
-  id: string;
+  id: UserId;
   email: string;
   name: string;
   country: string;
@@ -11,8 +16,8 @@ export interface User {
 }
 
 export interface Account {
-  id: string;
-  userId: string;
+  id: AccountId;
+  userId: UserId;
   name: string;
   type: AccountType;
   currency: string;
@@ -22,8 +27,8 @@ export interface Account {
 }
 
 export interface Category {
-  id: string;
-  userId: string;
+  id: CategoryId;
+  userId: UserId;
   name: string;
   type: TransactionType;
   color: string;
@@ -32,10 +37,10 @@ export interface Category {
 }
 
 export interface Transaction {
-  id: string;
-  userId: string;
-  accountId: string;
-  categoryId: string;
+  id: TransactionId;
+  userId: UserId;
+  accountId: AccountId;
+  categoryId: CategoryId;
   type: TransactionType;
   amount: number;
   date: string;
@@ -54,7 +59,7 @@ export interface DashboardSummary {
   periodBalance: number;
   lastTransactions: Transaction[];
   expensesByCategory: Array<{
-    categoryId: string;
+    categoryId: CategoryId;
     name: string;
     color: string;
     total: number;
@@ -69,8 +74,8 @@ export interface Paginated<T> {
 export interface TransactionFilters {
   from?: string;
   to?: string;
-  accountId?: string;
-  categoryId?: string;
+  accountId?: AccountId;
+  categoryId?: CategoryId;
   type?: TransactionType;
   limit?: number;
   offset?: number;

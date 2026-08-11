@@ -1,4 +1,4 @@
-import type { User } from '@meridia/shared';
+import type { User, UserId } from '@meridia/shared';
 import type { Db } from '../../database/types';
 
 export interface UserRow {
@@ -14,7 +14,7 @@ export interface UserRow {
 
 export function mapUserRow(row: UserRow): User {
   return {
-    id: row.id,
+    id: row.id as UserId,
     email: row.email,
     name: row.name,
     country: row.country,
@@ -40,7 +40,7 @@ export async function findByEmail(db: Db, email: string): Promise<UserRow | unde
   return result.rows[0];
 }
 
-export async function findById(db: Db, id: string): Promise<UserRow | undefined> {
+export async function findById(db: Db, id: UserId): Promise<UserRow | undefined> {
   const result = await db.query<UserRow>(
     'SELECT * FROM users WHERE id = $1',
     [id],
@@ -61,7 +61,7 @@ export async function create(
   return result.rows[0]!;
 }
 
-export async function updateName(db: Db, id: string, name: string): Promise<UserRow | undefined> {
+export async function updateName(db: Db, id: UserId, name: string): Promise<UserRow | undefined> {
   const result = await db.query<UserRow>(
     'UPDATE users SET name = $1 WHERE id = $2 RETURNING *',
     [name, id],

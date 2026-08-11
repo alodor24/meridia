@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { env } from '../../config/env';
 import { sendNoContent, sendSuccess } from '../../shared/http/http';
-import { expiresInToMs } from '../../shared/utils/money';
+import { expiresInToMs } from '../../shared/utils/time';
 import { asyncHandler } from '../../shared/utils/asyncHandler';
 import * as authService from './auth.service';
 

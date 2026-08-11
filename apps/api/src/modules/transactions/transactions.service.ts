@@ -8,8 +8,9 @@ import type {
   ListTransactionsQuery,
   UpdateTransactionInput,
 } from './transactions.schemas';
+import type { AccountId, CategoryId, TransactionId, UserId } from '@meridia/shared';
 
-export async function listTransactions(userId: string, filters: ListTransactionsQuery) {
+export async function listTransactions(userId: UserId, filters: ListTransactionsQuery) {
   const [items, total] = await Promise.all([
     transactionsRepository.list(pool, userId, filters),
     transactionsRepository.count(pool, userId, filters),
@@ -20,20 +21,20 @@ export async function listTransactions(userId: string, filters: ListTransactions
   };
 }
 
-export async function getTransaction(userId: string, id: string) {
+export async function getTransaction(userId: UserId, id: TransactionId) {
   const row = await transactionsRepository.findById(pool, userId, id);
   if (!row) throw new NotFoundError('Movimiento no encontrado');
   return transactionsRepository.mapTransactionRow(row);
 }
 
-async function assertAccountOwned(userId: string, accountId: string): Promise<void> {
+async function assertAccountOwned(userId: UserId, accountId: AccountId): Promise<void> {
   const account = await accountsRepository.findById(pool, userId, accountId);
   if (!account) throw new NotFoundError('Cuenta no encontrada');
 }
 
 async function assertCategoryMatchesType(
-  userId: string,
-  categoryId: string,
+  userId: UserId,
+  categoryId: CategoryId,
   type: 'income' | 'expense',
 ): Promise<void> {
   const category = await categoriesRepository.findById(pool, userId, categoryId);
@@ -46,32 +47,42 @@ async function assertCategoryMatchesType(
   }
 }
 
-export async function createTransaction(userId: string, input: CreateTransactionInput) {
-  await assertAccountOwned(userId, input.accountId);
-  await assertCategoryMatchesType(userId, input.categoryId, input.type);
+export async function createTransaction(userId: UserId, input: CreateTransactionInput) {
+  const accountId = input.accountId as AccountId;
+  const categoryId = input.categoryId as CategoryId;
+  await assertAccountOwned(userId, accountId);
+  await assertCategoryMatchesType(userId, categoryId, input.type);
 
-  const row = await transactionsRepository.create(pool, userId, input);
+  const row = await transactionsRepository.create(pool, userId, {
+    ...input,
+    accountId,
+    categoryId,
+  });
   return transactionsRepository.mapTransactionRow(row);
 }
 
-export async function updateTransaction(userId: string, id: string, input: UpdateTransactionInput) {
+export async function updateTransaction(userId: UserId, id: TransactionId, input: UpdateTransactionInput) {
   const existing = await transactionsRepository.findById(pool, userId, id);
   if (!existing) throw new NotFoundError('Movimiento no encontrado');
 
   const nextType = input.type ?? existing.type;
-  const nextCategoryId = input.categoryId ?? existing.category_id;
+  const nextCategoryId = (input.categoryId as CategoryId | undefined) ?? existing.category_id as CategoryId;
 
   if (input.accountId) {
-    await assertAccountOwned(userId, input.accountId);
+    await assertAccountOwned(userId, input.accountId as AccountId);
   }
   await assertCategoryMatchesType(userId, nextCategoryId, nextType);
 
-  const row = await transactionsRepository.update(pool, userId, id, input);
+  const row = await transactionsRepository.update(pool, userId, id, {
+    ...input,
+    accountId: input.accountId as AccountId | undefined,
+    categoryId: input.categoryId as CategoryId | undefined,
+  });
   if (!row) throw new NotFoundError('Movimiento no encontrado');
   return transactionsRepository.mapTransactionRow(row);
 }
 
-export async function deleteTransaction(userId: string, id: string): Promise<void> {
+export async function deleteTransaction(userId: UserId, id: TransactionId): Promise<void> {
   const removed = await transactionsRepository.remove(pool, userId, id);
   if (!removed) throw new NotFoundError('Movimiento no encontrado');
 }

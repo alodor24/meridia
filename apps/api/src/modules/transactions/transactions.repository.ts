@@ -1,4 +1,4 @@
-import type { Transaction, TransactionType } from '@meridia/shared';
+import type { AccountId, CategoryId, Transaction, TransactionId, TransactionType, UserId } from '@meridia/shared';
 import type { Db } from '../../database/types';
 import type { ListTransactionsQuery } from './transactions.schemas';
 
@@ -19,8 +19,8 @@ export interface TransactionRow {
 }
 
 export interface CreateTransactionInput {
-  accountId: string;
-  categoryId: string;
+  accountId: AccountId;
+  categoryId: CategoryId;
   type: TransactionType;
   amount: number;
   date: string;
@@ -28,8 +28,8 @@ export interface CreateTransactionInput {
 }
 
 export interface UpdateTransactionInput {
-  accountId?: string;
-  categoryId?: string;
+  accountId?: AccountId;
+  categoryId?: CategoryId;
   type?: TransactionType;
   amount?: number;
   date?: string;
@@ -38,10 +38,10 @@ export interface UpdateTransactionInput {
 
 export function mapTransactionRow(row: TransactionRow): Transaction {
   return {
-    id: row.id,
-    userId: row.user_id,
-    accountId: row.account_id,
-    categoryId: row.category_id,
+    id: row.id as TransactionId,
+    userId: row.user_id as UserId,
+    accountId: row.account_id as AccountId,
+    categoryId: row.category_id as CategoryId,
     type: row.type,
     amount: Number(row.amount),
     date: row.date,
@@ -65,7 +65,7 @@ const TRANSACTION_COLUMNS = `
 
 export async function list(
   db: Db,
-  userId: string,
+  userId: UserId,
   filters: ListTransactionsQuery,
 ): Promise<TransactionRow[]> {
   const { where, values } = buildWhere(userId, filters);
@@ -84,7 +84,7 @@ export async function list(
 
 export async function count(
   db: Db,
-  userId: string,
+  userId: UserId,
   filters: ListTransactionsQuery,
 ): Promise<number> {
   const { where, values } = buildWhere(userId, filters);
@@ -101,8 +101,8 @@ export async function count(
 
 export async function findById(
   db: Db,
-  userId: string,
-  id: string,
+  userId: UserId,
+  id: TransactionId,
 ): Promise<TransactionRow | undefined> {
   const result = await db.query<TransactionRow>(
     `SELECT ${TRANSACTION_COLUMNS}
@@ -117,7 +117,7 @@ export async function findById(
 
 export async function create(
   db: Db,
-  userId: string,
+  userId: UserId,
   input: CreateTransactionInput,
 ): Promise<TransactionRow> {
   const result = await db.query<TransactionRow>(
@@ -137,8 +137,8 @@ export async function create(
 
 export async function update(
   db: Db,
-  userId: string,
-  id: string,
+  userId: UserId,
+  id: TransactionId,
   input: UpdateTransactionInput,
 ): Promise<TransactionRow | undefined> {
   const fields: string[] = [];
@@ -170,7 +170,7 @@ export async function update(
   return result.rows[0];
 }
 
-export async function remove(db: Db, userId: string, id: string): Promise<boolean> {
+export async function remove(db: Db, userId: UserId, id: TransactionId): Promise<boolean> {
   const result = await db.query(
     'DELETE FROM transactions WHERE id = $1 AND user_id = $2',
     [id, userId],
@@ -178,7 +178,7 @@ export async function remove(db: Db, userId: string, id: string): Promise<boolea
   return (result.rowCount ?? 0) > 0;
 }
 
-function buildWhere(userId: string, filters: ListTransactionsQuery) {
+function buildWhere(userId: UserId, filters: ListTransactionsQuery) {
   const conditions = ['t.user_id = $1'];
   const values: unknown[] = [userId];
   if (filters.from) {

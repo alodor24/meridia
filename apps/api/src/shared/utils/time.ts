@@ -17,12 +17,3 @@ export function expiresInToMs(expiresIn: string): number {
   }
   return value * unit;
 }
-
-export function toNumber(value: string): number {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-
-export function signedAmount(type: 'income' | 'expense', amount: number): number {
-  return type === 'income' ? amount : -amount;
-}

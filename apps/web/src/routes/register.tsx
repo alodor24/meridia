@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { Button, Link as MuiLink, Stack, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import MuiLink from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { Link as RouterLink, Navigate, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { Formik, Form } from 'formik';
 import { COUNTRIES } from '@meridia/shared';

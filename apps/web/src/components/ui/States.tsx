@@ -1,5 +1,8 @@
 import type { ReactNode } from 'react';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
 import InboxIcon from '@mui/icons-material/Inbox';
 
 export function LoadingState({ label = 'Cargando…' }: { label?: string }) {
@@ -27,20 +30,14 @@ export function EmptyState({ message, action }: { message: string; action?: Reac
 
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, py: 8, textAlign: 'center' }}>
+    <Box role="alert" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, py: 8, textAlign: 'center' }}>
       <Typography variant="body1" color="error">
         {message}
       </Typography>
       {onRetry && (
-        <Typography component="div">
-          <button
-            type="button"
-            onClick={onRetry}
-            style={{ cursor: 'pointer', border: 'none', background: 'none', color: 'inherit', textDecoration: 'underline' }}
-          >
-            Reintentar
-          </button>
-        </Typography>
+        <Button variant="outlined" color="error" size="small" onClick={onRetry}>
+          Reintentar
+        </Button>
       )}
     </Box>
   );

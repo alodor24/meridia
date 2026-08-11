@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import { env, isProd } from '../config/env';
 import { isAppError } from '../shared/errors';
+import { logger } from '../shared/logger';
 
 export function notFoundHandler(_req: Request, res: Response): void {
   res.status(404).json({
@@ -28,7 +29,7 @@ export function errorHandler(
   }
 
   if (!isProd && !env.NODE_ENV.includes('test')) {
-    console.error(error);
+    logger.error({ err: error }, 'Error no controlado');
   }
 
   const message = isProd

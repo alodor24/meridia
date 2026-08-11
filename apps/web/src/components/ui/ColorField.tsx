@@ -1,4 +1,6 @@
-import { Box, FormHelperText, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import FormHelperText from '@mui/material/FormHelperText';
+import Typography from '@mui/material/Typography';
 import { useField } from 'formik';
 
 const PRESET_COLORS = [
@@ -18,32 +20,32 @@ export function ColorField({ name, label = 'Color' }: { name: string; label?: st
         {label}
       </Typography>
       <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap', alignItems: 'center' }}>
-        {PRESET_COLORS.map((color) => (
-          <Box
-            key={color}
-            role="button"
-            aria-label={`Color ${color}`}
-            onClick={() => helpers.setValue(color)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                helpers.setValue(color);
-              }
-            }}
-            tabIndex={0}
-            sx={{
-              width: 28,
-              height: 28,
-              borderRadius: '50%',
-              bgcolor: color,
-              cursor: 'pointer',
-              border: 2,
-              borderColor: field.value === color ? 'primary.main' : 'transparent',
-              '&:hover': { transform: 'scale(1.1)' },
-              transition: 'all 0.15s',
-            }}
-          />
-        ))}
+        {PRESET_COLORS.map((color) => {
+          const selected = field.value === color;
+          return (
+            <Box
+              key={color}
+              component="button"
+              type="button"
+              aria-label={`Usar color ${color}`}
+              aria-pressed={selected}
+              onClick={() => helpers.setValue(color)}
+              sx={{
+                width: 28,
+                height: 28,
+                borderRadius: '50%',
+                bgcolor: color,
+                cursor: 'pointer',
+                border: 2,
+                borderColor: selected ? 'primary.main' : 'transparent',
+                p: 0,
+                '&:hover': { transform: 'scale(1.1)' },
+                '&:focus-visible': { outline: '2px solid', outlineColor: 'primary.main', outlineOffset: 2 },
+                transition: 'all 0.15s',
+              }}
+            />
+          );
+        })}
         <Box
           component="label"
           sx={{

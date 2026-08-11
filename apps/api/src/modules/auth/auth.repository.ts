@@ -1,4 +1,4 @@
-import type { User } from '@meridia/shared';
+import type { User, UserId } from '@meridia/shared';
 import type { Db } from '../../database/types';
 import type { UserRow } from '../users/users.repository';
 import { mapUserRow } from '../users/users.repository';
@@ -17,7 +17,7 @@ export interface RefreshTokenWithUser extends RefreshTokenRow {
 }
 
 export interface CreateRefreshTokenInput {
-  userId: string;
+  userId: UserId;
   tokenHash: string;
   expiresAt: Date;
 }
@@ -124,14 +124,21 @@ const DEFAULT_CATEGORIES: Array<{ name: string; type: 'income' | 'expense'; colo
   { name: 'Otros gastos', type: 'expense', color: '#757575' },
 ];
 
-export async function createDefaultCategories(db: Db, userId: string): Promise<void> {
-  for (const category of DEFAULT_CATEGORIES) {
-    await db.query(
-      `INSERT INTO categories (user_id, name, type, color)
-       VALUES ($1, $2, $3, $4)`,
-      [userId, category.name, category.type, category.color],
-    );
-  }
+export async function createDefaultCategories(db: Db, userId: UserId): Promise<void> {
+  const values: unknown[] = [];
+  const placeholders: string[] = [];
+
+  DEFAULT_CATEGORIES.forEach((category, index) => {
+    const base = index * 4;
+    placeholders.push(`($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4})`);
+    values.push(userId, category.name, category.type, category.color);
+  });
+
+  await db.query(
+    `INSERT INTO categories (user_id, name, type, color)
+     VALUES ${placeholders.join(', ')}`,
+    values,
+  );
 }
 
 export function mapUserFromTokenRow(row: RefreshTokenWithUser): User {

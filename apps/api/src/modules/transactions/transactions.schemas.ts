@@ -8,7 +8,7 @@ const dateString = z
   .regex(/^\d{4}-\d{2}-\d{2}$/, 'Fecha inválida (usa formato YYYY-MM-DD)');
 
 const emptyToUndefined = (schema: z.ZodTypeAny) =>
-  z.preprocess((value) => (value === '' ? undefined : value), schema);
+  z.preprocess((value) => (value === '' ? undefined : value), schema.optional());
 
 export const createTransactionSchema = z.object({
   accountId: uuidSchema,

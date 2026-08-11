@@ -11,12 +11,14 @@ import { authRouter } from './modules/auth/auth.routes';
 import { categoriesRouter } from './modules/categories/categories.routes';
 import { dashboardRouter } from './modules/dashboard/dashboard.routes';
 import { transactionsRouter } from './modules/transactions/transactions.routes';
+import { httpLogger } from './shared/logger';
 
 export function createApp() {
   const app = express();
 
   app.disable('x-powered-by');
   app.use(helmet());
+  app.use(httpLogger);
   app.use(
     cors({
       origin: env.CORS_ORIGIN.split(',').map((o) => o.trim()),

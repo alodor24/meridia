@@ -1,32 +1,30 @@
-import { useEffect, useState } from 'react';import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  IconButton,
-  MenuItem,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from '@mui/material';
-import {
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  FilterAltOff as ClearFiltersIcon,
-} from '@mui/icons-material';
+import { useEffect, useMemo, useState } from 'react';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import ClearFiltersIcon from '@mui/icons-material/FilterAltOff';
 import type { Account, Category, Transaction, TransactionType } from '@meridia/shared';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { LoadingState, ErrorState, EmptyState } from '@/components/ui/States';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { useFetch, useAsyncAction } from '@/hooks/useAsync';import { useUiStore } from '@/stores/uiStore';
+import { useFetch, useAsyncAction } from '@/hooks/useAsync';
+import { useUiStore } from '@/stores/uiStore';
 import { formatCurrency, formatDate } from '@/utils/format';
 import { deleteTransaction, listTransactions } from './api';
 import { TransactionFormDialog } from './components/TransactionFormDialog';
@@ -105,6 +103,10 @@ function TransactionsPage() {
 
   const total = data?.total ?? 0;
   const items = data?.items ?? [];
+  const accountsByCurrency = useMemo(
+    () => new Map(accounts.map((a) => [a.id, a.currency])),
+    [accounts],
+  );
 
   return (
     <>
@@ -239,7 +241,7 @@ function TransactionsPage() {
                       <TableCell align="right">
                         <Chip
                           size="small"
-                          label={formatCurrency(transaction.amount, accounts.find((a) => a.id === transaction.accountId)?.currency ?? 'USD')}
+                          label={formatCurrency(transaction.amount, accountsByCurrency.get(transaction.accountId) ?? 'USD')}
                           color={transaction.type === 'income' ? 'success' : 'error'}
                           variant="outlined"
                         />

@@ -1,3 +1,4 @@
+import type { UserId } from '@meridia/shared';
 import type { Db } from '../../database/types';
 
 export interface PeriodSummaryRow {
@@ -12,7 +13,7 @@ export interface CategoryTotalRow {
   total: number;
 }
 
-export async function getTotalBalance(db: Db, userId: string): Promise<number> {
+export async function getTotalBalance(db: Db, userId: UserId): Promise<number> {
   const result = await db.query<{ total: number }>(
     `SELECT COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END), 0)::float8 AS total
      FROM transactions t
@@ -24,7 +25,7 @@ export async function getTotalBalance(db: Db, userId: string): Promise<number> {
 
 export async function getPeriodSummary(
   db: Db,
-  userId: string,
+  userId: UserId,
   from: string,
   to: string,
 ): Promise<PeriodSummaryRow> {
@@ -42,7 +43,7 @@ export async function getPeriodSummary(
 
 export async function getExpensesByCategory(
   db: Db,
-  userId: string,
+  userId: UserId,
   from: string,
   to: string,
 ): Promise<CategoryTotalRow[]> {

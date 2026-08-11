@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 import { sendNoContent, sendPaginated, sendSuccess } from '../../shared/http/http';
 import { asyncHandler } from '../../shared/utils/asyncHandler';
 import * as categoriesService from './categories.service';
+import type { CategoryId } from '@meridia/shared';
 
 export const list = asyncHandler(async (req: Request, res: Response) => {
   const categories = await categoriesService.listCategories(
@@ -12,7 +13,7 @@ export const list = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getOne = asyncHandler(async (req: Request, res: Response) => {
-  const category = await categoriesService.getCategory(req.user!.id, req.params.id!);
+  const category = await categoriesService.getCategory(req.user!.id, req.params.id as CategoryId);
   sendSuccess(res, { category });
 });
 
@@ -22,11 +23,11 @@ export const create = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const update = asyncHandler(async (req: Request, res: Response) => {
-  const category = await categoriesService.updateCategory(req.user!.id, req.params.id!, req.body);
+  const category = await categoriesService.updateCategory(req.user!.id, req.params.id as CategoryId, req.body);
   sendSuccess(res, { category });
 });
 
 export const remove = asyncHandler(async (req: Request, res: Response) => {
-  await categoriesService.deleteCategory(req.user!.id, req.params.id!);
+  await categoriesService.deleteCategory(req.user!.id, req.params.id as CategoryId);
   sendNoContent(res);
 });

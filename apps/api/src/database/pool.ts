@@ -1,6 +1,7 @@
 import type { Pool as PoolType } from 'pg';
 import pg from 'pg';
-import { env, isProd } from '../config/env';
+import { env } from '../config/env';
+import { logger } from '../shared/logger';
 
 const { Pool } = pg;
 
@@ -15,9 +16,7 @@ export const pool = new Pool({
 });
 
 pool.on('error', (err) => {
-  if (isProd) {
-    console.error('Error inesperado en el pool de PostgreSQL:', err);
-  }
+  logger.error({ err }, 'Error inesperado en el pool de PostgreSQL');
 });
 
 export type Queryable = Pick<PoolType, 'query'>;

@@ -1,5 +1,12 @@
-import { useEffect } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import InputAdornment from '@mui/material/InputAdornment';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import type { Account, Category, Transaction, TransactionType } from '@meridia/shared';
@@ -71,10 +78,6 @@ export function TransactionFormDialog({
         date: today(),
         note: '',
       };
-
-  useEffect(() => {
-    if (!open) return;
-  }, [open]);
 
   const handleSubmit = async (values: FormValues) => {
     const payload = {

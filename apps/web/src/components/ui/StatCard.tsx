@@ -1,5 +1,8 @@
 import type { ReactNode } from 'react';
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 export interface StatCardProps {
   title: string;
@@ -19,7 +22,20 @@ const colorMap = {
 
 export function StatCard({ title, value, subtitle, icon, color = 'primary' }: StatCardProps) {
   return (
-    <Card elevation={0} sx={{ border: 1, borderColor: 'divider', height: '100%' }}>
+    <Card
+      elevation={0}
+      sx={{
+        border: 1,
+        borderColor: 'divider',
+        height: '100%',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+        '&:hover': {
+          transform: 'translateY(-2px)',
+          boxShadow: 3,
+          borderColor: 'primary.light',
+        },
+      }}
+    >
       <CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
           <Typography variant="body2" color="text.secondary">

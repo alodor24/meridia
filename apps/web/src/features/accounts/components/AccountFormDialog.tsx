@@ -1,11 +1,8 @@
-import { useEffect } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import type { Account, AccountType } from '@meridia/shared';
@@ -22,10 +19,11 @@ interface FormValues {
   currency: string;
 }
 
-const validationSchema = Yup.object({
-  name: Yup.string().trim().min(1, 'El nombre es requerido').max(80, 'Demasiado largo').required('El nombre es requerido'),
-  type: Yup.mixed<AccountType>().oneOf(ACCOUNT_TYPE_OPTIONS.map((o) => o.value)).required('Seleccioná un tipo'),  currency: Yup.string().trim().length(3, 'Moneda inválida').required('La moneda es requerida'),
-});
+  const validationSchema = Yup.object({
+    name: Yup.string().trim().min(1, 'El nombre es requerido').max(80, 'Demasiado largo').required('El nombre es requerido'),
+    type: Yup.mixed<AccountType>().oneOf(ACCOUNT_TYPE_OPTIONS.map((o) => o.value)).required('Seleccioná un tipo'),
+    currency: Yup.string().trim().length(3, 'Moneda inválida').required('La moneda es requerida'),
+  });
 
 export interface AccountFormDialogProps {
   open: boolean;
@@ -57,10 +55,6 @@ export function AccountFormDialog({ open, account, defaultCurrency, onClose, onS
       onSaved();
     }
   };
-
-  useEffect(() => {
-    if (!open) return;
-  }, [open]);
 
   return (
     <Dialog open={open} onClose={loading ? undefined : onClose} maxWidth="xs" fullWidth>

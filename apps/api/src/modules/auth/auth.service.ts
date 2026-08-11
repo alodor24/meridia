@@ -4,16 +4,17 @@ import { env } from '../../config/env';
 import { pool, withTransaction } from '../../database/pool';
 import type { Db } from '../../database/types';
 import { AuthenticationError, ConflictError, NotFoundError } from '../../shared/errors';
-import { expiresInToMs } from '../../shared/utils/money';
+import { expiresInToMs } from '../../shared/utils/time';
 import { generateRefreshToken, hashRefreshToken } from '../../shared/utils/tokens';
 import * as authRepository from './auth.repository';
 import * as usersRepository from '../users/users.repository';
 import type { TokenPair } from './auth.types';
 import type { LoginInput, RegisterInput } from './auth.schemas';
+import type { UserId } from '@meridia/shared';
 
 const BCRYPT_ROUNDS = 10;
 
-function signAccessToken(userId: string, email: string): string {
+function signAccessToken(userId: UserId, email: string): string {
   return jwt.sign(
     { sub: userId, email },
     env.JWT_ACCESS_SECRET,
@@ -21,7 +22,7 @@ function signAccessToken(userId: string, email: string): string {
   );
 }
 
-async function issueTokenPair(db: Db, userId: string, email: string): Promise<TokenPair> {
+async function issueTokenPair(db: Db, userId: UserId, email: string): Promise<TokenPair> {
   const accessToken = signAccessToken(userId, email);
   const refreshToken = generateRefreshToken();
   await authRepository.createRefreshToken(db, {
@@ -50,11 +51,11 @@ export async function register(input: RegisterInput) {
       country: input.country,
       currency: input.currency,
     });
-    await authRepository.createDefaultCategories(client, created.id);
+    await authRepository.createDefaultCategories(client, created.id as UserId);
     return created;
   });
 
-  const tokens = await issueTokenPair(pool, user.id, user.email);
+  const tokens = await issueTokenPair(pool, user.id as UserId, user.email);
 
   return { user: usersRepository.mapUserRow(user), ...tokens };
 }
@@ -71,7 +72,7 @@ export async function login(input: LoginInput) {
     throw new AuthenticationError('Credenciales inválidas', 'INVALID_CREDENTIALS');
   }
 
-  const tokens = await issueTokenPair(pool, user.id, user.email);
+  const tokens = await issueTokenPair(pool, user.id as UserId, user.email);
 
   return { user: usersRepository.mapUserRow(user), ...tokens };
 }
@@ -88,7 +89,7 @@ export async function refresh(refreshToken: string) {
 
   const tokens = await withTransaction(async (client) => {
     await authRepository.revokeRefreshTokenById(client, record.id);
-    return issueTokenPair(client, record.user.id, record.user.email);
+    return issueTokenPair(client, record.user.id as UserId, record.user.email);
   });
 
   return {
@@ -102,13 +103,13 @@ export async function logout(refreshToken: string | undefined): Promise<void> {
   await authRepository.revokeRefreshToken(pool, hashRefreshToken(refreshToken));
 }
 
-export async function getMe(userId: string) {
+export async function getMe(userId: UserId) {
   const user = await usersRepository.findById(pool, userId);
   if (!user) throw new NotFoundError('Usuario no encontrado');
   return usersRepository.mapUserRow(user);
 }
 
-export async function updateProfile(userId: string, name: string) {
+export async function updateProfile(userId: UserId, name: string) {
   const user = await usersRepository.updateName(pool, userId, name.trim());
   if (!user) throw new NotFoundError('Usuario no encontrado');
   return usersRepository.mapUserRow(user);

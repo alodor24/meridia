@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react';
-import { Box, Card, CardContent, Container, Typography } from '@mui/material';
-import { Payments as PaymentsIcon } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 export function AuthLayout({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) {
   return (

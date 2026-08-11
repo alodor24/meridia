@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { toApiError } from '@/services/api/errors';
 
 export interface AsyncState<T> {
@@ -11,11 +11,15 @@ export function useFetch<T>(fetcher: () => Promise<T>, deps: unknown[] = []) {
   const [state, setState] = useState<AsyncState<T>>({ data: null, loading: true, error: null });
   const [reloadToken, setReloadToken] = useState(0);
 
+  const fetcherRef = useRef(fetcher);
+  fetcherRef.current = fetcher;
+
   useEffect(() => {
     let active = true;
     setState((s) => ({ ...s, loading: true, error: null }));
 
-    fetcher()
+    fetcherRef
+      .current()
       .then((data) => {
         if (active) setState({ data, loading: false, error: null });
       })
@@ -26,6 +30,7 @@ export function useFetch<T>(fetcher: () => Promise<T>, deps: unknown[] = []) {
     return () => {
       active = false;
     };
+    // deps is a dynamic array; the fetcher is read from a ref to avoid stale closures.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps, reloadToken]);
 

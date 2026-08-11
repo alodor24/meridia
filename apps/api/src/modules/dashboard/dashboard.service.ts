@@ -1,6 +1,7 @@
 import { pool } from '../../database/pool';
 import * as dashboardRepository from './dashboard.repository';
 import * as transactionsRepository from '../transactions/transactions.repository';
+import type { CategoryId, UserId } from '@meridia/shared';
 
 export interface DashboardFilters {
   from?: string;
@@ -16,7 +17,7 @@ function defaultRange(): { from: string; to: string } {
   return { from, to };
 }
 
-export async function getDashboard(userId: string, filters: DashboardFilters) {
+export async function getDashboard(userId: UserId, filters: DashboardFilters) {
   const { from, to } = filters.from && filters.to ? { from: filters.from, to: filters.to } : defaultRange();
   const limit = filters.limit ?? 8;
 
@@ -34,7 +35,7 @@ export async function getDashboard(userId: string, filters: DashboardFilters) {
     periodBalance: period.income - period.expenses,
     lastTransactions: lastTransactions.map(transactionsRepository.mapTransactionRow),
     expensesByCategory: expensesByCategory.map((row) => ({
-      categoryId: row.category_id,
+      categoryId: row.category_id as CategoryId,
       name: row.name,
       color: row.color,
       total: row.total,

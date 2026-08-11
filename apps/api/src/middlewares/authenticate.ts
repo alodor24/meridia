@@ -4,9 +4,10 @@ import { env } from '../config/env';
 import { pool } from '../database/pool';
 import { AuthenticationError } from '../shared/errors';
 import * as usersRepository from '../modules/users/users.repository';
+import type { UserId } from '@meridia/shared';
 
 interface AccessTokenPayload {
-  sub: string;
+  sub: UserId;
   email: string;
 }
 

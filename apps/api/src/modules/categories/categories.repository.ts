@@ -1,4 +1,4 @@
-import type { Category, TransactionType } from '@meridia/shared';
+import type { Category, CategoryId, TransactionType, UserId } from '@meridia/shared';
 import type { Db } from '../../database/types';
 
 export interface CategoryRow {
@@ -25,8 +25,8 @@ export interface UpdateCategoryInput {
 
 export function mapCategoryRow(row: CategoryRow): Category {
   return {
-    id: row.id,
-    userId: row.user_id,
+    id: row.id as CategoryId,
+    userId: row.user_id as UserId,
     name: row.name,
     type: row.type,
     color: row.color,
@@ -35,7 +35,7 @@ export function mapCategoryRow(row: CategoryRow): Category {
   };
 }
 
-export async function listByUser(db: Db, userId: string, type?: TransactionType): Promise<CategoryRow[]> {
+export async function listByUser(db: Db, userId: UserId, type?: TransactionType): Promise<CategoryRow[]> {
   const values: unknown[] = [userId];
   let typeClause = '';
   if (type) {
@@ -51,7 +51,7 @@ export async function listByUser(db: Db, userId: string, type?: TransactionType)
   return result.rows;
 }
 
-export async function findById(db: Db, userId: string, id: string): Promise<CategoryRow | undefined> {
+export async function findById(db: Db, userId: UserId, id: CategoryId): Promise<CategoryRow | undefined> {
   const result = await db.query<CategoryRow>(
     'SELECT * FROM categories WHERE id = $1 AND user_id = $2',
     [id, userId],
@@ -59,7 +59,7 @@ export async function findById(db: Db, userId: string, id: string): Promise<Cate
   return result.rows[0];
 }
 
-export async function create(db: Db, userId: string, input: CreateCategoryInput): Promise<CategoryRow> {
+export async function create(db: Db, userId: UserId, input: CreateCategoryInput): Promise<CategoryRow> {
   const result = await db.query<CategoryRow>(
     `INSERT INTO categories (user_id, name, type, color)
      VALUES ($1, $2, $3, $4)
@@ -71,8 +71,8 @@ export async function create(db: Db, userId: string, input: CreateCategoryInput)
 
 export async function update(
   db: Db,
-  userId: string,
-  id: string,
+  userId: UserId,
+  id: CategoryId,
   input: UpdateCategoryInput,
 ): Promise<CategoryRow | undefined> {
   const fields: string[] = [];
@@ -100,7 +100,7 @@ export async function update(
   return result.rows[0];
 }
 
-export async function countTransactions(db: Db, categoryId: string): Promise<number> {
+export async function countTransactions(db: Db, categoryId: CategoryId): Promise<number> {
   const result = await db.query<{ count: string }>(
     'SELECT COUNT(*)::text AS count FROM transactions WHERE category_id = $1',
     [categoryId],
@@ -108,7 +108,7 @@ export async function countTransactions(db: Db, categoryId: string): Promise<num
   return Number(result.rows[0]?.count ?? 0);
 }
 
-export async function remove(db: Db, userId: string, id: string): Promise<boolean> {
+export async function remove(db: Db, userId: UserId, id: CategoryId): Promise<boolean> {
   const result = await db.query(
     'DELETE FROM categories WHERE id = $1 AND user_id = $2',
     [id, userId],

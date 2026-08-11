@@ -1,4 +1,9 @@
-import { Box, Card, CardContent, LinearProgress, Stack, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import LinearProgress from '@mui/material/LinearProgress';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { formatCurrency } from '@/utils/format';
 
 export interface ExpensesByCategoryItem {

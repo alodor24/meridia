@@ -1,4 +1,4 @@
-import type { Account, AccountType } from '@meridia/shared';
+import type { Account, AccountId, AccountType, UserId } from '@meridia/shared';
 import type { Db } from '../../database/types';
 
 export interface AccountRow {
@@ -34,8 +34,8 @@ const BALANCE_SELECT = `
 
 export function mapAccountRow(row: AccountRow): Account {
   return {
-    id: row.id,
-    userId: row.user_id,
+    id: row.id as AccountId,
+    userId: row.user_id as UserId,
     name: row.name,
     type: row.type,
     currency: row.currency,
@@ -45,7 +45,7 @@ export function mapAccountRow(row: AccountRow): Account {
   };
 }
 
-export async function listByUser(db: Db, userId: string): Promise<AccountRow[]> {
+export async function listByUser(db: Db, userId: UserId): Promise<AccountRow[]> {
   const result = await db.query<AccountRow>(
     `SELECT a.*, ${BALANCE_SELECT}
      FROM accounts a
@@ -56,7 +56,7 @@ export async function listByUser(db: Db, userId: string): Promise<AccountRow[]> 
   return result.rows;
 }
 
-export async function findById(db: Db, userId: string, id: string): Promise<AccountRow | undefined> {
+export async function findById(db: Db, userId: UserId, id: AccountId): Promise<AccountRow | undefined> {
   const result = await db.query<AccountRow>(
     `SELECT a.*, ${BALANCE_SELECT}
      FROM accounts a
@@ -66,7 +66,7 @@ export async function findById(db: Db, userId: string, id: string): Promise<Acco
   return result.rows[0];
 }
 
-export async function create(db: Db, userId: string, input: CreateAccountInput): Promise<AccountRow> {
+export async function create(db: Db, userId: UserId, input: CreateAccountInput): Promise<AccountRow> {
   const result = await db.query<AccountRow>(
     `INSERT INTO accounts (user_id, name, type, currency)
      VALUES ($1, $2, $3, $4)
@@ -78,8 +78,8 @@ export async function create(db: Db, userId: string, input: CreateAccountInput):
 
 export async function update(
   db: Db,
-  userId: string,
-  id: string,
+  userId: UserId,
+  id: AccountId,
   input: UpdateAccountInput,
 ): Promise<AccountRow | undefined> {
   const fields: string[] = [];
@@ -107,7 +107,7 @@ export async function update(
   return result.rows[0];
 }
 
-export async function countTransactions(db: Db, accountId: string): Promise<number> {
+export async function countTransactions(db: Db, accountId: AccountId): Promise<number> {
   const result = await db.query<{ count: string }>(
     'SELECT COUNT(*)::text AS count FROM transactions WHERE account_id = $1',
     [accountId],
@@ -115,7 +115,7 @@ export async function countTransactions(db: Db, accountId: string): Promise<numb
   return Number(result.rows[0]?.count ?? 0);
 }
 
-export async function remove(db: Db, userId: string, id: string): Promise<boolean> {
+export async function remove(db: Db, userId: UserId, id: AccountId): Promise<boolean> {
   const result = await db.query(
     'DELETE FROM accounts WHERE id = $1 AND user_id = $2',
     [id, userId],
