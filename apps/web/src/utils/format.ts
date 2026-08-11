@@ -1,0 +1,48 @@
+import { es } from 'date-fns/locale';
+import { format as dateFnsFormat, isValid, parseISO } from 'date-fns';
+
+const currencyFormatterCache = new Map<string, Intl.NumberFormat>();
+
+function getFormatter(currency: string): Intl.NumberFormat {
+  const key = currency.toUpperCase();
+  let formatter = currencyFormatterCache.get(key);
+  if (!formatter) {
+    formatter = new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: key,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    currencyFormatterCache.set(key, formatter);
+  }
+  return formatter;
+}
+
+export function formatCurrency(amount: number, currency = 'USD'): string {
+  return getFormatter(currency).format(amount);
+}
+
+export function formatDate(date: string | Date, pattern = 'dd/MM/yyyy'): string {
+  const parsed = typeof date === 'string' ? parseISO(date) : date;
+  if (!isValid(parsed)) return '';
+  return dateFnsFormat(parsed, pattern, { locale: es });
+}
+
+export function formatMonth(date: Date): string {
+  return dateFnsFormat(date, 'LLLL yyyy', { locale: es });
+}
+
+export function today(): string {
+  return dateFnsFormat(new Date(), 'yyyy-MM-dd');
+}
+
+export function startOfMonth(): string {
+  const now = new Date();
+  const first = new Date(now.getFullYear(), now.getMonth(), 1);
+  return dateFnsFormat(first, 'yyyy-MM-dd');
+}
+
+export function formatAmountWithSign(amount: number, currency: string, type: 'income' | 'expense'): string {
+  const formatted = formatCurrency(amount, currency);
+  return type === 'income' ? `+ ${formatted}` : `- ${formatted}`;
+}

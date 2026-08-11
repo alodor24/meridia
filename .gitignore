@@ -1,0 +1,41 @@
+# Dependencias
+node_modules/
+.pnp
+.pnp.js
+
+# Entorno
+.env
+.env.*
+!.env.example
+!.env.test.example
+
+# Builds
+dist/
+build/
+*.tsbuildinfo
+
+# Cobertura
+coverage/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Tests / caché
+.vite/
+.cache/
+.turbo/
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
+
+# Vercel
+.vercel
+
+# Supabase
+supabase/
