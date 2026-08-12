@@ -1,9 +1,6 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
-import { useAuthStore } from '@/stores/authStore';
+import { createFileRoute } from "@tanstack/react-router";
+import HomePage from "@/features/home/HomePage";
 
-export const Route = createFileRoute('/')({
-  beforeLoad: () => {
-    const { status } = useAuthStore.getState();
-    throw redirect({ to: status === 'authenticated' ? '/app/dashboard' : '/login' });
-  },
+export const Route = createFileRoute("/")({
+  component: HomePage,
 });
