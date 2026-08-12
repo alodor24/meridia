@@ -32,20 +32,18 @@ const BALANCE_SELECT = `
   ), 0) AS balance
 `;
 
-export function mapAccountRow(row: AccountRow): Account {
-  return {
-    id: row.id as AccountId,
-    userId: row.user_id as UserId,
-    name: row.name,
-    type: row.type,
-    currency: row.currency,
-    balance: row.balance,
-    createdAt: row.created_at.toISOString(),
-    updatedAt: row.updated_at.toISOString(),
-  };
-}
+export const mapAccountRow = (row: AccountRow): Account => ({
+  id: row.id as AccountId,
+  userId: row.user_id as UserId,
+  name: row.name,
+  type: row.type,
+  currency: row.currency,
+  balance: row.balance,
+  createdAt: row.created_at.toISOString(),
+  updatedAt: row.updated_at.toISOString(),
+});
 
-export async function listByUser(db: Db, userId: UserId): Promise<AccountRow[]> {
+export const listByUser = async (db: Db, userId: UserId): Promise<AccountRow[]> => {
   const result = await db.query<AccountRow>(
     `SELECT a.*, ${BALANCE_SELECT}
      FROM accounts a
@@ -54,9 +52,13 @@ export async function listByUser(db: Db, userId: UserId): Promise<AccountRow[]> 
     [userId],
   );
   return result.rows;
-}
+};
 
-export async function findById(db: Db, userId: UserId, id: AccountId): Promise<AccountRow | undefined> {
+export const findById = async (
+  db: Db,
+  userId: UserId,
+  id: AccountId,
+): Promise<AccountRow | undefined> => {
   const result = await db.query<AccountRow>(
     `SELECT a.*, ${BALANCE_SELECT}
      FROM accounts a
@@ -64,9 +66,13 @@ export async function findById(db: Db, userId: UserId, id: AccountId): Promise<A
     [id, userId],
   );
   return result.rows[0];
-}
+};
 
-export async function create(db: Db, userId: UserId, input: CreateAccountInput): Promise<AccountRow> {
+export const create = async (
+  db: Db,
+  userId: UserId,
+  input: CreateAccountInput,
+): Promise<AccountRow> => {
   const result = await db.query<AccountRow>(
     `INSERT INTO accounts (user_id, name, type, currency)
      VALUES ($1, $2, $3, $4)
@@ -74,14 +80,14 @@ export async function create(db: Db, userId: UserId, input: CreateAccountInput):
     [userId, input.name, input.type, input.currency],
   );
   return result.rows[0]!;
-}
+};
 
-export async function update(
+export const update = async (
   db: Db,
   userId: UserId,
   id: AccountId,
   input: UpdateAccountInput,
-): Promise<AccountRow | undefined> {
+): Promise<AccountRow | undefined> => {
   const fields: string[] = [];
   const values: unknown[] = [id, userId];
   if (input.name !== undefined) {
@@ -105,20 +111,20 @@ export async function update(
     values,
   );
   return result.rows[0];
-}
+};
 
-export async function countTransactions(db: Db, accountId: AccountId): Promise<number> {
+export const countTransactions = async (db: Db, accountId: AccountId): Promise<number> => {
   const result = await db.query<{ count: string }>(
     'SELECT COUNT(*)::text AS count FROM transactions WHERE account_id = $1',
     [accountId],
   );
   return Number(result.rows[0]?.count ?? 0);
-}
+};
 
-export async function remove(db: Db, userId: UserId, id: AccountId): Promise<boolean> {
+export const remove = async (db: Db, userId: UserId, id: AccountId): Promise<boolean> => {
   const result = await db.query(
     'DELETE FROM accounts WHERE id = $1 AND user_id = $2',
     [id, userId],
   );
   return (result.rowCount ?? 0) > 0;
-}
+};

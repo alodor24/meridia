@@ -5,7 +5,7 @@ const UNIT_MS: Record<string, number> = {
   d: 86_400_000,
 };
 
-export function expiresInToMs(expiresIn: string): number {
+export const expiresInToMs = (expiresIn: string): number => {
   const match = /^(\d+)([smhd])$/.exec(expiresIn.trim());
   if (!match) {
     throw new Error(`Expiración inválida: "${expiresIn}" (usa formato como 15m, 30d)`);
@@ -16,4 +16,4 @@ export function expiresInToMs(expiresIn: string): number {
     throw new Error(`Expiración inválida: "${expiresIn}"`);
   }
   return value * unit;
-}
+};

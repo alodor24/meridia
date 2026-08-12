@@ -21,9 +21,9 @@ pool.on('error', (err) => {
 
 export type Queryable = Pick<PoolType, 'query'>;
 
-export async function withTransaction<T>(
+export const withTransaction = async <T>(
   fn: (client: pg.PoolClient) => Promise<T>,
-): Promise<T> {
+): Promise<T> => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -36,13 +36,13 @@ export async function withTransaction<T>(
   } finally {
     client.release();
   }
-}
+};
 
-export async function checkDatabaseConnection(): Promise<boolean> {
+export const checkDatabaseConnection = async (): Promise<boolean> => {
   try {
     await pool.query('SELECT 1');
     return true;
   } catch {
     return false;
   }
-}
+};

@@ -23,19 +23,17 @@ export interface UpdateCategoryInput {
   color?: string;
 }
 
-export function mapCategoryRow(row: CategoryRow): Category {
-  return {
-    id: row.id as CategoryId,
-    userId: row.user_id as UserId,
-    name: row.name,
-    type: row.type,
-    color: row.color,
-    createdAt: row.created_at.toISOString(),
-    updatedAt: row.updated_at.toISOString(),
-  };
-}
+export const mapCategoryRow = (row: CategoryRow): Category => ({
+  id: row.id as CategoryId,
+  userId: row.user_id as UserId,
+  name: row.name,
+  type: row.type,
+  color: row.color,
+  createdAt: row.created_at.toISOString(),
+  updatedAt: row.updated_at.toISOString(),
+});
 
-export async function listByUser(db: Db, userId: UserId, type?: TransactionType): Promise<CategoryRow[]> {
+export const listByUser = async (db: Db, userId: UserId, type?: TransactionType): Promise<CategoryRow[]> => {
   const values: unknown[] = [userId];
   let typeClause = '';
   if (type) {
@@ -49,17 +47,25 @@ export async function listByUser(db: Db, userId: UserId, type?: TransactionType)
     values,
   );
   return result.rows;
-}
+};
 
-export async function findById(db: Db, userId: UserId, id: CategoryId): Promise<CategoryRow | undefined> {
+export const findById = async (
+  db: Db,
+  userId: UserId,
+  id: CategoryId,
+): Promise<CategoryRow | undefined> => {
   const result = await db.query<CategoryRow>(
     'SELECT * FROM categories WHERE id = $1 AND user_id = $2',
     [id, userId],
   );
   return result.rows[0];
-}
+};
 
-export async function create(db: Db, userId: UserId, input: CreateCategoryInput): Promise<CategoryRow> {
+export const create = async (
+  db: Db,
+  userId: UserId,
+  input: CreateCategoryInput,
+): Promise<CategoryRow> => {
   const result = await db.query<CategoryRow>(
     `INSERT INTO categories (user_id, name, type, color)
      VALUES ($1, $2, $3, $4)
@@ -67,14 +73,14 @@ export async function create(db: Db, userId: UserId, input: CreateCategoryInput)
     [userId, input.name, input.type, input.color ?? '#607d8b'],
   );
   return result.rows[0]!;
-}
+};
 
-export async function update(
+export const update = async (
   db: Db,
   userId: UserId,
   id: CategoryId,
   input: UpdateCategoryInput,
-): Promise<CategoryRow | undefined> {
+): Promise<CategoryRow | undefined> => {
   const fields: string[] = [];
   const values: unknown[] = [id, userId];
   if (input.name !== undefined) {
@@ -98,20 +104,20 @@ export async function update(
     values,
   );
   return result.rows[0];
-}
+};
 
-export async function countTransactions(db: Db, categoryId: CategoryId): Promise<number> {
+export const countTransactions = async (db: Db, categoryId: CategoryId): Promise<number> => {
   const result = await db.query<{ count: string }>(
     'SELECT COUNT(*)::text AS count FROM transactions WHERE category_id = $1',
     [categoryId],
   );
   return Number(result.rows[0]?.count ?? 0);
-}
+};
 
-export async function remove(db: Db, userId: UserId, id: CategoryId): Promise<boolean> {
+export const remove = async (db: Db, userId: UserId, id: CategoryId): Promise<boolean> => {
   const result = await db.query(
     'DELETE FROM categories WHERE id = $1 AND user_id = $2',
     [id, userId],
   );
   return (result.rowCount ?? 0) > 0;
-}
+};

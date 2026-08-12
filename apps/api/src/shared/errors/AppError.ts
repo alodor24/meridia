@@ -43,6 +43,5 @@ export class ConflictError extends AppError {
   }
 }
 
-export function isAppError(error: unknown): error is AppError {
-  return error instanceof AppError;
-}
+export const isAppError = (error: unknown): error is AppError =>
+  error instanceof AppError;

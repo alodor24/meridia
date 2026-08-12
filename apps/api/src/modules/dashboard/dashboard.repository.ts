@@ -13,7 +13,7 @@ export interface CategoryTotalRow {
   total: number;
 }
 
-export async function getTotalBalance(db: Db, userId: UserId): Promise<number> {
+export const getTotalBalance = async (db: Db, userId: UserId): Promise<number> => {
   const result = await db.query<{ total: number }>(
     `SELECT COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END), 0)::float8 AS total
      FROM transactions t
@@ -21,14 +21,14 @@ export async function getTotalBalance(db: Db, userId: UserId): Promise<number> {
     [userId],
   );
   return result.rows[0]?.total ?? 0;
-}
+};
 
-export async function getPeriodSummary(
+export const getPeriodSummary = async (
   db: Db,
   userId: UserId,
   from: string,
   to: string,
-): Promise<PeriodSummaryRow> {
+): Promise<PeriodSummaryRow> => {
   const result = await db.query<PeriodSummaryRow>(
     `SELECT
        COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE 0 END), 0)::float8 AS income,
@@ -39,14 +39,14 @@ export async function getPeriodSummary(
   );
   const row = result.rows[0] ?? { income: 0, expenses: 0 };
   return { income: row.income ?? 0, expenses: row.expenses ?? 0 };
-}
+};
 
-export async function getExpensesByCategory(
+export const getExpensesByCategory = async (
   db: Db,
   userId: UserId,
   from: string,
   to: string,
-): Promise<CategoryTotalRow[]> {
+): Promise<CategoryTotalRow[]> => {
   const result = await db.query<CategoryTotalRow>(
     `SELECT c.id AS category_id, c.name, c.color, SUM(t.amount)::float8 AS total
      FROM transactions t
@@ -57,4 +57,4 @@ export async function getExpensesByCategory(
     [userId, from, to],
   );
   return result.rows;
-}
+};

@@ -1,34 +1,38 @@
-import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import SaveIcon from '@mui/icons-material/Save';
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
-import { PageHeader } from '@/components/ui/PageHeader';
-import { FormTextField } from '@/components/ui/FormTextField';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { useAuthStore } from '@/stores/authStore';
-import { useUiStore } from '@/stores/uiStore';
-import { updateProfile } from '@/features/auth/api';
-import { getCountryName } from '@/utils/labels';
-import { formatDate, getCurrencySymbol } from '@/utils/format';
-import { toApiError } from '@/services/api/errors';
+import { useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Divider from "@mui/material/Divider";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import SaveIcon from "@mui/icons-material/Save";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { FormTextField } from "@/components/ui/FormTextField";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useAuthStore } from "@/stores/authStore";
+import { useUiStore } from "@/stores/uiStore";
+import { updateProfile } from "@/features/auth/api";
+import { getCountryName } from "@/utils/labels";
+import { formatDate, getCurrencySymbol } from "@/utils/format";
+import { toApiError } from "@/services/api/errors";
 
 const profileValidationSchema = Yup.object({
-  name: Yup.string().trim().min(1, 'El nombre es requerido').max(80, 'Demasiado largo').required('El nombre es requerido'),
+  name: Yup.string()
+    .trim()
+    .min(1, "El nombre es requerido")
+    .max(80, "Demasiado largo")
+    .required("El nombre es requerido"),
 });
 
-function ProfilePage() {
-  useDocumentTitle('Perfil');
+const ProfilePage = () => {
+  useDocumentTitle("Perfil");
   const user = useAuthStore((s) => s.user);
   const refreshProfile = useAuthStore((s) => s.refreshProfile);
   const showSnackbar = useUiStore((s) => s.showSnackbar);
@@ -41,9 +45,9 @@ function ProfilePage() {
     try {
       await updateProfile(values.name);
       await refreshProfile();
-      showSnackbar('Perfil actualizado');
+      showSnackbar("Perfil actualizado");
     } catch (error) {
-      showSnackbar(toApiError(error).message, 'error');
+      showSnackbar(toApiError(error).message, "error");
     } finally {
       setSubmitting(false);
     }
@@ -54,10 +58,17 @@ function ProfilePage() {
       <PageHeader title="Perfil" subtitle="Tu información personal" />
 
       <Stack spacing={3} sx={{ maxWidth: 600 }}>
-        <Card elevation={0} sx={{ border: 1, borderColor: 'divider' }}>
+        <Card elevation={0} sx={{ border: 1, borderColor: "divider" }}>
           <CardContent>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-              <Avatar sx={{ width: 56, height: 56, bgcolor: 'primary.main', fontSize: 24 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+              <Avatar
+                sx={{
+                  width: 56,
+                  height: 56,
+                  bgcolor: "primary.main",
+                  fontSize: 24,
+                }}
+              >
                 {user.name.charAt(0).toUpperCase()}
               </Avatar>
               <Box>
@@ -70,19 +81,28 @@ function ProfilePage() {
             <Divider />
             <List dense>
               <ListItem>
-                <ListItemText primary="País" secondary={getCountryName(user.country)} />
+                <ListItemText
+                  primary="País"
+                  secondary={getCountryName(user.country)}
+                />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Moneda" secondary={getCurrencySymbol(user.currency)} />
+                <ListItemText
+                  primary="Moneda"
+                  secondary={getCurrencySymbol(user.currency)}
+                />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Miembro desde" secondary={formatDate(user.createdAt)} />
+                <ListItemText
+                  primary="Miembro desde"
+                  secondary={formatDate(user.createdAt)}
+                />
               </ListItem>
             </List>
           </CardContent>
         </Card>
 
-        <Card elevation={0} sx={{ border: 1, borderColor: 'divider' }}>
+        <Card elevation={0} sx={{ border: 1, borderColor: "divider" }}>
           <CardContent>
             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
               Actualizar nombre
@@ -102,7 +122,7 @@ function ProfilePage() {
                     disabled={submitting || values.name === user.name}
                     sx={{ mt: 1 }}
                   >
-                    {submitting ? 'Guardando…' : 'Guardar cambios'}
+                    {submitting ? "Guardando…" : "Guardar cambios"}
                   </Button>
                 </Form>
               )}
@@ -112,6 +132,6 @@ function ProfilePage() {
       </Stack>
     </>
   );
-}
+};
 
 export default ProfilePage;

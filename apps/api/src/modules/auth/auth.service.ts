@@ -14,15 +14,14 @@ import type { UserId } from '@meridia/shared';
 
 const BCRYPT_ROUNDS = 10;
 
-function signAccessToken(userId: UserId, email: string): string {
-  return jwt.sign(
+const signAccessToken = (userId: UserId, email: string): string =>
+  jwt.sign(
     { sub: userId, email },
     env.JWT_ACCESS_SECRET,
     { expiresIn: env.JWT_ACCESS_EXPIRES_IN as jwt.SignOptions['expiresIn'] },
   );
-}
 
-async function issueTokenPair(db: Db, userId: UserId, email: string): Promise<TokenPair> {
+const issueTokenPair = async (db: Db, userId: UserId, email: string): Promise<TokenPair> => {
   const accessToken = signAccessToken(userId, email);
   const refreshToken = generateRefreshToken();
   await authRepository.createRefreshToken(db, {
@@ -31,9 +30,9 @@ async function issueTokenPair(db: Db, userId: UserId, email: string): Promise<To
     expiresAt: new Date(Date.now() + expiresInToMs(env.JWT_REFRESH_EXPIRES_IN)),
   });
   return { accessToken, refreshToken };
-}
+};
 
-export async function register(input: RegisterInput) {
+export const register = async (input: RegisterInput) => {
   const email = input.email.trim().toLowerCase();
 
   const existing = await usersRepository.findByEmail(pool, email);
@@ -58,9 +57,9 @@ export async function register(input: RegisterInput) {
   const tokens = await issueTokenPair(pool, user.id as UserId, user.email);
 
   return { user: usersRepository.mapUserRow(user), ...tokens };
-}
+};
 
-export async function login(input: LoginInput) {
+export const login = async (input: LoginInput) => {
   const email = input.email.trim().toLowerCase();
   const user = await usersRepository.findByEmail(pool, email);
 
@@ -75,9 +74,9 @@ export async function login(input: LoginInput) {
   const tokens = await issueTokenPair(pool, user.id as UserId, user.email);
 
   return { user: usersRepository.mapUserRow(user), ...tokens };
-}
+};
 
-export async function refresh(refreshToken: string) {
+export const refresh = async (refreshToken: string) => {
   const record = await authRepository.findValidRefreshToken(
     pool,
     hashRefreshToken(refreshToken),
@@ -96,21 +95,21 @@ export async function refresh(refreshToken: string) {
     user: usersRepository.mapUserRow(record.user),
     ...tokens,
   };
-}
+};
 
-export async function logout(refreshToken: string | undefined): Promise<void> {
+export const logout = async (refreshToken: string | undefined): Promise<void> => {
   if (!refreshToken) return;
   await authRepository.revokeRefreshToken(pool, hashRefreshToken(refreshToken));
-}
+};
 
-export async function getMe(userId: UserId) {
+export const getMe = async (userId: UserId) => {
   const user = await usersRepository.findById(pool, userId);
   if (!user) throw new NotFoundError('Usuario no encontrado');
   return usersRepository.mapUserRow(user);
-}
+};
 
-export async function updateProfile(userId: UserId, name: string) {
+export const updateProfile = async (userId: UserId, name: string) => {
   const user = await usersRepository.updateName(pool, userId, name.trim());
   if (!user) throw new NotFoundError('Usuario no encontrado');
   return usersRepository.mapUserRow(user);
-}
+};

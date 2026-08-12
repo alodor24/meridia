@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import { Link as RouterLink } from "@tanstack/react-router";
 
-export function AuthLayout({
+export const AuthLayout = ({
   title,
   subtitle,
   children,
@@ -16,7 +16,7 @@ export function AuthLayout({
   title: string;
   subtitle: string;
   children: ReactNode;
-}) {
+}) => {
   return (
     <Box
       sx={{
@@ -65,4 +65,4 @@ export function AuthLayout({
       </Container>
     </Box>
   );
-}
+};

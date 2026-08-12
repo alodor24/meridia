@@ -1,35 +1,40 @@
-import { useEffect, useMemo, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Chip from '@mui/material/Chip';
-import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
-import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import ClearFiltersIcon from '@mui/icons-material/FilterAltOff';
-import type { Account, Category, Transaction, TransactionType } from '@meridia/shared';
-import { PageHeader } from '@/components/ui/PageHeader';
-import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
-import { LoadingState, ErrorState, EmptyState } from '@/components/ui/States';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { useFetch, useAsyncAction } from '@/hooks/useAsync';
-import { useUiStore } from '@/stores/uiStore';
-import { formatCurrency, formatDate } from '@/utils/format';
-import { deleteTransaction, listTransactions } from './api';
-import { TransactionFormDialog } from './components/TransactionFormDialog';
-import { listAccounts } from '@/features/accounts/api';
-import { listCategories } from '@/features/categories/api';
+import { useEffect, useMemo, useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Chip from "@mui/material/Chip";
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import Stack from "@mui/material/Stack";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import ClearFiltersIcon from "@mui/icons-material/FilterAltOff";
+import type {
+  Account,
+  Category,
+  Transaction,
+  TransactionType,
+} from "@meridia/shared";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useFetch, useAsyncAction } from "@/hooks/useAsync";
+import { useUiStore } from "@/stores/uiStore";
+import { formatCurrency, formatDate } from "@/utils/format";
+import { deleteTransaction, listTransactions } from "./api";
+import { TransactionFormDialog } from "./components/TransactionFormDialog";
+import { listAccounts } from "@/features/accounts/api";
+import { listCategories } from "@/features/categories/api";
 
 const PAGE_SIZE = 20;
 
@@ -38,13 +43,19 @@ interface Filters {
   to: string;
   accountId: string;
   categoryId: string;
-  type: '' | TransactionType;
+  type: "" | TransactionType;
 }
 
-const emptyFilters: Filters = { from: '', to: '', accountId: '', categoryId: '', type: '' };
+const emptyFilters: Filters = {
+  from: "",
+  to: "",
+  accountId: "",
+  categoryId: "",
+  type: "",
+};
 
-function TransactionsPage() {
-  useDocumentTitle('Movimientos');
+const TransactionsPage = () => {
+  useDocumentTitle("Movimientos");
   const showSnackbar = useUiStore((s) => s.showSnackbar);
   const { loading: deletingLoading, run: runDelete } = useAsyncAction();
 
@@ -66,16 +77,28 @@ function TransactionsPage() {
 
   const { data, loading, error, refetch } = useFetch(
     () => listTransactions({ ...activeFilters, limit }),
-    [filters.from, filters.to, filters.accountId, filters.categoryId, filters.type, limit],
+    [
+      filters.from,
+      filters.to,
+      filters.accountId,
+      filters.categoryId,
+      filters.type,
+      limit,
+    ],
   );
 
   useEffect(() => {
     let active = true;
-    void Promise.all([listAccounts(), listCategories()]).then(([accountList, categoryList]) => {
+    const load = async () => {
+      const [accountList, categoryList] = await Promise.all([
+        listAccounts(),
+        listCategories(),
+      ]);
       if (!active) return;
       setAccounts(accountList);
       setCategories(categoryList);
-    });
+    };
+    void load();
     return () => {
       active = false;
     };
@@ -86,13 +109,13 @@ function TransactionsPage() {
     setLimit(PAGE_SIZE);
   };
 
-  const hasFilters = Object.values(filters).some((value) => value !== '');
+  const hasFilters = Object.values(filters).some((value) => value !== "");
 
   const handleDelete = async () => {
     if (!deleting) return;
     const result = await runDelete(async () => {
       await deleteTransaction(deleting.id);
-      return 'Movimiento eliminado';
+      return "Movimiento eliminado";
     });
     if (result) {
       showSnackbar(result);
@@ -120,10 +143,14 @@ function TransactionsPage() {
         }}
       />
 
-      <Card elevation={0} sx={{ border: 1, borderColor: 'divider', mb: 2 }}>
+      <Card elevation={0} sx={{ border: 1, borderColor: "divider", mb: 2 }}>
         <CardContent>
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} sx={{ alignItems: 'flex-start' }}>
-            <Box sx={{ width: { xs: '100%', md: 150 } }}>
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            spacing={1.5}
+            sx={{ alignItems: "flex-start" }}
+          >
+            <Box sx={{ width: { xs: "100%", md: 150 } }}>
               <TextField
                 label="Desde"
                 type="date"
@@ -131,10 +158,12 @@ function TransactionsPage() {
                 slotProps={{ inputLabel: { shrink: true } }}
                 fullWidth
                 value={filters.from}
-                onChange={(e) => setFilters((f) => ({ ...f, from: e.target.value }))}
+                onChange={(e) =>
+                  setFilters((f) => ({ ...f, from: e.target.value }))
+                }
               />
             </Box>
-            <Box sx={{ width: { xs: '100%', md: 150 } }}>
+            <Box sx={{ width: { xs: "100%", md: 150 } }}>
               <TextField
                 label="Hasta"
                 type="date"
@@ -142,17 +171,21 @@ function TransactionsPage() {
                 slotProps={{ inputLabel: { shrink: true } }}
                 fullWidth
                 value={filters.to}
-                onChange={(e) => setFilters((f) => ({ ...f, to: e.target.value }))}
+                onChange={(e) =>
+                  setFilters((f) => ({ ...f, to: e.target.value }))
+                }
               />
             </Box>
-            <Box sx={{ width: { xs: '100%', md: 200 } }}>
+            <Box sx={{ width: { xs: "100%", md: 200 } }}>
               <TextField
                 select
                 label="Cuenta"
                 size="small"
                 fullWidth
                 value={filters.accountId}
-                onChange={(e) => setFilters((f) => ({ ...f, accountId: e.target.value }))}
+                onChange={(e) =>
+                  setFilters((f) => ({ ...f, accountId: e.target.value }))
+                }
               >
                 <MenuItem value="">Todas</MenuItem>
                 {accounts.map((a) => (
@@ -162,14 +195,16 @@ function TransactionsPage() {
                 ))}
               </TextField>
             </Box>
-            <Box sx={{ width: { xs: '100%', md: 200 } }}>
+            <Box sx={{ width: { xs: "100%", md: 200 } }}>
               <TextField
                 select
                 label="Categoría"
                 size="small"
                 fullWidth
                 value={filters.categoryId}
-                onChange={(e) => setFilters((f) => ({ ...f, categoryId: e.target.value }))}
+                onChange={(e) =>
+                  setFilters((f) => ({ ...f, categoryId: e.target.value }))
+                }
               >
                 <MenuItem value="">Todas</MenuItem>
                 {categories.map((c) => (
@@ -179,14 +214,19 @@ function TransactionsPage() {
                 ))}
               </TextField>
             </Box>
-            <Box sx={{ width: { xs: '100%', md: 130 } }}>
+            <Box sx={{ width: { xs: "100%", md: 130 } }}>
               <TextField
                 select
                 label="Tipo"
                 size="small"
                 fullWidth
                 value={filters.type}
-                onChange={(e) => setFilters((f) => ({ ...f, type: e.target.value as Filters['type'] }))}
+                onChange={(e) =>
+                  setFilters((f) => ({
+                    ...f,
+                    type: e.target.value as Filters["type"],
+                  }))
+                }
               >
                 <MenuItem value="">Todos</MenuItem>
                 <MenuItem value="income">Ingresos</MenuItem>
@@ -194,7 +234,11 @@ function TransactionsPage() {
               </TextField>
             </Box>
             {hasFilters && (
-              <Button startIcon={<ClearFiltersIcon />} onClick={resetFilters} sx={{ mt: 1.5 }}>
+              <Button
+                startIcon={<ClearFiltersIcon />}
+                onClick={resetFilters}
+                sx={{ mt: 1.5 }}
+              >
                 Limpiar
               </Button>
             )}
@@ -210,9 +254,9 @@ function TransactionsPage() {
       )}
 
       {data && items.length > 0 && (
-        <Card elevation={0} sx={{ border: 1, borderColor: 'divider' }}>
+        <Card elevation={0} sx={{ border: 1, borderColor: "divider" }}>
           <CardContent>
-            <Box sx={{ overflowX: 'auto' }}>
+            <Box sx={{ overflowX: "auto" }}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -229,28 +273,57 @@ function TransactionsPage() {
                     <TableRow key={transaction.id} hover>
                       <TableCell>{formatDate(transaction.date)}</TableCell>
                       <TableCell>
-                        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                          <Avatar sx={{ width: 22, height: 22, bgcolor: transaction.categoryColor ?? '#607d8b', fontSize: 11 }}>
-                            {transaction.categoryName?.charAt(0) ?? '?'}
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          sx={{ alignItems: "center" }}
+                        >
+                          <Avatar
+                            sx={{
+                              width: 22,
+                              height: 22,
+                              bgcolor: transaction.categoryColor ?? "#607d8b",
+                              fontSize: 11,
+                            }}
+                          >
+                            {transaction.categoryName?.charAt(0) ?? "?"}
                           </Avatar>
-                          <Typography variant="body2">{transaction.categoryName}</Typography>
+                          <Typography variant="body2">
+                            {transaction.categoryName}
+                          </Typography>
                         </Stack>
                       </TableCell>
                       <TableCell>{transaction.accountName}</TableCell>
-                      <TableCell>{transaction.note ?? ''}</TableCell>
+                      <TableCell>{transaction.note ?? ""}</TableCell>
                       <TableCell align="right">
                         <Chip
                           size="small"
-                          label={formatCurrency(transaction.amount, accountsByCurrency.get(transaction.accountId) ?? 'USD')}
-                          color={transaction.type === 'income' ? 'success' : 'error'}
+                          label={formatCurrency(
+                            transaction.amount,
+                            accountsByCurrency.get(transaction.accountId) ??
+                              "USD",
+                          )}
+                          color={
+                            transaction.type === "income" ? "success" : "error"
+                          }
                           variant="outlined"
                         />
                       </TableCell>
                       <TableCell align="right">
-                        <IconButton aria-label="Editar movimiento" onClick={() => { setEditing(transaction); setFormOpen(true); }}>
+                        <IconButton
+                          aria-label="Editar movimiento"
+                          onClick={() => {
+                            setEditing(transaction);
+                            setFormOpen(true);
+                          }}
+                        >
                           <EditIcon fontSize="small" />
                         </IconButton>
-                        <IconButton aria-label="Eliminar movimiento" color="error" onClick={() => setDeleting(transaction)}>
+                        <IconButton
+                          aria-label="Eliminar movimiento"
+                          color="error"
+                          onClick={() => setDeleting(transaction)}
+                        >
                           <DeleteIcon fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -260,11 +333,17 @@ function TransactionsPage() {
               </Table>
             </Box>
             {items.length < total && (
-              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                <Button onClick={() => setLimit((l) => l + PAGE_SIZE)}>Cargar más</Button>
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                <Button onClick={() => setLimit((l) => l + PAGE_SIZE)}>
+                  Cargar más
+                </Button>
               </Box>
             )}
-            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'right', mt: 1 }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ display: "block", textAlign: "right", mt: 1 }}
+            >
               {items.length} de {total} movimientos
             </Typography>
           </CardContent>
@@ -294,6 +373,6 @@ function TransactionsPage() {
       />
     </>
   );
-}
+};
 
 export default TransactionsPage;

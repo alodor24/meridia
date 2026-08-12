@@ -40,11 +40,10 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response) =>
   sendSuccess(res, { user });
 });
 
-function readRefreshCookie(req: Request): string {
-  return (req.cookies as Record<string, string> | undefined)?.[env.COOKIE_NAME] ?? '';
-}
+const readRefreshCookie = (req: Request): string =>
+  (req.cookies as Record<string, string> | undefined)?.[env.COOKIE_NAME] ?? '';
 
-function setRefreshCookie(res: Response, token: string): void {
+const setRefreshCookie = (res: Response, token: string): void => {
   res.cookie(env.COOKIE_NAME, token, {
     httpOnly: true,
     secure: env.COOKIE_SECURE,
@@ -52,13 +51,13 @@ function setRefreshCookie(res: Response, token: string): void {
     path: '/api/auth',
     maxAge: expiresInToMs(env.JWT_REFRESH_EXPIRES_IN),
   });
-}
+};
 
-function clearRefreshCookie(res: Response): void {
+const clearRefreshCookie = (res: Response): void => {
   res.clearCookie(env.COOKIE_NAME, {
     httpOnly: true,
     secure: env.COOKIE_SECURE,
     sameSite: env.COOKIE_SAME_SITE,
     path: '/api/auth',
   });
-}
+};

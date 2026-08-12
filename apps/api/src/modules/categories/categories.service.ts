@@ -4,29 +4,29 @@ import * as categoriesRepository from './categories.repository';
 import type { CreateCategoryInput, UpdateCategoryInput } from './categories.schemas';
 import type { CategoryId, UserId } from '@meridia/shared';
 
-export async function listCategories(userId: UserId, type?: 'income' | 'expense') {
+export const listCategories = async (userId: UserId, type?: 'income' | 'expense') => {
   const rows = await categoriesRepository.listByUser(pool, userId, type);
   return rows.map(categoriesRepository.mapCategoryRow);
-}
+};
 
-export async function getCategory(userId: UserId, id: CategoryId) {
+export const getCategory = async (userId: UserId, id: CategoryId) => {
   const row = await categoriesRepository.findById(pool, userId, id);
   if (!row) throw new NotFoundError('Categoría no encontrada');
   return categoriesRepository.mapCategoryRow(row);
-}
+};
 
-export async function createCategory(userId: UserId, input: CreateCategoryInput) {
+export const createCategory = async (userId: UserId, input: CreateCategoryInput) => {
   const row = await categoriesRepository.create(pool, userId, input);
   return categoriesRepository.mapCategoryRow(row);
-}
+};
 
-export async function updateCategory(userId: UserId, id: CategoryId, input: UpdateCategoryInput) {
+export const updateCategory = async (userId: UserId, id: CategoryId, input: UpdateCategoryInput) => {
   const row = await categoriesRepository.update(pool, userId, id, input);
   if (!row) throw new NotFoundError('Categoría no encontrada');
   return categoriesRepository.mapCategoryRow(row);
-}
+};
 
-export async function deleteCategory(userId: UserId, id: CategoryId): Promise<void> {
+export const deleteCategory = async (userId: UserId, id: CategoryId): Promise<void> => {
   const row = await categoriesRepository.findById(pool, userId, id);
   if (!row) throw new NotFoundError('Categoría no encontrada');
 
@@ -39,4 +39,4 @@ export async function deleteCategory(userId: UserId, id: CategoryId): Promise<vo
   }
 
   await categoriesRepository.remove(pool, userId, id);
-}
+};

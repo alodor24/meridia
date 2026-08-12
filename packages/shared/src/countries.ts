@@ -39,6 +39,5 @@ export const COUNTRIES: CountryOption[] = [
   { code: 'AU', name: 'Australia', currency: 'AUD' },
 ].sort((a, b) => a.name.localeCompare(b.name, 'es'));
 
-export function getCountryByCode(code: string): CountryOption | undefined {
-  return COUNTRIES.find((c) => c.code === code.toUpperCase());
-}
+export const getCountryByCode = (code: string): CountryOption | undefined =>
+  COUNTRIES.find((c) => c.code === code.toUpperCase());

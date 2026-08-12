@@ -1,21 +1,26 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import InputAdornment from '@mui/material/InputAdornment';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
-import type { Account, Category, Transaction, TransactionType } from '@meridia/shared';
-import { FormTextField } from '@/components/ui/FormTextField';
-import { FormSelect } from '@/components/ui/FormSelect';
-import { useAsyncAction } from '@/hooks/useAsync';
-import { useUiStore } from '@/stores/uiStore';
-import { getCurrencySymbol, today } from '@/utils/format';
-import { createTransaction, updateTransaction } from '../api';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import InputAdornment from "@mui/material/InputAdornment";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import type {
+  Account,
+  Category,
+  Transaction,
+  TransactionType,
+} from "@meridia/shared";
+import { FormTextField } from "@/components/ui/FormTextField";
+import { FormSelect } from "@/components/ui/FormSelect";
+import { useAsyncAction } from "@/hooks/useAsync";
+import { useUiStore } from "@/stores/uiStore";
+import { getCurrencySymbol, today } from "@/utils/format";
+import { createTransaction, updateTransaction } from "../api";
 
 interface FormValues {
   accountId: string;
@@ -26,20 +31,20 @@ interface FormValues {
   note: string;
 }
 
-function buildValidationSchema() {
+const buildValidationSchema = () => {
   return Yup.object({
-    accountId: Yup.string().required('Seleccioná una cuenta'),
-    categoryId: Yup.string().required('Seleccioná una categoría'),
-    type: Yup.mixed<TransactionType>().oneOf(['income', 'expense']).required(),
+    accountId: Yup.string().required("Seleccioná una cuenta"),
+    categoryId: Yup.string().required("Seleccioná una categoría"),
+    type: Yup.mixed<TransactionType>().oneOf(["income", "expense"]).required(),
     amount: Yup.number()
-      .typeError('El monto debe ser un número')
-      .positive('El monto debe ser mayor a cero')
-      .max(9_999_999_999.99, 'Monto demasiado grande')
-      .required('El monto es requerido'),
-    date: Yup.string().required('La fecha es requerida'),
-    note: Yup.string().max(255, 'La nota no puede superar los 255 caracteres'),
+      .typeError("El monto debe ser un número")
+      .positive("El monto debe ser mayor a cero")
+      .max(9_999_999_999.99, "Monto demasiado grande")
+      .required("El monto es requerido"),
+    date: Yup.string().required("La fecha es requerida"),
+    note: Yup.string().max(255, "La nota no puede superar los 255 caracteres"),
   });
-}
+};
 
 export interface TransactionFormDialogProps {
   open: boolean;
@@ -50,14 +55,14 @@ export interface TransactionFormDialogProps {
   onSaved: () => void;
 }
 
-export function TransactionFormDialog({
+export const TransactionFormDialog = ({
   open,
   transaction,
   accounts,
   categories,
   onClose,
   onSaved,
-}: TransactionFormDialogProps) {
+}: TransactionFormDialogProps) => {
   const showSnackbar = useUiStore((s) => s.showSnackbar);
   const { loading, run } = useAsyncAction();
 
@@ -68,15 +73,15 @@ export function TransactionFormDialog({
         type: transaction.type,
         amount: String(transaction.amount),
         date: transaction.date,
-        note: transaction.note ?? '',
+        note: transaction.note ?? "",
       }
     : {
-        accountId: accounts[0]?.id ?? '',
-        categoryId: '',
-        type: 'expense',
-        amount: '',
+        accountId: accounts[0]?.id ?? "",
+        categoryId: "",
+        type: "expense",
+        amount: "",
         date: today(),
-        note: '',
+        note: "",
       };
 
   const handleSubmit = async (values: FormValues) => {
@@ -91,10 +96,10 @@ export function TransactionFormDialog({
     const result = await run(async () => {
       if (transaction) {
         await updateTransaction(transaction.id, payload);
-        return 'Movimiento actualizado';
+        return "Movimiento actualizado";
       }
       await createTransaction(payload);
-      return 'Movimiento creado';
+      return "Movimiento creado";
     });
     if (result) {
       showSnackbar(result);
@@ -103,10 +108,17 @@ export function TransactionFormDialog({
   };
 
   return (
-    <Dialog open={open} onClose={loading ? undefined : onClose} maxWidth="xs" fullWidth>
-      <DialogTitle>{transaction ? 'Editar movimiento' : 'Nuevo movimiento'}</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={loading ? undefined : onClose}
+      maxWidth="xs"
+      fullWidth
+    >
+      <DialogTitle>
+        {transaction ? "Editar movimiento" : "Nuevo movimiento"}
+      </DialogTitle>
       <Formik
-        key={transaction?.id ?? 'new'}
+        key={transaction?.id ?? "new"}
         initialValues={initialValues}
         validationSchema={buildValidationSchema()}
         onSubmit={handleSubmit}
@@ -120,8 +132,8 @@ export function TransactionFormDialog({
                 value={values.type}
                 onChange={(_, next: TransactionType | null) => {
                   if (next) {
-                    void setFieldValue('type', next);
-                    void setFieldValue('categoryId', '');
+                    void setFieldValue("type", next);
+                    void setFieldValue("categoryId", "");
                   }
                 }}
                 aria-label="Tipo de movimiento"
@@ -138,7 +150,10 @@ export function TransactionFormDialog({
               <FormSelect
                 name="accountId"
                 label="Cuenta"
-                options={accounts.map((a) => ({ value: a.id, label: `${a.name} (${getCurrencySymbol(a.currency)})` }))}
+                options={accounts.map((a) => ({
+                  value: a.id,
+                  label: `${a.name} (${getCurrencySymbol(a.currency)})`,
+                }))}
               />
 
               <FormSelect
@@ -157,21 +172,34 @@ export function TransactionFormDialog({
                   slotProps={{
                     htmlInput: { step: "0.01", min: "0" },
                     input: {
-                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                      startAdornment: (
+                        <InputAdornment position="start">$</InputAdornment>
+                      ),
                     },
                   }}
                 />
-                <FormTextField name="date" label="Fecha" type="date" slotProps={{ inputLabel: { shrink: true } }} />
+                <FormTextField
+                  name="date"
+                  label="Fecha"
+                  type="date"
+                  slotProps={{ inputLabel: { shrink: true } }}
+                />
               </Box>
 
-              <FormTextField name="note" label="Nota (opcional)" placeholder="Ej: supermercado" multiline rows={2} />
+              <FormTextField
+                name="note"
+                label="Nota (opcional)"
+                placeholder="Ej: supermercado"
+                multiline
+                rows={2}
+              />
             </DialogContent>
             <DialogActions sx={{ px: 3, pb: 2 }}>
               <Button onClick={onClose} disabled={loading} color="inherit">
                 Cancelar
               </Button>
               <Button type="submit" variant="contained" disabled={loading}>
-                {loading ? 'Guardando…' : 'Guardar'}
+                {loading ? "Guardando…" : "Guardar"}
               </Button>
             </DialogActions>
           </Form>
@@ -179,4 +207,4 @@ export function TransactionFormDialog({
       </Formik>
     </Dialog>
   );
-}
+};

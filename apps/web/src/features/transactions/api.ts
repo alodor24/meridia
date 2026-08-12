@@ -1,5 +1,5 @@
-import type { Paginated, Transaction, TransactionType } from '@meridia/shared';
-import { http } from '@/services/api/client';
+import type { Paginated, Transaction, TransactionType } from "@meridia/shared";
+import { http } from "@/services/api/client";
 
 export interface TransactionFilters {
   from?: string;
@@ -20,22 +20,37 @@ export interface CreateTransactionPayload {
   note?: string;
 }
 
+const cleanParams = (filters: TransactionFilters): Record<string, unknown> => {
+  const params: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(filters)) {
+    if (value !== undefined && value !== "") params[key] = value;
+  }
+  return params;
+};
+
 export const listTransactions = (filters: TransactionFilters = {}) =>
-  http.get<Paginated<Transaction>>('/api/transactions', { params: cleanParams(filters) });
+  http.get<Paginated<Transaction>>("/api/transactions", {
+    params: cleanParams(filters),
+  });
 
-export const createTransaction = (payload: CreateTransactionPayload) =>
-  http.post<{ transaction: Transaction }>('/api/transactions', payload).then((r) => r.transaction);
+export const createTransaction = async (payload: CreateTransactionPayload) => {
+  const result = await http.post<{ transaction: Transaction }>(
+    "/api/transactions",
+    payload,
+  );
+  return result.transaction;
+};
 
-export const updateTransaction = (id: string, payload: Partial<CreateTransactionPayload>) =>
-  http.patch<{ transaction: Transaction }>(`/api/transactions/${id}`, payload).then((r) => r.transaction);
+export const updateTransaction = async (
+  id: string,
+  payload: Partial<CreateTransactionPayload>,
+) => {
+  const result = await http.patch<{ transaction: Transaction }>(
+    `/api/transactions/${id}`,
+    payload,
+  );
+  return result.transaction;
+};
 
 export const deleteTransaction = (id: string) =>
   http.delete<null>(`/api/transactions/${id}`);
-
-function cleanParams(filters: TransactionFilters): Record<string, unknown> {
-  const params: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(filters)) {
-    if (value !== undefined && value !== '') params[key] = value;
-  }
-  return params;
-}

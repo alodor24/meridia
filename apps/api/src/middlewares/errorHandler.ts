@@ -3,19 +3,19 @@ import { env, isProd } from '../config/env';
 import { isAppError } from '../shared/errors';
 import { logger } from '../shared/logger';
 
-export function notFoundHandler(_req: Request, res: Response): void {
+export const notFoundHandler = (_req: Request, res: Response): void => {
   res.status(404).json({
     success: false,
     error: { code: 'NOT_FOUND', message: 'Ruta no encontrada' },
   });
-}
+};
 
-export function errorHandler(
+export const errorHandler = (
   error: unknown,
   _req: Request,
   res: Response,
   _next: NextFunction,
-): void {
+): void => {
   if (isAppError(error)) {
     res.status(error.statusCode).json({
       success: false,
@@ -42,4 +42,4 @@ export function errorHandler(
     success: false,
     error: { code: 'INTERNAL_ERROR', message },
   });
-}
+};

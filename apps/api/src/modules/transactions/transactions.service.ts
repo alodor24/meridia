@@ -10,7 +10,7 @@ import type {
 } from './transactions.schemas';
 import type { AccountId, CategoryId, TransactionId, UserId } from '@meridia/shared';
 
-export async function listTransactions(userId: UserId, filters: ListTransactionsQuery) {
+export const listTransactions = async (userId: UserId, filters: ListTransactionsQuery) => {
   const [items, total] = await Promise.all([
     transactionsRepository.list(pool, userId, filters),
     transactionsRepository.count(pool, userId, filters),
@@ -19,24 +19,24 @@ export async function listTransactions(userId: UserId, filters: ListTransactions
     items: items.map(transactionsRepository.mapTransactionRow),
     total,
   };
-}
+};
 
-export async function getTransaction(userId: UserId, id: TransactionId) {
+export const getTransaction = async (userId: UserId, id: TransactionId) => {
   const row = await transactionsRepository.findById(pool, userId, id);
   if (!row) throw new NotFoundError('Movimiento no encontrado');
   return transactionsRepository.mapTransactionRow(row);
-}
+};
 
-async function assertAccountOwned(userId: UserId, accountId: AccountId): Promise<void> {
+const assertAccountOwned = async (userId: UserId, accountId: AccountId): Promise<void> => {
   const account = await accountsRepository.findById(pool, userId, accountId);
   if (!account) throw new NotFoundError('Cuenta no encontrada');
-}
+};
 
-async function assertCategoryMatchesType(
+const assertCategoryMatchesType = async (
   userId: UserId,
   categoryId: CategoryId,
   type: 'income' | 'expense',
-): Promise<void> {
+): Promise<void> => {
   const category = await categoriesRepository.findById(pool, userId, categoryId);
   if (!category) throw new NotFoundError('Categoría no encontrada');
   if (category.type !== type) {
@@ -45,9 +45,9 @@ async function assertCategoryMatchesType(
       { code: 'CATEGORY_TYPE_MISMATCH' },
     );
   }
-}
+};
 
-export async function createTransaction(userId: UserId, input: CreateTransactionInput) {
+export const createTransaction = async (userId: UserId, input: CreateTransactionInput) => {
   const accountId = input.accountId as AccountId;
   const categoryId = input.categoryId as CategoryId;
   await assertAccountOwned(userId, accountId);
@@ -59,9 +59,9 @@ export async function createTransaction(userId: UserId, input: CreateTransaction
     categoryId,
   });
   return transactionsRepository.mapTransactionRow(row);
-}
+};
 
-export async function updateTransaction(userId: UserId, id: TransactionId, input: UpdateTransactionInput) {
+export const updateTransaction = async (userId: UserId, id: TransactionId, input: UpdateTransactionInput) => {
   const existing = await transactionsRepository.findById(pool, userId, id);
   if (!existing) throw new NotFoundError('Movimiento no encontrado');
 
@@ -80,9 +80,9 @@ export async function updateTransaction(userId: UserId, id: TransactionId, input
   });
   if (!row) throw new NotFoundError('Movimiento no encontrado');
   return transactionsRepository.mapTransactionRow(row);
-}
+};
 
-export async function deleteTransaction(userId: UserId, id: TransactionId): Promise<void> {
+export const deleteTransaction = async (userId: UserId, id: TransactionId): Promise<void> => {
   const removed = await transactionsRepository.remove(pool, userId, id);
   if (!removed) throw new NotFoundError('Movimiento no encontrado');
-}
+};

@@ -1,9 +1,9 @@
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 export interface ConfirmDialogProps {
   open: boolean;
@@ -16,18 +16,23 @@ export interface ConfirmDialogProps {
   onClose: () => void;
 }
 
-export function ConfirmDialog({
+export const ConfirmDialog = ({
   open,
   title,
   description,
-  confirmLabel = 'Confirmar',
-  cancelLabel = 'Cancelar',
+  confirmLabel = "Confirmar",
+  cancelLabel = "Cancelar",
   loading = false,
   onConfirm,
   onClose,
-}: ConfirmDialogProps) {
+}: ConfirmDialogProps) => {
   return (
-    <Dialog open={open} onClose={loading ? undefined : onClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={open}
+      onClose={loading ? undefined : onClose}
+      maxWidth="xs"
+      fullWidth
+    >
       <DialogTitle>{title}</DialogTitle>
       {description && (
         <DialogContent>
@@ -38,10 +43,15 @@ export function ConfirmDialog({
         <Button onClick={onClose} disabled={loading} color="inherit">
           {cancelLabel}
         </Button>
-        <Button onClick={onConfirm} disabled={loading} color="error" variant="contained">
-          {loading ? 'Procesando…' : confirmLabel}
+        <Button
+          onClick={onConfirm}
+          disabled={loading}
+          color="error"
+          variant="contained"
+        >
+          {loading ? "Procesando…" : confirmLabel}
         </Button>
       </DialogActions>
     </Dialog>
   );
-}
+};

@@ -9,15 +9,15 @@ export interface DashboardFilters {
   limit?: number;
 }
 
-function defaultRange(): { from: string; to: string } {
+const defaultRange = (): { from: string; to: string } => {
   const now = new Date();
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
   const to = now.toISOString().slice(0, 10);
   const from = firstDay.toISOString().slice(0, 10);
   return { from, to };
-}
+};
 
-export async function getDashboard(userId: UserId, filters: DashboardFilters) {
+export const getDashboard = async (userId: UserId, filters: DashboardFilters) => {
   const { from, to } = filters.from && filters.to ? { from: filters.from, to: filters.to } : defaultRange();
   const limit = filters.limit ?? 8;
 
@@ -42,4 +42,4 @@ export async function getDashboard(userId: UserId, filters: DashboardFilters) {
     })),
     period: { from, to },
   };
-}
+};

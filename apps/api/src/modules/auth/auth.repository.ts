@@ -22,10 +22,10 @@ export interface CreateRefreshTokenInput {
   expiresAt: Date;
 }
 
-export async function createRefreshToken(
+export const createRefreshToken = async (
   db: Db,
   input: CreateRefreshTokenInput,
-): Promise<RefreshTokenRow> {
+): Promise<RefreshTokenRow> => {
   const result = await db.query<RefreshTokenRow>(
     `INSERT INTO refresh_tokens (user_id, token_hash, expires_at)
      VALUES ($1, $2, $3)
@@ -33,12 +33,12 @@ export async function createRefreshToken(
     [input.userId, input.tokenHash, input.expiresAt],
   );
   return result.rows[0]!;
-}
+};
 
-export async function findValidRefreshToken(
+export const findValidRefreshToken = async (
   db: Db,
   tokenHash: string,
-): Promise<RefreshTokenWithUser | undefined> {
+): Promise<RefreshTokenWithUser | undefined> => {
   const result = await db.query<{
     refresh_token_id: string;
     user_id: string;
@@ -87,27 +87,27 @@ export async function findValidRefreshToken(
       updated_at: row.user_updated_at,
     },
   };
-}
+};
 
-export async function revokeRefreshToken(
+export const revokeRefreshToken = async (
   db: Db,
   tokenHash: string,
-): Promise<void> {
+): Promise<void> => {
   await db.query(
     'UPDATE refresh_tokens SET revoked_at = now() WHERE token_hash = $1',
     [tokenHash],
   );
-}
+};
 
-export async function revokeRefreshTokenById(
+export const revokeRefreshTokenById = async (
   db: Db,
   id: string,
-): Promise<void> {
+): Promise<void> => {
   await db.query(
     'UPDATE refresh_tokens SET revoked_at = now() WHERE id = $1',
     [id],
   );
-}
+};
 
 const DEFAULT_CATEGORIES: Array<{ name: string; type: 'income' | 'expense'; color: string }> = [
   { name: 'Salario', type: 'income', color: '#2e7d32' },
@@ -124,7 +124,7 @@ const DEFAULT_CATEGORIES: Array<{ name: string; type: 'income' | 'expense'; colo
   { name: 'Otros gastos', type: 'expense', color: '#757575' },
 ];
 
-export async function createDefaultCategories(db: Db, userId: UserId): Promise<void> {
+export const createDefaultCategories = async (db: Db, userId: UserId): Promise<void> => {
   const values: unknown[] = [];
   const placeholders: string[] = [];
 
@@ -139,8 +139,7 @@ export async function createDefaultCategories(db: Db, userId: UserId): Promise<v
      VALUES ${placeholders.join(', ')}`,
     values,
   );
-}
+};
 
-export function mapUserFromTokenRow(row: RefreshTokenWithUser): User {
-  return mapUserRow(row.user);
-}
+export const mapUserFromTokenRow = (row: RefreshTokenWithUser): User =>
+  mapUserRow(row.user);

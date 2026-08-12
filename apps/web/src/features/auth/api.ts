@@ -1,5 +1,5 @@
-import type { User } from '@meridia/shared';
-import { http } from '@/services/api/client';
+import type { User } from "@meridia/shared";
+import { http } from "@/services/api/client";
 
 export interface AuthResponse {
   user: User;
@@ -20,16 +20,19 @@ export interface RegisterPayload {
 }
 
 export const register = (payload: RegisterPayload) =>
-  http.post<AuthResponse>('/api/auth/register', payload);
+  http.post<AuthResponse>("/api/auth/register", payload);
 
 export const login = (payload: LoginPayload) =>
-  http.post<AuthResponse>('/api/auth/login', payload);
+  http.post<AuthResponse>("/api/auth/login", payload);
 
-export const logout = () =>
-  http.post<null>('/api/auth/logout');
+export const logout = () => http.post<null>("/api/auth/logout");
 
-export const getMe = () =>
-  http.get<{ user: User }>('/api/auth/me').then((r) => r.user);
+export const getMe = async () => {
+  const result = await http.get<{ user: User }>("/api/auth/me");
+  return result.user;
+};
 
-export const updateProfile = (name: string) =>
-  http.patch<{ user: User }>('/api/auth/me', { name }).then((r) => r.user);
+export const updateProfile = async (name: string) => {
+  const result = await http.patch<{ user: User }>("/api/auth/me", { name });
+  return result.user;
+};

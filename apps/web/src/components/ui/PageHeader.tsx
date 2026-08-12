@@ -1,7 +1,7 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import AddIcon from '@mui/icons-material/Add';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import AddIcon from "@mui/icons-material/Add";
 
 export interface PageHeaderProps {
   title: string;
@@ -10,16 +10,21 @@ export interface PageHeaderProps {
   onAction?: () => void;
 }
 
-export function PageHeader({ title, subtitle, actionLabel, onAction }: PageHeaderProps) {
+export const PageHeader = ({
+  title,
+  subtitle,
+  actionLabel,
+  onAction,
+}: PageHeaderProps) => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
         gap: 2,
         mb: 3,
-        flexWrap: 'wrap',
+        flexWrap: "wrap",
       }}
     >
       <Box>
@@ -39,4 +44,4 @@ export function PageHeader({ title, subtitle, actionLabel, onAction }: PageHeade
       )}
     </Box>
   );
-}
+};

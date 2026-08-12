@@ -1,20 +1,22 @@
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
-import type { TextFieldProps } from '@mui/material/TextField';
-import { useField } from 'formik';
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import type { TextFieldProps } from "@mui/material/TextField";
+import { useField } from "formik";
 
 export interface SelectOption {
   value: string;
   label: string;
 }
 
-export interface FormSelectProps
-  extends Omit<TextFieldProps, 'name' | 'value' | 'onChange' | 'onBlur' | 'select'> {
+export interface FormSelectProps extends Omit<
+  TextFieldProps,
+  "name" | "value" | "onChange" | "onBlur" | "select"
+> {
   name: string;
   options: SelectOption[];
 }
 
-export function FormSelect({ name, options, ...props }: FormSelectProps) {
+export const FormSelect = ({ name, options, ...props }: FormSelectProps) => {
   const [field, meta] = useField<string>(name);
   const showError = meta.touched && Boolean(meta.error);
 
@@ -35,4 +37,4 @@ export function FormSelect({ name, options, ...props }: FormSelectProps) {
       ))}
     </TextField>
   );
-}
+};

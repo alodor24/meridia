@@ -10,11 +10,11 @@ const allowedOrigins = env.CORS_ORIGIN.split(',').map((o) => o.trim());
  * se rechazan las peticiones mutantes cuyo header Origin no coincida con
  * un origen permitido.
  */
-export function csrfProtection(
+export const csrfProtection = (
   req: Request,
   _res: Response,
   next: NextFunction,
-): void {
+): void => {
   const isMutation = !['GET', 'HEAD', 'OPTIONS'].includes(req.method);
 
   if (isMutation) {
@@ -30,4 +30,4 @@ export function csrfProtection(
   }
 
   next();
-}
+};

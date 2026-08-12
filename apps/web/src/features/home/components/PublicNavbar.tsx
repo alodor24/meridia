@@ -24,7 +24,7 @@ const NAV_LINKS = [
   { label: "Crear cuenta", to: "/register" },
 ];
 
-export function PublicNavbar() {
+export const PublicNavbar = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
   const themeMode = useUiStore((s) => s.themeMode);
@@ -107,4 +107,4 @@ export function PublicNavbar() {
       </Toolbar>
     </AppBar>
   );
-}
+};

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-export function useDocumentTitle(title: string): void {
+export const useDocumentTitle = (title: string): void => {
   useEffect(() => {
     document.title = title ? `${title} · Meridia` : 'Meridia';
   }, [title]);
-}
+};

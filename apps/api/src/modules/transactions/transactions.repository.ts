@@ -36,23 +36,21 @@ export interface UpdateTransactionInput {
   note?: string;
 }
 
-export function mapTransactionRow(row: TransactionRow): Transaction {
-  return {
-    id: row.id as TransactionId,
-    userId: row.user_id as UserId,
-    accountId: row.account_id as AccountId,
-    categoryId: row.category_id as CategoryId,
-    type: row.type,
-    amount: Number(row.amount),
-    date: row.date,
-    note: row.note,
-    accountName: row.account_name,
-    categoryName: row.category_name,
-    categoryColor: row.category_color,
-    createdAt: row.created_at.toISOString(),
-    updatedAt: row.updated_at.toISOString(),
-  };
-}
+export const mapTransactionRow = (row: TransactionRow): Transaction => ({
+  id: row.id as TransactionId,
+  userId: row.user_id as UserId,
+  accountId: row.account_id as AccountId,
+  categoryId: row.category_id as CategoryId,
+  type: row.type,
+  amount: Number(row.amount),
+  date: row.date,
+  note: row.note,
+  accountName: row.account_name,
+  categoryName: row.category_name,
+  categoryColor: row.category_color,
+  createdAt: row.created_at.toISOString(),
+  updatedAt: row.updated_at.toISOString(),
+});
 
 const TRANSACTION_COLUMNS = `
   t.id, t.user_id, t.account_id, t.category_id, t.type,
@@ -63,11 +61,11 @@ const TRANSACTION_COLUMNS = `
   c.color AS category_color
 `;
 
-export async function list(
+export const list = async (
   db: Db,
   userId: UserId,
   filters: ListTransactionsQuery,
-): Promise<TransactionRow[]> {
+): Promise<TransactionRow[]> => {
   const { where, values } = buildWhere(userId, filters);
   const result = await db.query<TransactionRow>(
     `SELECT ${TRANSACTION_COLUMNS}
@@ -80,13 +78,13 @@ export async function list(
     [...values, filters.limit, filters.offset],
   );
   return result.rows;
-}
+};
 
-export async function count(
+export const count = async (
   db: Db,
   userId: UserId,
   filters: ListTransactionsQuery,
-): Promise<number> {
+): Promise<number> => {
   const { where, values } = buildWhere(userId, filters);
   const result = await db.query<{ count: string }>(
     `SELECT COUNT(*)::text AS count
@@ -97,13 +95,13 @@ export async function count(
     values,
   );
   return Number(result.rows[0]?.count ?? 0);
-}
+};
 
-export async function findById(
+export const findById = async (
   db: Db,
   userId: UserId,
   id: TransactionId,
-): Promise<TransactionRow | undefined> {
+): Promise<TransactionRow | undefined> => {
   const result = await db.query<TransactionRow>(
     `SELECT ${TRANSACTION_COLUMNS}
      FROM transactions t
@@ -113,13 +111,13 @@ export async function findById(
     [id, userId],
   );
   return result.rows[0];
-}
+};
 
-export async function create(
+export const create = async (
   db: Db,
   userId: UserId,
   input: CreateTransactionInput,
-): Promise<TransactionRow> {
+): Promise<TransactionRow> => {
   const result = await db.query<TransactionRow>(
     `WITH ins AS (
        INSERT INTO transactions (user_id, account_id, category_id, type, amount, date, note)
@@ -133,14 +131,14 @@ export async function create(
     [userId, input.accountId, input.categoryId, input.type, input.amount, input.date, input.note ?? null],
   );
   return result.rows[0]!;
-}
+};
 
-export async function update(
+export const update = async (
   db: Db,
   userId: UserId,
   id: TransactionId,
   input: UpdateTransactionInput,
-): Promise<TransactionRow | undefined> {
+): Promise<TransactionRow | undefined> => {
   const fields: string[] = [];
   const values: unknown[] = [id, userId];
   const set = (column: string, value: unknown) => {
@@ -168,17 +166,17 @@ export async function update(
     values,
   );
   return result.rows[0];
-}
+};
 
-export async function remove(db: Db, userId: UserId, id: TransactionId): Promise<boolean> {
+export const remove = async (db: Db, userId: UserId, id: TransactionId): Promise<boolean> => {
   const result = await db.query(
     'DELETE FROM transactions WHERE id = $1 AND user_id = $2',
     [id, userId],
   );
   return (result.rowCount ?? 0) > 0;
-}
+};
 
-function buildWhere(userId: UserId, filters: ListTransactionsQuery) {
+const buildWhere = (userId: UserId, filters: ListTransactionsQuery) => {
   const conditions = ['t.user_id = $1'];
   const values: unknown[] = [userId];
   if (filters.from) {
@@ -202,4 +200,4 @@ function buildWhere(userId: UserId, filters: ListTransactionsQuery) {
     conditions.push(`t.type = $${values.length}`);
   }
   return { where: `WHERE ${conditions.join(' AND ')}`, values };
-}
+};

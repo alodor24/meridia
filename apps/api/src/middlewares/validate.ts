@@ -8,7 +8,7 @@ interface ValidatedLocals extends Record<string, unknown> {
   validatedQuery?: unknown;
 }
 
-export function validate(schema: ZodSchema, part: RequestPart = 'body') {
+export const validate = (schema: ZodSchema, part: RequestPart = 'body') => {
   return (req: Request, res: Response, next: NextFunction): void => {
     const result = schema.safeParse(req[part]);
     if (!result.success) {

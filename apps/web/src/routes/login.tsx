@@ -21,7 +21,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useUiStore } from "@/stores/uiStore";
 import { toApiError } from "@/services/api/errors";
 
-function LoginPage() {
+const LoginPage = () => {
   const status = useAuthStore((s) => s.status);
   const loginUser = useAuthStore((s) => s.loginUser);
   const showSnackbar = useUiStore((s) => s.showSnackbar);
@@ -100,7 +100,7 @@ function LoginPage() {
       </AuthLayout>
     </PublicLayout>
   );
-}
+};
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,

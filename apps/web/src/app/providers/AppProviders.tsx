@@ -1,19 +1,19 @@
-import type { ReactNode } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import GlobalStyles from '@mui/material/GlobalStyles';
-import { useUiStore } from '@/stores/uiStore';
+import type { ReactNode } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import { useUiStore } from "@/stores/uiStore";
 
-export function AppProviders({ children }: { children: ReactNode }) {
+export const AppProviders = ({ children }: { children: ReactNode }) => {
   const themeMode = useUiStore((s) => s.themeMode);
 
   const theme = createTheme({
     palette: {
       mode: themeMode,
-      primary: { main: '#4f6bff' },
-      secondary: { main: '#00b8a9' },
+      primary: { main: "#4f6bff" },
+      secondary: { main: "#00b8a9" },
       background: {
-        default: themeMode === 'light' ? '#fafafa' : '#141616',
+        default: themeMode === "light" ? "#fafafa" : "#141616",
       },
     },
     shape: { borderRadius: 3 },
@@ -28,16 +28,16 @@ export function AppProviders({ children }: { children: ReactNode }) {
       <CssBaseline />
       <GlobalStyles
         styles={{
-          ':focus-visible': {
-            outline: '2px solid #4f6bff',
+          ":focus-visible": {
+            outline: "2px solid #4f6bff",
             outlineOffset: 2,
           },
-          '@media (prefers-reduced-motion: reduce)': {
-            '*': {
-              animationDuration: '0.01ms !important',
-              animationIterationCount: '1 !important',
-              transitionDuration: '0.01ms !important',
-              scrollBehavior: 'auto !important',
+          "@media (prefers-reduced-motion: reduce)": {
+            "*": {
+              animationDuration: "0.01ms !important",
+              animationIterationCount: "1 !important",
+              transitionDuration: "0.01ms !important",
+              scrollBehavior: "auto !important",
             },
           },
         }}
@@ -45,4 +45,4 @@ export function AppProviders({ children }: { children: ReactNode }) {
       {children}
     </ThemeProvider>
   );
-}
+};

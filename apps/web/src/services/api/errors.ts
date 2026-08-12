@@ -18,7 +18,7 @@ interface ErrorPayload {
   details?: unknown;
 }
 
-export function toApiError(error: unknown): ApiError {
+export const toApiError = (error: unknown): ApiError => {
   if (error instanceof ApiError) return error;
 
   if (error instanceof Object && 'response' in error) {

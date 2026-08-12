@@ -43,7 +43,7 @@ const FEATURES = [
   },
 ];
 
-function HomePage() {
+const HomePage = () => {
   useDocumentTitle("Inicio");
   const status = useAuthStore((s) => s.status);
 
@@ -138,6 +138,6 @@ function HomePage() {
       </Container>
     </PublicLayout>
   );
-}
+};
 
 export default HomePage;

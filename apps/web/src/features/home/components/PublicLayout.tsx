@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { PublicNavbar } from "./PublicNavbar";
 
-export function PublicLayout({ children }: { children: ReactNode }) {
+export const PublicLayout = ({ children }: { children: ReactNode }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <PublicNavbar />
@@ -23,4 +23,4 @@ export function PublicLayout({ children }: { children: ReactNode }) {
       </Box>
     </Box>
   );
-}
+};

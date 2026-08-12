@@ -11,11 +11,11 @@ interface AccessTokenPayload {
   email: string;
 }
 
-export async function authenticate(
+export const authenticate = async (
   req: Request,
   _res: Response,
   next: NextFunction,
-): Promise<void> {
+): Promise<void> => {
   const header = req.headers.authorization;
   const token = header?.startsWith('Bearer ') ? header.slice(7) : undefined;
 
@@ -40,4 +40,4 @@ export async function authenticate(
 
   req.user = usersRepository.mapUserRow(userRow);
   next();
-}
+};

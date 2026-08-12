@@ -24,7 +24,7 @@ import { useUiStore } from "@/stores/uiStore";
 import { toApiError } from "@/services/api/errors";
 import { getCurrencySymbol } from "@/utils/format";
 
-function RegisterPage() {
+const RegisterPage = () => {
   const status = useAuthStore((s) => s.status);
   const registerUser = useAuthStore((s) => s.registerUser);
   const showSnackbar = useUiStore((s) => s.showSnackbar);
@@ -137,7 +137,7 @@ function RegisterPage() {
       </AuthLayout>
     </PublicLayout>
   );
-}
+};
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
