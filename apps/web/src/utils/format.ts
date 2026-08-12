@@ -3,6 +3,28 @@ import { format as dateFnsFormat, isValid, parseISO } from 'date-fns';
 
 const currencyFormatterCache = new Map<string, Intl.NumberFormat>();
 
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  VES: 'Bs.',
+};
+
+export function getCurrencySymbol(currency: string): string {
+  const code = currency.toUpperCase();
+  return CURRENCY_SYMBOLS[code] ?? code;
+}
+
+let decimalFormatter: Intl.NumberFormat | undefined;
+
+function getDecimalFormatter(): Intl.NumberFormat {
+  if (!decimalFormatter) {
+    decimalFormatter = new Intl.NumberFormat('es-AR', {
+      style: 'decimal',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+  return decimalFormatter;
+}
+
 function getFormatter(currency: string): Intl.NumberFormat {
   const key = currency.toUpperCase();
   let formatter = currencyFormatterCache.get(key);
@@ -19,6 +41,11 @@ function getFormatter(currency: string): Intl.NumberFormat {
 }
 
 export function formatCurrency(amount: number, currency = 'USD'): string {
+  const code = currency.toUpperCase();
+  const symbol = getCurrencySymbol(code);
+  if (CURRENCY_SYMBOLS[code]) {
+    return `${symbol} ${getDecimalFormatter().format(amount)}`;
+  }
   return getFormatter(currency).format(amount);
 }
 

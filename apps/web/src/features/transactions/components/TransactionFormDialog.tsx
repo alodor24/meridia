@@ -14,7 +14,7 @@ import { FormTextField } from '@/components/ui/FormTextField';
 import { FormSelect } from '@/components/ui/FormSelect';
 import { useAsyncAction } from '@/hooks/useAsync';
 import { useUiStore } from '@/stores/uiStore';
-import { today } from '@/utils/format';
+import { getCurrencySymbol, today } from '@/utils/format';
 import { createTransaction, updateTransaction } from '../api';
 
 interface FormValues {
@@ -138,7 +138,7 @@ export function TransactionFormDialog({
               <FormSelect
                 name="accountId"
                 label="Cuenta"
-                options={accounts.map((a) => ({ value: a.id, label: `${a.name} (${a.currency})` }))}
+                options={accounts.map((a) => ({ value: a.id, label: `${a.name} (${getCurrencySymbol(a.currency)})` }))}
               />
 
               <FormSelect

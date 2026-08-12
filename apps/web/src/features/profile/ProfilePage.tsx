@@ -20,7 +20,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useUiStore } from '@/stores/uiStore';
 import { updateProfile } from '@/features/auth/api';
 import { getCountryName } from '@/utils/labels';
-import { formatDate } from '@/utils/format';
+import { formatDate, getCurrencySymbol } from '@/utils/format';
 import { toApiError } from '@/services/api/errors';
 
 const profileValidationSchema = Yup.object({
@@ -73,7 +73,7 @@ function ProfilePage() {
                 <ListItemText primary="País" secondary={getCountryName(user.country)} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Moneda" secondary={user.currency} />
+                <ListItemText primary="Moneda" secondary={getCurrencySymbol(user.currency)} />
               </ListItem>
               <ListItem>
                 <ListItemText primary="Miembro desde" secondary={formatDate(user.createdAt)} />

@@ -22,7 +22,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useFetch, useAsyncAction } from '@/hooks/useAsync';
 import { useAuthStore } from '@/stores/authStore';
 import { useUiStore } from '@/stores/uiStore';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency, getCurrencySymbol } from '@/utils/format';
 import { ACCOUNT_TYPE_LABELS } from '@/utils/labels';
 import { deleteAccount, listAccounts } from './api';
 import { AccountFormDialog } from './components/AccountFormDialog';
@@ -92,7 +92,7 @@ function AccountsPage() {
                           <Box>
                             <Typography variant="body1">{account.name}</Typography>
                             <Typography variant="caption" color="text.secondary">
-                              {account.currency}
+                              {getCurrencySymbol(account.currency)}
                             </Typography>
                           </Box>
                         </Stack>

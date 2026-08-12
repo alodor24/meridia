@@ -13,6 +13,7 @@ import { registerValidationSchema, type RegisterFormValues } from '@/features/au
 import { useAuthStore } from '@/stores/authStore';
 import { useUiStore } from '@/stores/uiStore';
 import { toApiError } from '@/services/api/errors';
+import { getCurrencySymbol } from '@/utils/format';
 
 function RegisterPage() {
   const status = useAuthStore((s) => s.status);
@@ -25,7 +26,7 @@ function RegisterPage() {
     return <Navigate to="/app/dashboard" replace />;
   }
 
-  const countryOptions = COUNTRIES.map((c) => ({ value: c.code, label: `${c.name} (${c.currency})` }));
+  const countryOptions = COUNTRIES.map((c) => ({ value: c.code, label: `${c.name} (${getCurrencySymbol(c.currency)})` }));
 
   const initialValues: RegisterFormValues = {
     name: '',

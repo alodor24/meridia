@@ -1,5 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { formatCurrency, formatDate, formatMonth, today, startOfMonth } from './format';
+import { formatCurrency, getCurrencySymbol, formatDate, formatMonth, today, startOfMonth } from './format';
+
+describe('getCurrencySymbol', () => {
+  it('returns the custom symbol for VES', () => {
+    expect(getCurrencySymbol('VES')).toBe('Bs.');
+  });
+
+  it('falls back to the currency code when no symbol is defined', () => {
+    expect(getCurrencySymbol('USD')).toBe('USD');
+  });
+});
 
 describe('formatCurrency', () => {
   it('formats a positive amount with the given currency', () => {
@@ -15,6 +25,10 @@ describe('formatCurrency', () => {
 
   it('defaults to USD when no currency is provided', () => {
     expect(formatCurrency(5)).toContain('US$');
+  });
+
+  it('formats VES with the Bs. symbol', () => {
+    expect(formatCurrency(1234.5, 'VES')).toBe('Bs. 1.234,50');
   });
 });
 
