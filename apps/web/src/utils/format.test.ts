@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { formatCurrency, getCurrencySymbol, formatDate, formatMonth, today, startOfMonth } from './format';
 
 describe('getCurrencySymbol', () => {
-  it('returns the custom symbol for VES', () => {
-    expect(getCurrencySymbol('VES')).toBe('Bs.');
+  it('returns the custom symbol for VED', () => {
+    expect(getCurrencySymbol('VED')).toBe('VED');
   });
 
   it('falls back to the currency code when no symbol is defined', () => {
@@ -27,8 +27,8 @@ describe('formatCurrency', () => {
     expect(formatCurrency(5)).toContain('US$');
   });
 
-  it('formats VES with the Bs. symbol', () => {
-    expect(formatCurrency(1234.5, 'VES')).toBe('Bs. 1.234,50');
+  it('formats VED with the VED symbol', () => {
+    expect(formatCurrency(1234.5, 'VED')).toBe('VED 1.234,50');
   });
 });
 

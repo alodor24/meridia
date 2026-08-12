@@ -28,7 +28,7 @@ export const COUNTRIES: CountryOption[] = [
   { code: 'PY', name: 'Paraguay', currency: 'PYG' },
   { code: 'PE', name: 'Perú', currency: 'PEN' },
   { code: 'UY', name: 'Uruguay', currency: 'UYU' },
-  { code: 'VE', name: 'Venezuela', currency: 'VES' },
+  { code: 'VE', name: 'Venezuela', currency: 'VED' },
   { code: 'DE', name: 'Alemania', currency: 'EUR' },
   { code: 'FR', name: 'Francia', currency: 'EUR' },
   { code: 'IT', name: 'Italia', currency: 'EUR' },
