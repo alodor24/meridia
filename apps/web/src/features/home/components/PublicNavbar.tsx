@@ -33,7 +33,7 @@ export function PublicNavbar() {
 
   return (
     <AppBar
-      position="fixed"
+      position="sticky"
       elevation={0}
       sx={{
         bgcolor: "background.paper",

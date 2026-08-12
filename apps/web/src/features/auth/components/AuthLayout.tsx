@@ -20,7 +20,7 @@ export function AuthLayout({
   return (
     <Box
       sx={{
-        minHeight: "100vh",
+        flexGrow: 1,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
