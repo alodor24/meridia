@@ -53,7 +53,7 @@ function ProfilePage() {
     <>
       <PageHeader title="Perfil" subtitle="Tu información personal" />
 
-      <Stack spacing={3} maxWidth={600}>
+      <Stack spacing={3} sx={{ maxWidth: 600 }}>
         <Card elevation={0} sx={{ border: 1, borderColor: 'divider' }}>
           <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
@@ -84,7 +84,7 @@ function ProfilePage() {
 
         <Card elevation={0} sx={{ border: 1, borderColor: 'divider' }}>
           <CardContent>
-            <Typography variant="subtitle1" fontWeight={600} mb={1}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
               Actualizar nombre
             </Typography>
             <Formik

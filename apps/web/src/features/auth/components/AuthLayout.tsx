@@ -46,7 +46,7 @@ export function AuthLayout({
             sx={{ display: "flex", alignItems: "center", gap: 1 }}
           >
             <PaymentsIcon color="primary" sx={{ fontSize: 36 }} />
-            <Typography variant="h5" fontWeight={700}>
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
               Meridia
             </Typography>
           </MuiLink>
@@ -56,7 +56,7 @@ export function AuthLayout({
         </Box>
         <Card elevation={0} sx={{ border: 1, borderColor: "divider" }}>
           <CardContent sx={{ p: { xs: 2, sm: 4 } }}>
-            <Typography variant="h6" mb={2} fontWeight={600}>
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
               {title}
             </Typography>
             {children}

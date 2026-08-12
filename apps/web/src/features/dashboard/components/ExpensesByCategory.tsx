@@ -24,7 +24,7 @@ export function ExpensesByCategory({ items = [], currency }: ExpensesByCategoryP
   return (
     <Card elevation={0} sx={{ border: 1, borderColor: 'divider', height: '100%' }}>
       <CardContent>
-        <Typography variant="h6" fontWeight={600} mb={1}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           Gastos por categoría
         </Typography>
         {items.length === 0 ? (
@@ -32,10 +32,10 @@ export function ExpensesByCategory({ items = [], currency }: ExpensesByCategoryP
             Sin gastos en el período.
           </Typography>
         ) : (
-          <Stack spacing={1.5} mt={2}>
+          <Stack spacing={1.5} sx={{ mt: 2 }}>
             {items.map((item) => (
               <Box key={item.categoryId}>
-                <Stack direction="row" justifyContent="space-between" mb={0.5}>
+                <Stack direction="row" sx={{ justifyContent: 'space-between', mb: 0.5 }}>
                   <Typography variant="body2">{item.name}</Typography>
                   <Typography variant="body2" color="text.secondary">
                     {formatCurrency(item.total, currency)}

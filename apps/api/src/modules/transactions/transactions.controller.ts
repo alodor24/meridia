@@ -8,7 +8,7 @@ import type { TransactionId } from '@meridia/shared';
 export const list = asyncHandler(async (req: Request, res: Response) => {
   const data = await transactionsService.listTransactions(
     req.user!.id,
-    req.query as unknown as ListTransactionsQuery,
+    res.locals.validatedQuery as ListTransactionsQuery,
   );
   sendPaginated(res, data);
 });

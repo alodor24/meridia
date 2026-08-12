@@ -5,11 +5,11 @@ const hexColor = /^#([0-9a-fA-F]{6})$/;
 
 export const createCategorySchema = z.object({
   name: z
-    .string({ required_error: 'El nombre es requerido' })
+    .string({ error: 'El nombre es requerido' })
     .trim()
     .min(1, 'El nombre es requerido')
     .max(80, 'El nombre no puede superar los 80 caracteres'),
-  type: z.enum(TRANSACTION_TYPES, { errorMap: () => ({ message: 'Tipo de categoría inválido' }) }),
+  type: z.enum(TRANSACTION_TYPES, { error: 'Tipo de categoría inválido' }),
   color: z
     .string()
     .trim()

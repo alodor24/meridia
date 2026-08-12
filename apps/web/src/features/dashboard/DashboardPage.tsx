@@ -43,23 +43,23 @@ function DashboardPage() {
         }}
       />
 
-      <Grid container spacing={2} mt={1}>
-        <Grid item xs={12} sm={6} md={3}>
+      <Grid container spacing={2} sx={{ mt: 1 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard title="Balance total" value={formatCurrency(data.totalBalance, currency)} icon={<WalletIcon />} color={data.totalBalance >= 0 ? 'success' : 'error'} />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard title="Ingresos del período" value={formatCurrency(data.income, currency)} icon={<TrendUpIcon />} color="success" />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard title="Gastos del período" value={formatCurrency(data.expenses, currency)} icon={<TrendDownIcon />} color="error" />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard title="Balance del período" value={formatCurrency(data.periodBalance, currency)} icon={<BalanceIcon />} color={data.periodBalance >= 0 ? 'success' : 'error'} />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <RecentTransactions transactions={data.lastTransactions} currency={currency} />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <ExpensesByCategory items={data.expensesByCategory} currency={currency} />
         </Grid>
       </Grid>

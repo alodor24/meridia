@@ -87,9 +87,8 @@ function LoginPage() {
         </Formik>
         <Stack
           direction="row"
-          justifyContent="center"
           spacing={0.5}
-          sx={{ mt: 2 }}
+          sx={{ justifyContent: "center", mt: 2 }}
         >
           <Typography variant="body2" color="text.secondary">
             ¿No tenés cuenta?

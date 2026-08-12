@@ -19,7 +19,7 @@ export function RecentTransactions({ transactions = [], currency }: RecentTransa
     return (
       <Card elevation={0} sx={{ border: 1, borderColor: 'divider', height: '100%' }}>
         <CardContent>
-          <Typography variant="h6" fontWeight={600} mb={1}>
+          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
             Últimos movimientos
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -33,14 +33,14 @@ export function RecentTransactions({ transactions = [], currency }: RecentTransa
   return (
     <Card elevation={0} sx={{ border: 1, borderColor: 'divider', height: '100%' }}>
       <CardContent>
-        <Typography variant="h6" fontWeight={600} mb={1}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           Últimos movimientos
         </Typography>
         {transactions.map((transaction, index) => (
           <Box key={transaction.id}>
             {index > 0 && <Divider />}
-            <Stack direction="row" alignItems="center" justifyContent="space-between" py={1} spacing={2}>
-              <Stack direction="row" alignItems="center" spacing={1.5} minWidth={0}>
+            <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'space-between', py: 1 }}>
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0 }}>
                 <Box
                   sx={{
                     width: 32,
@@ -57,7 +57,7 @@ export function RecentTransactions({ transactions = [], currency }: RecentTransa
                 >
                   {transaction.categoryName?.charAt(0) ?? '?'}
                 </Box>
-                <Stack minWidth={0}>
+                <Stack sx={{ minWidth: 0 }}>
                   <Typography variant="body2" noWrap>
                     {transaction.categoryName}
                   </Typography>

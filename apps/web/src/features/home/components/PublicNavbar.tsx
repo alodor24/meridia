@@ -55,13 +55,13 @@ export function PublicNavbar() {
           }}
         >
           <PaymentsIcon color="primary" />
-          <Typography variant="h6" fontWeight={700}>
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
             Meridia
           </Typography>
         </Button>
         <Box sx={{ flexGrow: 1 }} />
         {isDesktop ? (
-          <Stack direction="row" spacing={1} alignItems="center">
+          <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
             {NAV_LINKS.map((link) => (
               <Button
                 key={link.to}

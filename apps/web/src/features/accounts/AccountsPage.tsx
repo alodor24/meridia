@@ -87,7 +87,7 @@ function AccountsPage() {
                   {data.map((account) => (
                     <TableRow key={account.id} hover>
                       <TableCell>
-                        <Stack direction="row" alignItems="center" spacing={1}>
+                        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                           <AccountIcon color="primary" />
                           <Box>
                             <Typography variant="body1">{account.name}</Typography>
@@ -101,7 +101,7 @@ function AccountsPage() {
                         <Chip size="small" label={ACCOUNT_TYPE_LABELS[account.type]} variant="outlined" />
                       </TableCell>
                       <TableCell align="right">
-                        <Typography variant="body1" fontWeight={600} color={account.balance >= 0 ? 'success.main' : 'error.main'}>
+                        <Typography variant="body1" color={account.balance >= 0 ? 'success.main' : 'error.main'} sx={{ fontWeight: 600 }}>
                           {formatCurrency(account.balance, account.currency)}
                         </Typography>
                       </TableCell>

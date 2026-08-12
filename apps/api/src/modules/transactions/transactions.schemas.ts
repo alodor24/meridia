@@ -13,9 +13,9 @@ const emptyToUndefined = (schema: z.ZodTypeAny) =>
 export const createTransactionSchema = z.object({
   accountId: uuidSchema,
   categoryId: uuidSchema,
-  type: z.enum(TRANSACTION_TYPES, { errorMap: () => ({ message: 'Tipo inválido' }) }),
+  type: z.enum(TRANSACTION_TYPES, { error: 'Tipo inválido' }),
   amount: z
-    .number({ required_error: 'El monto es requerido', invalid_type_error: 'El monto debe ser un número' })
+    .number({ error: 'El monto es requerido y debe ser un número' })
     .positive('El monto debe ser mayor a cero')
     .max(9_999_999_999.99, 'Monto demasiado grande'),
   date: dateString,

@@ -70,7 +70,7 @@ export function AccountFormDialog({ open, account, defaultCurrency, onClose, onS
             <DialogContent>
               <FormTextField name="name" label="Nombre" autoFocus placeholder="Ej: Banco Santander" />
               <FormSelect name="type" label="Tipo" options={ACCOUNT_TYPE_OPTIONS} />
-              <FormTextField name="currency" label="Moneda (ISO 4217)" placeholder="ARS" inputProps={{ maxLength: 3, style: { textTransform: 'uppercase' } }} />
+              <FormTextField name="currency" label="Moneda (ISO 4217)" placeholder="ARS" slotProps={{ htmlInput: { maxLength: 3, style: { textTransform: 'uppercase' } } }} />
             </DialogContent>
             <DialogActions sx={{ px: 3, pb: 2 }}>
               <Button onClick={onClose} disabled={loading} color="inherit">

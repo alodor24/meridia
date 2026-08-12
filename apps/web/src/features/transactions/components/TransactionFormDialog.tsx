@@ -149,19 +149,19 @@ export function TransactionFormDialog({
                   .map((c) => ({ value: c.id, label: c.name }))}
               />
 
-              <Box display="flex" gap={1}>
+              <Box sx={{ display: "flex", gap: 1 }}>
                 <FormTextField
                   name="amount"
                   label="Monto"
                   type="number"
-                  inputProps={{ step: '0.01', min: '0' }}
                   slotProps={{
+                    htmlInput: { step: "0.01", min: "0" },
                     input: {
                       startAdornment: <InputAdornment position="start">$</InputAdornment>,
                     },
                   }}
                 />
-                <FormTextField name="date" label="Fecha" type="date" InputLabelProps={{ shrink: true }} />
+                <FormTextField name="date" label="Fecha" type="date" slotProps={{ inputLabel: { shrink: true } }} />
               </Box>
 
               <FormTextField name="note" label="Nota (opcional)" placeholder="Ej: supermercado" multiline rows={2} />

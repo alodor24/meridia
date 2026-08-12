@@ -122,13 +122,13 @@ function TransactionsPage() {
 
       <Card elevation={0} sx={{ border: 1, borderColor: 'divider', mb: 2 }}>
         <CardContent>
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} alignItems="flex-start">
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} sx={{ alignItems: 'flex-start' }}>
             <Box sx={{ width: { xs: '100%', md: 150 } }}>
               <TextField
                 label="Desde"
                 type="date"
                 size="small"
-                InputLabelProps={{ shrink: true }}
+                slotProps={{ inputLabel: { shrink: true } }}
                 fullWidth
                 value={filters.from}
                 onChange={(e) => setFilters((f) => ({ ...f, from: e.target.value }))}
@@ -139,7 +139,7 @@ function TransactionsPage() {
                 label="Hasta"
                 type="date"
                 size="small"
-                InputLabelProps={{ shrink: true }}
+                slotProps={{ inputLabel: { shrink: true } }}
                 fullWidth
                 value={filters.to}
                 onChange={(e) => setFilters((f) => ({ ...f, to: e.target.value }))}
@@ -229,7 +229,7 @@ function TransactionsPage() {
                     <TableRow key={transaction.id} hover>
                       <TableCell>{formatDate(transaction.date)}</TableCell>
                       <TableCell>
-                        <Stack direction="row" alignItems="center" spacing={1}>
+                        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                           <Avatar sx={{ width: 22, height: 22, bgcolor: transaction.categoryColor ?? '#607d8b', fontSize: 11 }}>
                             {transaction.categoryName?.charAt(0) ?? '?'}
                           </Avatar>

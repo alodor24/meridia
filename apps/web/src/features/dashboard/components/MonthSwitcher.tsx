@@ -20,11 +20,11 @@ export function MonthSwitcher({ anchor, onChange }: MonthSwitcherProps) {
     onChange(monthRangeFor(next));
   };
   return (
-    <Stack direction="row" alignItems="center" justifyContent="space-between" maxWidth={420} mt={2}>
+    <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', maxWidth: 420, mt: 2 }}>
       <IconButton aria-label="Mes anterior" onClick={() => shift(-1)}>
         <ChevronLeftIcon />
       </IconButton>
-      <Typography variant="subtitle1" fontWeight={600}>
+      <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
         {label}
       </Typography>
       <IconButton aria-label="Mes siguiente" onClick={() => shift(1)}>

@@ -15,8 +15,8 @@ export function ColorField({ name, label = 'Color' }: { name: string; label?: st
   const showError = meta.touched && Boolean(meta.error);
 
   return (
-    <Box mt={2}>
-      <Typography variant="body2" color="text.secondary" mb={1}>
+    <Box sx={{ mt: 2 }}>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
         {label}
       </Typography>
       <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap', alignItems: 'center' }}>

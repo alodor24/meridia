@@ -64,9 +64,9 @@ function HomePage() {
           maxWidth="md"
           sx={{ py: { xs: 8, md: 12 }, textAlign: "center" }}
         >
-          <Stack spacing={2} alignItems="center">
+          <Stack spacing={2} sx={{ alignItems: "center" }}>
             <PaymentsIcon color="primary" sx={{ fontSize: 56 }} />
-            <Typography variant="h3" component="h1" fontWeight={800}>
+            <Typography variant="h3" component="h1" sx={{ fontWeight: 800 }}>
               Tus finanzas personales, simples y seguras.
             </Typography>
             <Typography
@@ -109,14 +109,13 @@ function HomePage() {
         <Typography
           variant="h5"
           component="h2"
-          fontWeight={700}
-          sx={{ textAlign: "center", mb: 4 }}
+          sx={{ fontWeight: 700, textAlign: "center", mb: 4 }}
         >
           ¿Qué podés hacer con Meridia?
         </Typography>
         <Grid container spacing={3}>
           {FEATURES.map((feature) => (
-            <Grid item xs={12} sm={6} md={3} key={feature.title}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={feature.title}>
               <Card
                 elevation={0}
                 sx={{ height: "100%", border: 1, borderColor: "divider" }}
@@ -124,7 +123,7 @@ function HomePage() {
                 <CardContent>
                   <Stack spacing={1}>
                     {feature.icon}
-                    <Typography variant="h6" fontWeight={600}>
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
                       {feature.title}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">

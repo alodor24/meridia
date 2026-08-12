@@ -60,8 +60,8 @@ function CategoriesPage() {
   const renderTable = (categories: Category[], title: string, onAdd: () => void) => (
     <Card elevation={0} sx={{ border: 1, borderColor: 'divider' }}>
       <CardContent>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1}>
-          <Typography variant="subtitle1" fontWeight={600}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
             {title}
           </Typography>
           <IconButton size="small" onClick={onAdd} aria-label={`Agregar ${title.toLowerCase()}`}>
@@ -69,7 +69,7 @@ function CategoriesPage() {
           </IconButton>
         </Stack>
         {categories.length === 0 ? (
-          <Typography variant="body2" color="text.secondary" py={2} textAlign="center">
+          <Typography variant="body2" color="text.secondary" sx={{ py: 2, textAlign: "center" }}>
             Sin categorías.
           </Typography>
         ) : (
@@ -85,7 +85,7 @@ function CategoriesPage() {
                 {categories.map((category) => (
                   <TableRow key={category.id} hover>
                     <TableCell>
-                      <Stack direction="row" alignItems="center" spacing={1}>
+                      <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                         <Avatar sx={{ width: 24, height: 24, bgcolor: category.color, fontSize: 12 }}>
                           {category.name.charAt(0)}
                         </Avatar>

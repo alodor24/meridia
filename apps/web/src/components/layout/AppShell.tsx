@@ -72,7 +72,7 @@ export function AppShell() {
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Toolbar sx={{ gap: 1 }}>
         <PaymentsIcon color="primary" />
-        <Typography variant="h6" fontWeight={700}>
+        <Typography variant="h6" sx={{ fontWeight: 700 }}>
           Meridia
         </Typography>
       </Toolbar>

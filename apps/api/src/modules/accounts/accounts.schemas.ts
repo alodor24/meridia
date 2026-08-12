@@ -3,11 +3,11 @@ import { ACCOUNT_TYPES } from '@meridia/shared';
 
 export const createAccountSchema = z.object({
   name: z
-    .string({ required_error: 'El nombre es requerido' })
+    .string({ error: 'El nombre es requerido' })
     .trim()
     .min(1, 'El nombre es requerido')
     .max(80, 'El nombre no puede superar los 80 caracteres'),
-  type: z.enum(ACCOUNT_TYPES, { errorMap: () => ({ message: 'Tipo de cuenta inválido' }) }),
+  type: z.enum(ACCOUNT_TYPES, { error: 'Tipo de cuenta inválido' }),
   currency: z
     .string()
     .trim()

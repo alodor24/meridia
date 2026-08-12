@@ -43,7 +43,7 @@ export function StatCard({ title, value, subtitle, icon, color = 'primary' }: St
           </Typography>
           {icon && <Box sx={{ color: colorMap[color] }}>{icon}</Box>}
         </Box>
-        <Typography variant="h6" component="div" fontWeight={600} sx={{ color: colorMap[color] }}>
+        <Typography variant="h6" component="div" sx={{ fontWeight: 600, color: colorMap[color] }}>
           {value}
         </Typography>
         {subtitle && (
