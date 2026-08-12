@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import type { ZodSchema } from 'zod';
+import type { ZodType } from 'zod';
 import { ValidationError } from '../shared/errors';
 
 type RequestPart = 'body' | 'query' | 'params';
@@ -8,7 +8,7 @@ interface ValidatedLocals extends Record<string, unknown> {
   validatedQuery?: unknown;
 }
 
-export const validate = (schema: ZodSchema, part: RequestPart = 'body') => {
+export const validate = (schema: ZodType, part: RequestPart = 'body') => {
   return (req: Request, res: Response, next: NextFunction): void => {
     const result = schema.safeParse(req[part]);
     if (!result.success) {
