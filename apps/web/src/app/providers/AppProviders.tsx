@@ -13,10 +13,10 @@ export function AppProviders({ children }: { children: ReactNode }) {
       primary: { main: '#4f6bff' },
       secondary: { main: '#00b8a9' },
       background: {
-        default: themeMode === 'light' ? '#f6f7fb' : '#121212',
+        default: themeMode === 'light' ? '#fafafa' : '#141616',
       },
     },
-    shape: { borderRadius: 10 },
+    shape: { borderRadius: 3 },
     typography: {
       fontFamily:
         "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
