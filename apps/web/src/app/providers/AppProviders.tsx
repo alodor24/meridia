@@ -10,11 +10,34 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
   const theme = createTheme({
     palette: {
       mode: themeMode,
-      primary: { main: "#4f6bff" },
-      secondary: { main: "#00b8a9" },
-      background: {
-        default: themeMode === "light" ? "#fafafa" : "#141616",
+      primary: { 
+        main: themeMode === "light" ? "#5e35b1" : "#2962ff",
+        contrastText: "#fff",
       },
+      secondary: { 
+        main: "#4dd0e1", 
+        contrastText: "#fff",
+      },
+      error: {
+        main: "#e53935",
+      },
+      warning: {
+        main: "#ff9800",
+      },
+      info: {
+        main: "#2196f3",
+      },
+      success: {
+        main: "#4caf50",
+      },
+      background: {
+        default: themeMode === "light" ? "#eceff1" : "#050607",
+        paper: themeMode === "light" ? "#fff" : "#0e131a",
+      },
+      text: {
+        primary: themeMode === "light" ? "#37474f" : "#cfd8dc",
+      },
+      divider: themeMode === "light" ? "#e0e0e0" : "#212121",
     },
     shape: { borderRadius: 3 },
     typography: {
@@ -28,6 +51,10 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
       <CssBaseline />
       <GlobalStyles
         styles={{
+          "::selection": {
+            backgroundColor: "#42a5f5",
+            color: "#fff",
+          },
           ":focus-visible": {
             outline: "2px solid #4f6bff",
             outlineOffset: 2,
