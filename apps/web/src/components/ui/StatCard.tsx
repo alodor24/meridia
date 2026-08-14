@@ -29,18 +29,8 @@ export const StatCard = ({
 }: StatCardProps) => {
   return (
     <Card
-      elevation={0}
-      sx={{
-        border: 1,
-        borderColor: "divider",
-        height: "100%",
-        transition: "transform 0.2s ease, box-shadow 0.2s ease",
-        "&:hover": {
-          transform: "translateY(-2px)",
-          boxShadow: 3,
-          borderColor: "primary.light",
-        },
-      }}
+      elevation={3}
+      sx={{ height: "100%" }}
     >
       <CardContent>
         <Box
@@ -51,7 +41,7 @@ export const StatCard = ({
             mb: 1,
           }}
         >
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
             {title}
           </Typography>
           {icon && <Box sx={{ color: colorMap[color] }}>{icon}</Box>}
@@ -59,7 +49,7 @@ export const StatCard = ({
         <Typography
           variant="h6"
           component="div"
-          sx={{ fontWeight: 600, color: colorMap[color] }}
+          sx={{ fontWeight: 700, color: colorMap[color] }}
         >
           {value}
         </Typography>
