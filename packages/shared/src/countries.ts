@@ -14,7 +14,6 @@ export const COUNTRIES: CountryOption[] = [
   { code: 'CL', name: 'Chile', currency: 'CLP' },
   { code: 'CO', name: 'Colombia', currency: 'COP' },
   { code: 'CR', name: 'Costa Rica', currency: 'CRC' },
-  { code: 'CU', name: 'Cuba', currency: 'CUP' },
   { code: 'DO', name: 'República Dominicana', currency: 'DOP' },
   { code: 'EC', name: 'Ecuador', currency: 'USD' },
   { code: 'SV', name: 'El Salvador', currency: 'USD' },
