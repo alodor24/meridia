@@ -12,7 +12,6 @@ import {
 import { Formik, Form } from "formik";
 import { COUNTRIES } from "@meridia/shared";
 import { AuthLayout } from "@/features/auth/components/AuthLayout";
-import { PublicLayout } from "@/features/home/components/PublicLayout";
 import { FormTextField } from "@/components/ui/FormTextField";
 import { FormSelect } from "@/components/ui/FormSelect";
 import {
@@ -68,10 +67,9 @@ const RegisterPage = () => {
   };
 
   return (
-    <PublicLayout>
       <AuthLayout
         title="Crear cuenta"
-        subtitle="Elegí tu país para usar tu moneda local."
+        subtitle="Elige tu país para usar tu moneda local."
       >
         <Formik
           initialValues={initialValues}
@@ -84,7 +82,6 @@ const RegisterPage = () => {
                 name="name"
                 label="Nombre"
                 autoComplete="name"
-                autoFocus
               />
               <FormTextField
                 name="email"
@@ -128,14 +125,13 @@ const RegisterPage = () => {
           sx={{ justifyContent: "center", mt: 2 }}
         >
           <Typography variant="body2" color="text.secondary">
-            ¿Ya tenés cuenta?
+            ¿Ya tienes cuenta?
           </Typography>
           <MuiLink component={RouterLink} to="/login" variant="body2">
-            Iniciá sesión
+            Inicia sesión
           </MuiLink>
         </Stack>
       </AuthLayout>
-    </PublicLayout>
   );
 };
 

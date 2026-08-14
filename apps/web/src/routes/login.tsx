@@ -11,7 +11,6 @@ import {
 } from "@tanstack/react-router";
 import { Formik, Form } from "formik";
 import { AuthLayout } from "@/features/auth/components/AuthLayout";
-import { PublicLayout } from "@/features/home/components/PublicLayout";
 import { FormTextField } from "@/components/ui/FormTextField";
 import {
   loginValidationSchema,
@@ -47,7 +46,6 @@ const LoginPage = () => {
   };
 
   return (
-    <PublicLayout>
       <AuthLayout
         title="Iniciar sesión"
         subtitle="Tus finanzas personales, simples y seguras."
@@ -64,7 +62,6 @@ const LoginPage = () => {
                 label="Email"
                 type="email"
                 autoComplete="email"
-                autoFocus
               />
               <FormTextField
                 name="password"
@@ -91,14 +88,13 @@ const LoginPage = () => {
           sx={{ justifyContent: "center", mt: 2 }}
         >
           <Typography variant="body2" color="text.secondary">
-            ¿No tenés cuenta?
+            ¿No tienes cuenta?
           </Typography>
           <MuiLink component={RouterLink} to="/register" variant="body2">
             Registrate
           </MuiLink>
         </Stack>
       </AuthLayout>
-    </PublicLayout>
   );
 };
 
