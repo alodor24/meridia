@@ -7,6 +7,8 @@ import { useUiStore } from "@/stores/uiStore";
 export const AppProviders = ({ children }: { children: ReactNode }) => {
   const themeMode = useUiStore((s) => s.themeMode);
 
+  const fontFamily = "'Mulish', sans-serif";
+
   const theme = createTheme({
     palette: {
       mode: themeMode,
@@ -41,8 +43,7 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
     },
     shape: { borderRadius: 3 },
     typography: {
-      fontFamily:
-        "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+      fontFamily: fontFamily,
     },
   });
 
