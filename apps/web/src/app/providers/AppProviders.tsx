@@ -51,6 +51,21 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
       <CssBaseline />
       <GlobalStyles
         styles={{
+          "::-webkit-scrollbar-track": {
+            backgroundColor: "#e0e0e0",
+            borderRadius: "5rem",
+          },
+          "::-webkit-scrollbar": {
+            width: "0.4rem",
+            height: "0.4rem",
+          },
+          "::-webkit-scrollbar-thumb": {
+            backgroundColor: "#607d8b",
+            borderRadius: "5rem",
+          },
+          "::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "#42a5f5",
+          },
           "::selection": {
             backgroundColor: "#42a5f5",
             color: "#fff",
