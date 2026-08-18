@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useAuthStore } from "@/stores/authStore";
 import { Navigate } from "@tanstack/react-router";
-import { AppShell } from "@/components/layout/AppShell";
+import PrivateLayout from "@/components/layout/PrivateLayout";
 
 const AppLayout = () => {
   const status = useAuthStore((s) => s.status);
@@ -9,7 +9,7 @@ const AppLayout = () => {
   if (status === "loading") return null;
   if (status === "unauthenticated") return <Navigate to="/login" />;
 
-  return <AppShell />;
+  return <PrivateLayout />;
 };
 
 export const Route = createFileRoute("/app")({

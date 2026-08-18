@@ -23,4 +23,5 @@ export const Route = createRootRoute({
       <Outlet />
     </AppProviders>
   ),
+  notFoundComponent: () => <h1>Configurar página de error acá</h1>,
 });

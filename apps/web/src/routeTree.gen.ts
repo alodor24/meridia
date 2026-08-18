@@ -9,11 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as AppAccountsRouteImport } from './routes/app/accounts'
 import { Route as AppCategoriesRouteImport } from './routes/app/categories'
@@ -21,9 +22,8 @@ import { Route as AppDashboardRouteImport } from './routes/app/dashboard'
 import { Route as AppProfileRouteImport } from './routes/app/profile'
 import { Route as AppTransactionsRouteImport } from './routes/app/transactions'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const publicRouteRoute = publicRouteRouteImport.update({
+  id: '/(public)',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -45,6 +45,11 @@ const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
   getParentRoute: () => rootRouteImport,
+} as any)
+const publicIndexRoute = publicIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicRouteRoute,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
@@ -78,7 +83,6 @@ const AppTransactionsRoute = AppTransactionsRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/login': typeof LoginRoute
@@ -88,10 +92,10 @@ export interface FileRoutesByFullPath {
   '/app/dashboard': typeof AppDashboardRoute
   '/app/profile': typeof AppProfileRoute
   '/app/transactions': typeof AppTransactionsRoute
+  '/': typeof publicIndexRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -100,11 +104,12 @@ export interface FileRoutesByTo {
   '/app/dashboard': typeof AppDashboardRoute
   '/app/profile': typeof AppProfileRoute
   '/app/transactions': typeof AppTransactionsRoute
+  '/': typeof publicIndexRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/(public)': typeof publicRouteRouteWithChildren
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/login': typeof LoginRoute
@@ -114,12 +119,12 @@ export interface FileRoutesById {
   '/app/dashboard': typeof AppDashboardRoute
   '/app/profile': typeof AppProfileRoute
   '/app/transactions': typeof AppTransactionsRoute
+  '/(public)/': typeof publicIndexRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/app'
     | '/auth'
     | '/login'
@@ -129,10 +134,10 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/profile'
     | '/app/transactions'
+    | '/'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/auth'
     | '/login'
     | '/register'
@@ -141,10 +146,11 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/profile'
     | '/app/transactions'
+    | '/'
     | '/app'
   id:
     | '__root__'
-    | '/'
+    | '/(public)'
     | '/app'
     | '/auth'
     | '/login'
@@ -154,11 +160,12 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/profile'
     | '/app/transactions'
+    | '/(public)/'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  publicRouteRoute: typeof publicRouteRouteWithChildren
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   LoginRoute: typeof LoginRoute
@@ -167,11 +174,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/(public)': {
+      id: '/(public)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof publicRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -201,6 +208,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(public)/': {
+      id: '/(public)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof publicIndexRouteImport
+      parentRoute: typeof publicRouteRoute
     }
     '/app/': {
       id: '/app/'
@@ -247,6 +261,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface publicRouteRouteChildren {
+  publicIndexRoute: typeof publicIndexRoute
+}
+
+const publicRouteRouteChildren: publicRouteRouteChildren = {
+  publicIndexRoute: publicIndexRoute,
+}
+
+const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
+  publicRouteRouteChildren,
+)
+
 interface AppRouteChildren {
   AppAccountsRoute: typeof AppAccountsRoute
   AppCategoriesRoute: typeof AppCategoriesRoute
@@ -268,7 +294,7 @@ const AppRouteChildren: AppRouteChildren = {
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  publicRouteRoute: publicRouteRouteWithChildren,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   LoginRoute: LoginRoute,

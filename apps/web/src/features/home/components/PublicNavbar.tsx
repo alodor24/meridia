@@ -40,8 +40,7 @@ export const PublicNavbar = () => {
         color: "text.primary",
         borderBottom: 1,
         borderColor: "divider",
-      }}
-    >
+      }}>
       <Toolbar>
         <Button
           component={Link}
@@ -52,8 +51,7 @@ export const PublicNavbar = () => {
             gap: 1,
             mr: 2,
             minWidth: 0,
-          }}
-        >
+          }}>
           <PaymentsIcon color="primary" />
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
             Meridia
@@ -68,18 +66,13 @@ export const PublicNavbar = () => {
                 component={Link}
                 to={link.to}
                 color="inherit"
-                variant={link.to === "/register" ? "contained" : "text"}
-              >
+                variant={link.to === "/register" ? "contained" : "text"}>
                 {link.label}
               </Button>
             ))}
           </Stack>
         ) : (
-          <IconButton
-            color="inherit"
-            onClick={(e) => setMenuAnchor(e.currentTarget)}
-            data-testid="public-nav-menu"
-          >
+          <IconButton color="inherit" onClick={(e) => setMenuAnchor(e.currentTarget)} data-testid="public-nav-menu">
             <MenuIcon />
           </IconButton>
         )}
@@ -88,18 +81,9 @@ export const PublicNavbar = () => {
             {themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
           </IconButton>
         </Tooltip>
-        <Menu
-          anchorEl={menuAnchor}
-          open={Boolean(menuAnchor)}
-          onClose={() => setMenuAnchor(null)}
-        >
+        <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
           {NAV_LINKS.map((link) => (
-            <MenuItem
-              key={link.to}
-              component={Link}
-              to={link.to}
-              onClick={() => setMenuAnchor(null)}
-            >
+            <MenuItem key={link.to} component={Link} to={link.to} onClick={() => setMenuAnchor(null)}>
               {link.label}
             </MenuItem>
           ))}

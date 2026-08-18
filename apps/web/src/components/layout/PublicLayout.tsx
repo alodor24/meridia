@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Box from "@mui/material/Box";
-import { PublicNavbar } from "./PublicNavbar";
+import { PublicNavbar } from "../../features/home/components/PublicNavbar";
 import Footer from "@/components/ui/Footer";
 
 export const PublicLayout = ({ children }: { children: ReactNode }) => {

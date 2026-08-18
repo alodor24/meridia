@@ -43,7 +43,7 @@ const NAV_ITEMS = [
   { label: "Perfil", to: "/app/profile", icon: <PersonIcon /> },
 ];
 
-export const AppShell = () => {
+const PrivateLayout = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const location = useLocation();
@@ -59,8 +59,7 @@ export const AppShell = () => {
   const snackbar = useUiStore((s) => s.snackbar);
   const hideSnackbar = useUiStore((s) => s.hideSnackbar);
 
-  const [profileMenuAnchor, setProfileMenuAnchor] =
-    useState<null | HTMLElement>(null);
+  const [profileMenuAnchor, setProfileMenuAnchor] = useState<null | HTMLElement>(null);
   const [loggingOut, setLoggingOut] = useState(false);
 
   const handleLogout = async () => {
@@ -87,8 +86,7 @@ export const AppShell = () => {
               component={Link}
               to={item.to}
               selected={active}
-              onClick={() => !isDesktop && setDrawerOpen(false)}
-            >
+              onClick={() => !isDesktop && setDrawerOpen(false)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.label} />
             </ListItemButton>
@@ -98,12 +96,8 @@ export const AppShell = () => {
       <Divider />
       <List>
         <ListItemButton onClick={toggleTheme}>
-          <ListItemIcon>
-            {themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
-          </ListItemIcon>
-          <ListItemText
-            primary={themeMode === "light" ? "Modo oscuro" : "Modo claro"}
-          />
+          <ListItemIcon>{themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />}</ListItemIcon>
+          <ListItemText primary={themeMode === "light" ? "Modo oscuro" : "Modo claro"} />
         </ListItemButton>
       </List>
     </Box>
@@ -123,8 +117,7 @@ export const AppShell = () => {
           color: "primary.contrastText",
           transition: "top 0.2s ease",
           "&:focus": { top: 12 },
-        }}
-      >
+        }}>
         Saltar al contenido
       </Button>
       <AppBar
@@ -136,20 +129,13 @@ export const AppShell = () => {
           color: "text.primary",
           borderBottom: 1,
           borderColor: "divider",
-        }}
-      >
+        }}>
         <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={toggleDrawer}
-            sx={{ mr: 2, display: { md: "none" } }}
-          >
+          <IconButton edge="start" color="inherit" onClick={toggleDrawer} sx={{ mr: 2, display: { md: "none" } }}>
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1, fontWeight: 700 }}>
-            {NAV_ITEMS.find((n) => location.pathname.startsWith(n.to))?.label ??
-              "Meridia"}
+            {NAV_ITEMS.find((n) => location.pathname.startsWith(n.to))?.label ?? "Meridia"}
           </Typography>
           <Tooltip title="Cambiar tema">
             <IconButton onClick={toggleTheme} color="inherit">
@@ -157,19 +143,14 @@ export const AppShell = () => {
             </IconButton>
           </Tooltip>
           <Tooltip title="Cuenta">
-            <IconButton
-              onClick={(e) => setProfileMenuAnchor(e.currentTarget)}
-              sx={{ ml: 1 }}
-              data-testid="profile-menu"
-            >
+            <IconButton onClick={(e) => setProfileMenuAnchor(e.currentTarget)} sx={{ ml: 1 }} data-testid="profile-menu">
               <Avatar
                 sx={{
                   width: 32,
                   height: 32,
                   bgcolor: "primary.main",
                   fontSize: 14,
-                }}
-              >
+                }}>
                 {user?.name?.charAt(0).toUpperCase() ?? "?"}
               </Avatar>
             </IconButton>
@@ -178,13 +159,8 @@ export const AppShell = () => {
             anchorEl={profileMenuAnchor}
             open={Boolean(profileMenuAnchor)}
             onClose={() => setProfileMenuAnchor(null)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          >
-            <MenuItem
-              component={Link}
-              to="/app/profile"
-              onClick={() => setProfileMenuAnchor(null)}
-            >
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+            <MenuItem component={Link} to="/app/profile" onClick={() => setProfileMenuAnchor(null)}>
               <ListItemIcon>
                 <PersonIcon fontSize="small" />
               </ListItemIcon>
@@ -211,26 +187,16 @@ export const AppShell = () => {
               width: DRAWER_WIDTH,
               boxSizing: "border-box",
             },
-          }}
-        >
+          }}>
           {drawerContent}
         </Drawer>
       ) : (
-        <Drawer
-          variant="temporary"
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
-        >
+        <Drawer variant="temporary" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
           {drawerContent}
         </Drawer>
       )}
 
-      <Box
-        component="main"
-        id="main-content"
-        tabIndex={-1}
-        sx={{ flexGrow: 1, p: { xs: 2, md: 3 }, pt: { xs: 10, md: 12 } }}
-      >
+      <Box component="main" id="main-content" tabIndex={-1} sx={{ flexGrow: 1, p: { xs: 2, md: 3 }, pt: { xs: 10, md: 12 } }}>
         <Outlet />
       </Box>
 
@@ -238,17 +204,13 @@ export const AppShell = () => {
         open={snackbar.open}
         autoHideDuration={4000}
         onClose={hideSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert
-          onClose={hideSnackbar}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+        <Alert onClose={hideSnackbar} severity={snackbar.severity} variant="filled" sx={{ width: "100%" }}>
           {snackbar.message}
         </Alert>
       </Snackbar>
     </Box>
   );
 };
+
+export default PrivateLayout;
