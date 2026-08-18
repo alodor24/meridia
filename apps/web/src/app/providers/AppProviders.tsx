@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { useUiStore } from "@/stores/uiStore";
+import globalStyles from "@/styles/globalStyles";
 
 export const AppProviders = ({ children }: { children: ReactNode }) => {
   const themeMode = useUiStore((s) => s.themeMode);
@@ -12,12 +13,12 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
   const theme = createTheme({
     palette: {
       mode: themeMode,
-      primary: { 
+      primary: {
         main: themeMode === "light" ? "#5e35b1" : "#2962ff",
         contrastText: "#fff",
       },
-      secondary: { 
-        main: "#4dd0e1", 
+      secondary: {
+        main: "#4dd0e1",
         contrastText: "#fff",
       },
       error: {
@@ -50,41 +51,7 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <GlobalStyles
-        styles={{
-          "::-webkit-scrollbar-track": {
-            backgroundColor: "#e0e0e0",
-            borderRadius: "5rem",
-          },
-          "::-webkit-scrollbar": {
-            width: "0.4rem",
-            height: "0.4rem",
-          },
-          "::-webkit-scrollbar-thumb": {
-            backgroundColor: "#607d8b",
-            borderRadius: "5rem",
-          },
-          "::-webkit-scrollbar-thumb:hover": {
-            backgroundColor: "#42a5f5",
-          },
-          "::selection": {
-            backgroundColor: "#42a5f5",
-            color: "#fff",
-          },
-          ":focus-visible": {
-            outline: "2px solid #4f6bff",
-            outlineOffset: 2,
-          },
-          "@media (prefers-reduced-motion: reduce)": {
-            "*": {
-              animationDuration: "0.01ms !important",
-              animationIterationCount: "1 !important",
-              transitionDuration: "0.01ms !important",
-              scrollBehavior: "auto !important",
-            },
-          },
-        }}
-      />
+      <GlobalStyles styles={globalStyles} />
       {children}
     </ThemeProvider>
   );
