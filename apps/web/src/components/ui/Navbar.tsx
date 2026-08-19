@@ -7,10 +7,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip, { tooltipClasses, TooltipProps } from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -24,7 +24,19 @@ const NAV_LINKS = [
   { label: "Crear cuenta", to: "/register" },
 ];
 
-export const PublicNavbar = () => {
+// TODO: Tooltip with arrow and custom styles
+const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip describeChild {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: theme.palette.common.black,
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.black,
+  },
+}));
+
+const Navbar = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
   const themeMode = useUiStore((s) => s.themeMode);
@@ -34,12 +46,11 @@ export const PublicNavbar = () => {
   return (
     <AppBar
       position="sticky"
-      elevation={0}
+      elevation={5}
       sx={{
-        bgcolor: "background.paper",
+        backgroundColor: themeMode === "light" ? "rgba(255, 255, 255, 0.9)" : "rgba(14, 19, 26, 0.9)",
         color: "text.primary",
-        borderBottom: 1,
-        borderColor: "divider",
+        backdropFilter: "saturate(180%) blur(5px)",
       }}>
       <Toolbar>
         <Button
@@ -53,11 +64,14 @@ export const PublicNavbar = () => {
             minWidth: 0,
           }}>
           <PaymentsIcon color="primary" />
+
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
             Meridia
           </Typography>
         </Button>
+
         <Box sx={{ flexGrow: 1 }} />
+
         {isDesktop ? (
           <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
             {NAV_LINKS.map((link) => (
@@ -76,11 +90,14 @@ export const PublicNavbar = () => {
             <MenuIcon />
           </IconButton>
         )}
-        <Tooltip title="Cambiar tema">
+
+        {/*// TODO: Move this component to global component */}
+        <BootstrapTooltip title="Cambiar tema">
           <IconButton onClick={toggleTheme} color="inherit" sx={{ ml: 1 }}>
             {themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
           </IconButton>
-        </Tooltip>
+        </BootstrapTooltip>
+
         <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
           {NAV_LINKS.map((link) => (
             <MenuItem key={link.to} component={Link} to={link.to} onClick={() => setMenuAnchor(null)}>
@@ -92,3 +109,5 @@ export const PublicNavbar = () => {
     </AppBar>
   );
 };
+
+export default Navbar;
