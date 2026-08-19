@@ -4,7 +4,7 @@ import { format as dateFnsFormat, isValid, parseISO } from "date-fns";
 const currencyFormatterCache = new Map<string, Intl.NumberFormat>();
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
-  VED: "VED",
+  VES: "VES",
 };
 
 export const getCurrencySymbol = (currency: string): string => {
