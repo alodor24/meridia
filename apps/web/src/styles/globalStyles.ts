@@ -32,4 +32,8 @@ const globalStyles = {
     },
 };
 
+export const navbarLight = "rgba(255, 255, 255, 0.9)";
+
+export const navbarDark = "rgba(14, 19, 26, 0.9)";
+
 export default globalStyles;
