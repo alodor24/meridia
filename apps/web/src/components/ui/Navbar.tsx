@@ -7,34 +7,22 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
-import Tooltip, { tooltipClasses, TooltipProps } from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { styled, useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import MenuIcon from "@mui/icons-material/Menu";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import { Link } from "@tanstack/react-router";
 import { useUiStore } from "@/stores/uiStore";
+import CustomTooltip from "./CustomTooltip";
 
 const NAV_LINKS = [
   { label: "Inicio", to: "/" },
   { label: "Iniciar sesión", to: "/login" },
   { label: "Crear cuenta", to: "/register" },
 ];
-
-// TODO: Tooltip with arrow and custom styles
-const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip describeChild {...props} arrow classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.arrow}`]: {
-    color: theme.palette.common.black,
-  },
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.black,
-  },
-}));
 
 const Navbar = () => {
   const theme = useTheme();
@@ -91,12 +79,11 @@ const Navbar = () => {
           </IconButton>
         )}
 
-        {/*// TODO: Move this component to global component */}
-        <BootstrapTooltip title="Cambiar tema">
+        <CustomTooltip title="Cambiar tema">
           <IconButton onClick={toggleTheme} color="inherit" sx={{ ml: 1 }}>
             {themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
           </IconButton>
-        </BootstrapTooltip>
+        </CustomTooltip>
 
         <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
           {NAV_LINKS.map((link) => (
