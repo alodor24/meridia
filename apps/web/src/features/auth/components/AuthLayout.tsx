@@ -7,16 +7,13 @@ import MuiLink from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import { Link as RouterLink } from "@tanstack/react-router";
+import { Alert, Snackbar } from "@mui/material";
+import { useUiStore } from "@/stores/uiStore";
 
-export const AuthLayout = ({
-  title,
-  subtitle,
-  children,
-}: {
-  title: string;
-  subtitle: string;
-  children: ReactNode;
-}) => {
+export const AuthLayout = ({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) => {
+  const snackbar = useUiStore((s) => s.snackbar);
+  const hideSnackbar = useUiStore((s) => s.hideSnackbar);
+
   return (
     <Box
       sx={{
@@ -24,10 +21,11 @@ export const AuthLayout = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        minHeight: "100vh",
         bgcolor: "background.default",
-        p: 2,
-      }}
-    >
+        px: 2,
+        py: 5,
+      }}>
       <Container maxWidth="xs">
         <Box
           sx={{
@@ -36,15 +34,13 @@ export const AuthLayout = ({
             alignItems: "center",
             mb: 3,
             gap: 1,
-          }}
-        >
+          }}>
           <MuiLink
             component={RouterLink}
             to="/"
             underline="none"
             color="inherit"
-            sx={{ display: "flex", alignItems: "center", gap: 1 }}
-          >
+            sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <PaymentsIcon color="primary" sx={{ fontSize: 36 }} />
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
               Meridia
@@ -63,6 +59,20 @@ export const AuthLayout = ({
           </CardContent>
         </Card>
       </Container>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={hideSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}>
+        <Alert
+          onClose={hideSnackbar}
+          variant="filled"
+          severity={snackbar.severity}
+          sx={{ width: "100%", color: "primary.contrastText" }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
