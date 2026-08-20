@@ -9,6 +9,7 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { Alert, Snackbar } from "@mui/material";
 import { useUiStore } from "@/stores/uiStore";
+import { PATHS } from "@/conts";
 
 export const AuthLayout = ({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) => {
   const snackbar = useUiStore((s) => s.snackbar);
@@ -37,20 +38,23 @@ export const AuthLayout = ({ title, subtitle, children }: { title: string; subti
           }}>
           <MuiLink
             component={RouterLink}
-            to="/"
+            to={PATHS.HOME}
             underline="none"
             color="inherit"
             sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <PaymentsIcon color="primary" sx={{ fontSize: 36 }} />
+
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
               Meridia
             </Typography>
           </MuiLink>
+
           <Typography variant="body2" color="text.secondary" align="center">
             {subtitle}
           </Typography>
         </Box>
-        <Card elevation={0} sx={{ border: 1, borderColor: "divider" }}>
+
+        <Card elevation={3}>
           <CardContent sx={{ p: { xs: 2, sm: 4 } }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
               {title}
