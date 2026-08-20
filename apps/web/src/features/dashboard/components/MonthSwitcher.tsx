@@ -27,14 +27,15 @@ export const MonthSwitcher = ({ anchor, onChange }: MonthSwitcherProps) => {
         justifyContent: "space-between",
         maxWidth: 420,
         mt: 2,
-      }}
-    >
+      }}>
       <IconButton aria-label="Mes anterior" onClick={() => shift(-1)}>
         <ChevronLeftIcon />
       </IconButton>
+
       <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
         {label}
       </Typography>
+
       <IconButton aria-label="Mes siguiente" onClick={() => shift(1)}>
         <ChevronRightIcon />
       </IconButton>
