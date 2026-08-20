@@ -204,8 +204,12 @@ const PrivateLayout = () => {
         open={snackbar.open}
         autoHideDuration={4000}
         onClose={hideSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
-        <Alert onClose={hideSnackbar} severity={snackbar.severity} variant="filled" sx={{ width: "100%" }}>
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}>
+        <Alert
+          onClose={hideSnackbar}
+          variant="filled"
+          severity={snackbar.severity}
+          sx={{ width: "100%", color: "primary.contrastText" }}>
           {snackbar.message}
         </Alert>
       </Snackbar>
