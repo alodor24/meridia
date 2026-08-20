@@ -23,10 +23,7 @@ const DashboardPage = () => {
   const [anchor, setAnchor] = useState(new Date());
   const [range, setRange] = useState(monthRangeFor(new Date()));
 
-  const { data, loading, error, refetch } = useFetch(
-    () => getDashboard(range),
-    [range.from, range.to],
-  );
+  const { data, loading, error, refetch } = useFetch(() => getDashboard(range), [range.from, range.to]);
 
   if (loading && !data) return <LoadingState />;
   if (error && !data) return <ErrorState message={error} onRetry={refetch} />;
@@ -34,10 +31,8 @@ const DashboardPage = () => {
 
   return (
     <>
-      <PageHeader
-        title="Dashboard"
-        subtitle={`Resumen de ${formatMonth(anchor)}`}
-      />
+      <PageHeader title="Dashboard" subtitle={`Resumen de ${formatMonth(anchor)}`} />
+
       <MonthSwitcher
         anchor={anchor}
         onChange={(nextRange) => {
@@ -55,41 +50,40 @@ const DashboardPage = () => {
             color={data.totalBalance >= 0 ? "success" : "error"}
           />
         </Grid>
+
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
-            title="Ingresos del período"
+            title="Ingresos del mes"
             value={formatCurrency(data.income, currency)}
             icon={<TrendUpIcon />}
             color="success"
           />
         </Grid>
+
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
-            title="Gastos del período"
+            title="Gastos del mes"
             value={formatCurrency(data.expenses, currency)}
             icon={<TrendDownIcon />}
             color="error"
           />
         </Grid>
+
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
-            title="Balance del período"
+            title="Balance del mes"
             value={formatCurrency(data.periodBalance, currency)}
             icon={<BalanceIcon />}
             color={data.periodBalance >= 0 ? "success" : "error"}
           />
         </Grid>
+
         <Grid size={{ xs: 12, md: 6 }}>
-          <RecentTransactions
-            transactions={data.lastTransactions}
-            currency={currency}
-          />
+          <RecentTransactions transactions={data.lastTransactions} currency={currency} />
         </Grid>
+
         <Grid size={{ xs: 12, md: 6 }}>
-          <ExpensesByCategory
-            items={data.expensesByCategory}
-            currency={currency}
-          />
+          <ExpensesByCategory items={data.expensesByCategory} currency={currency} />
         </Grid>
       </Grid>
     </>
