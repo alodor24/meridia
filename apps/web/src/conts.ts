@@ -2,10 +2,15 @@ export const PATHS = {
   HOME: "/",
   LOGIN: "/login",
   REGISTER: "/register",
-  DASHBOARD: "/dashboard",
-  PROFILE: "/profile",
-  SETTINGS: "/settings",
+  TRANSACTIONS: "/app/transactions",
 };
+
+export const AUTH_PATHS = [
+  "/api/auth/login",
+  "/api/auth/register",
+  "/api/auth/refresh",
+  "/api/auth/logout",
+];
 
 export const NAV_LINKS = [
   { label: "Inicio", to: PATHS.HOME },
