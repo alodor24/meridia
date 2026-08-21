@@ -32,8 +32,10 @@ const globalStyles = {
     },
 };
 
-export const navbarLight = "rgba(255, 255, 255, 0.9)";
+export const NAVBAR_LIGHT = "rgba(255, 255, 255, 0.9)";
 
-export const navbarDark = "rgba(14, 19, 26, 0.9)";
+export const NAVBAR_DARK = "rgba(14, 19, 26, 0.9)";
+
+export const DRAWER_WIDTH = 240;
 
 export default globalStyles;
