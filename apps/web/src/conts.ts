@@ -1,8 +1,14 @@
+import {Category, Dashboard, Person, Receipt, Wallet} from "@mui/icons-material";
+
 export const PATHS = {
   HOME: "/",
   LOGIN: "/login",
   REGISTER: "/register",
+  DASHBOARD: "/app/dashboard",
+  ACCOUNTS: "/app/accounts",
   TRANSACTIONS: "/app/transactions",
+  CATEGORIES: "/app/categories",
+  PROFILE: "/app/profile",
 };
 
 export const AUTH_PATHS = [
@@ -16,4 +22,12 @@ export const NAV_LINKS = [
   { label: "Inicio", to: PATHS.HOME },
   { label: "Iniciar sesión", to: PATHS.LOGIN },
   { label: "Crear cuenta", to: PATHS.REGISTER },
+];
+
+export const NAV_ITEMS = [
+  { label: "Dashboard", to: PATHS.DASHBOARD, icon: Dashboard },
+  { label: "Cuentas", to: PATHS.ACCOUNTS, icon: Wallet },
+  { label: "Movimientos", to: PATHS.TRANSACTIONS, icon: Receipt },
+  { label: "Categorías", to: PATHS.CATEGORIES, icon: Category },
+  { label: "Perfil", to: PATHS.PROFILE, icon: Person },
 ];
