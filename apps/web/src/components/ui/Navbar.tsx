@@ -19,7 +19,7 @@ import { useUiStore } from "@/stores/uiStore";
 import CustomTooltip from "./CustomTooltip";
 import { NAV_LINKS, PATHS } from "@/conts";
 import { Container } from "@mui/material";
-import { navbarDark, navbarLight } from "@/styles/globalStyles";
+import { NAVBAR_DARK, NAVBAR_LIGHT } from "@/styles/globalStyles";
 
 const Navbar = () => {
   const theme = useTheme();
@@ -33,58 +33,65 @@ const Navbar = () => {
       position="sticky"
       elevation={5}
       sx={{
-        backgroundColor: themeMode === "light" ? navbarLight : navbarDark,
+        backgroundColor: themeMode === "light" ? NAVBAR_LIGHT : NAVBAR_DARK,
         color: "text.primary",
         backdropFilter: "saturate(180%) blur(5px)",
       }}>
       <Container maxWidth="xl">
-        <Toolbar>
-          <Button
-            component={Link}
-            to={PATHS.HOME}
-            sx={{
-              textTransform: "none",
-              color: "inherit",
-              gap: 1,
-              mr: 2,
-              minWidth: 0,
-            }}>
-            <PaymentsIcon color="primary" />
+        <Toolbar disableGutters>
+          <Box sx={{ flexGrow: 1, display: "flex", width: "fit-content" }}>
+            <Link to={PATHS.HOME}>
+              <Box sx={{ display: "flex", width: "fit-content", alignItems: "center", gap: "0.5rem" }}>
+                <PaymentsIcon color="primary" />
 
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Meridia
-            </Typography>
-          </Button>
+                <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 700 }}>
+                  Meridia
+                </Typography>
+              </Box>
+            </Link>
+          </Box>
 
-          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ flexGrow: 0, display: "flex", width: "fit-content" }}>
+            <CustomTooltip title="Cambiar tema">
+              <IconButton onClick={toggleTheme} color="inherit" sx={{ ml: 1 }}>
+                {themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+              </IconButton>
+            </CustomTooltip>
 
-          <CustomTooltip title="Cambiar tema">
-            <IconButton onClick={toggleTheme} color="inherit" sx={{ ml: 1 }}>
-              {themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
-            </IconButton>
-          </CustomTooltip>
+            {isDesktop ? (
+              <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+                {NAV_LINKS.map((link) => (
+                  <Button
+                    key={link.to}
+                    component={Link}
+                    to={link.to}
+                    variant="text"
+                    color="inherit"
+                    sx={{
+                      textTransform: "capitalize",
+                      letterSpacing: 0.5,
+                      fontSize: 15,
+                      transition: "all 0.3s ease-in-out",
+                      "&:hover": { color: "primary.main" },
+                    }}>
+                    {link.label}
+                  </Button>
+                ))}
+              </Stack>
+            ) : (
+              <IconButton color="inherit" onClick={(e) => setMenuAnchor(e.currentTarget)} data-testid="public-nav-menu">
+                <MenuIcon />
+              </IconButton>
+            )}
 
-          {isDesktop ? (
-            <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+            <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
               {NAV_LINKS.map((link) => (
-                <Button key={link.to} component={Link} to={link.to} variant="text" sx={{ fontWeight: 700 }} color="inherit">
+                <MenuItem key={link.to} component={Link} to={link.to} onClick={() => setMenuAnchor(null)}>
                   {link.label}
-                </Button>
+                </MenuItem>
               ))}
-            </Stack>
-          ) : (
-            <IconButton color="inherit" onClick={(e) => setMenuAnchor(e.currentTarget)} data-testid="public-nav-menu">
-              <MenuIcon />
-            </IconButton>
-          )}
-
-          <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
-            {NAV_LINKS.map((link) => (
-              <MenuItem key={link.to} component={Link} to={link.to} onClick={() => setMenuAnchor(null)}>
-                {link.label}
-              </MenuItem>
-            ))}
-          </Menu>
+            </Menu>
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
