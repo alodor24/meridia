@@ -5,15 +5,9 @@ import axios, {
 } from "axios";
 import { tokenManager } from "./tokenManager";
 import { toApiError } from "./errors";
+import { AUTH_PATHS } from "@/conts";
 
 export const API_BASE_URL = import.meta.env.VITE_API_URL ?? "";
-
-const AUTH_PATHS = [
-  "/api/auth/login",
-  "/api/auth/register",
-  "/api/auth/refresh",
-  "/api/auth/logout",
-];
 
 const client = axios.create({
   baseURL: API_BASE_URL,
