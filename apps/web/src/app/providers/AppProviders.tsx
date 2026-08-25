@@ -40,11 +40,50 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
       text: {
         primary: themeMode === "light" ? "#37474f" : "#cfd8dc",
       },
-      divider: themeMode === "light" ? "#e0e0e0" : "#212121",
+      divider: themeMode === "light" ? "#e0e0e0" : "#424242",
     },
     shape: { borderRadius: 3 },
     typography: {
       fontFamily: fontFamily,
+    },
+
+    components: {
+      MuiTableHead: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            backgroundColor: theme.palette.primary.main,
+
+            "& .MuiTableCell-root": {
+              color: theme.palette.primary.contrastText,
+              fontWeight: 700,
+            },
+          }),
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            color: theme.palette.text.primary,
+          }),
+        },
+      },
+      MuiTableRow: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            "&:hover": {
+              backgroundColor: theme.palette.action.hover,
+            },
+          }),
+        },
+      },
+      MuiTable: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            backgroundColor: theme.palette.background.paper,
+          }),
+        },
+      },
     },
   });
 

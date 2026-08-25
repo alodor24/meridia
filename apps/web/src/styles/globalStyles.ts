@@ -30,6 +30,9 @@ const globalStyles = {
             scrollBehavior: "auto !important",
         },
     },
+    ".MuiButton-root": {
+        borderRadius: "3rem !important",
+    },
 };
 
 export const NAVBAR_LIGHT = "rgba(255, 255, 255, 0.9)";

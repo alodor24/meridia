@@ -44,6 +44,7 @@ const AccountsPage = () => {
       await deleteAccount(deletingAccount.id);
       return "Cuenta eliminada";
     });
+
     if (result) {
       showSnackbar(result);
       setDeletingAccount(null);
@@ -66,12 +67,10 @@ const AccountsPage = () => {
       {loading && <LoadingState />}
       {error && <ErrorState message={error} onRetry={refetch} />}
 
-      {data && data.length === 0 && (
-        <EmptyState message="Todavía no tenés cuentas. Creá la primera para empezar." />
-      )}
+      {data && data.length === 0 && <EmptyState message="Todavía no tenés cuentas. Creá la primera para empezar." />}
 
       {data && data.length > 0 && (
-        <Card elevation={0} sx={{ border: 1, borderColor: "divider" }}>
+        <Card elevation={3}>
           <CardContent>
             <Box sx={{ overflowX: "auto" }}>
               <Table>
@@ -87,40 +86,21 @@ const AccountsPage = () => {
                   {data.map((account) => (
                     <TableRow key={account.id} hover>
                       <TableCell>
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          sx={{ alignItems: "center" }}
-                        >
+                        <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
                           <AccountIcon color="primary" />
                           <Box>
-                            <Typography variant="body1">
-                              {account.name}
-                            </Typography>
-                            <Typography
-                              variant="caption"
-                              color="text.secondary"
-                            >
+                            <Typography variant="body1">{account.name}</Typography>
+                            <Typography variant="caption" color="text.secondary">
                               {getCurrencySymbol(account.currency)}
                             </Typography>
                           </Box>
                         </Stack>
                       </TableCell>
                       <TableCell>
-                        <Chip
-                          size="small"
-                          label={ACCOUNT_TYPE_LABELS[account.type]}
-                          variant="outlined"
-                        />
+                        <Chip size="small" label={ACCOUNT_TYPE_LABELS[account.type]} variant="outlined" />
                       </TableCell>
                       <TableCell align="right">
-                        <Typography
-                          variant="body1"
-                          color={
-                            account.balance >= 0 ? "success.main" : "error.main"
-                          }
-                          sx={{ fontWeight: 600 }}
-                        >
+                        <Typography variant="body1" color={account.balance >= 0 ? "success" : "error"} sx={{ fontWeight: 600 }}>
                           {formatCurrency(account.balance, account.currency)}
                         </Typography>
                       </TableCell>
@@ -130,15 +110,10 @@ const AccountsPage = () => {
                           onClick={() => {
                             setEditing(account);
                             setFormOpen(true);
-                          }}
-                        >
+                          }}>
                           <EditIcon fontSize="small" />
                         </IconButton>
-                        <IconButton
-                          aria-label="Eliminar cuenta"
-                          color="error"
-                          onClick={() => setDeletingAccount(account)}
-                        >
+                        <IconButton aria-label="Eliminar cuenta" color="error" onClick={() => setDeletingAccount(account)}>
                           <DeleteIcon fontSize="small" />
                         </IconButton>
                       </TableCell>
