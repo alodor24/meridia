@@ -1,4 +1,4 @@
-import {Category, Dashboard, Person, Receipt, Wallet} from "@mui/icons-material";
+import {Category, Dashboard, Receipt, Wallet} from "@mui/icons-material";
 
 export const PATHS = {
   HOME: "/",
@@ -29,5 +29,4 @@ export const NAV_ITEMS = [
   { label: "Cuentas", to: PATHS.ACCOUNTS, icon: Wallet },
   { label: "Movimientos", to: PATHS.TRANSACTIONS, icon: Receipt },
   { label: "Categorías", to: PATHS.CATEGORIES, icon: Category },
-  { label: "Perfil", to: PATHS.PROFILE, icon: Person },
 ];
