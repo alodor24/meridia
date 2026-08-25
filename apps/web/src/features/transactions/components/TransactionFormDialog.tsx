@@ -9,12 +9,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import type {
-  Account,
-  Category,
-  Transaction,
-  TransactionType,
-} from "@meridia/shared";
+import type { Account, Category, Transaction, TransactionType } from "@meridia/shared";
 import { FormTextField } from "@/components/ui/FormTextField";
 import { FormSelect } from "@/components/ui/FormSelect";
 import { useAsyncAction } from "@/hooks/useAsync";
@@ -108,21 +103,13 @@ export const TransactionFormDialog = ({
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={loading ? undefined : onClose}
-      maxWidth="xs"
-      fullWidth
-    >
-      <DialogTitle>
-        {transaction ? "Editar movimiento" : "Nuevo movimiento"}
-      </DialogTitle>
+    <Dialog open={open} onClose={loading ? undefined : onClose} maxWidth="xs" fullWidth>
+      <DialogTitle>{transaction ? "Editar movimiento" : "Nuevo movimiento"}</DialogTitle>
       <Formik
         key={transaction?.id ?? "new"}
         initialValues={initialValues}
         validationSchema={buildValidationSchema()}
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         {({ values, setFieldValue }) => (
           <Form>
             <DialogContent>
@@ -137,8 +124,7 @@ export const TransactionFormDialog = ({
                   }
                 }}
                 aria-label="Tipo de movimiento"
-                sx={{ mb: 2, mt: 1 }}
-              >
+                sx={{ mb: 2, mt: 1 }}>
                 <ToggleButton value="expense" color="error">
                   Gasto
                 </ToggleButton>
@@ -159,9 +145,7 @@ export const TransactionFormDialog = ({
               <FormSelect
                 name="categoryId"
                 label="Categoría"
-                options={categories
-                  .filter((c) => c.type === values.type)
-                  .map((c) => ({ value: c.id, label: c.name }))}
+                options={categories.filter((c) => c.type === values.type).map((c) => ({ value: c.id, label: c.name }))}
               />
 
               <Box sx={{ display: "flex", gap: 1 }}>
@@ -172,34 +156,21 @@ export const TransactionFormDialog = ({
                   slotProps={{
                     htmlInput: { step: "0.01", min: "0" },
                     input: {
-                      startAdornment: (
-                        <InputAdornment position="start">$</InputAdornment>
-                      ),
+                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
                     },
                   }}
                 />
-                <FormTextField
-                  name="date"
-                  label="Fecha"
-                  type="date"
-                  slotProps={{ inputLabel: { shrink: true } }}
-                />
+                <FormTextField name="date" label="Fecha" type="date" slotProps={{ inputLabel: { shrink: true } }} />
               </Box>
 
-              <FormTextField
-                name="note"
-                label="Nota (opcional)"
-                placeholder="Ej: supermercado"
-                multiline
-                rows={2}
-              />
+              <FormTextField name="note" label="Nota (opcional)" placeholder="Ej: supermercado" multiline rows={2} />
             </DialogContent>
-            <DialogActions sx={{ px: 3, pb: 2 }}>
+            <DialogActions sx={{ px: 3, pb: 3 }}>
               <Button onClick={onClose} disabled={loading} color="inherit">
                 Cancelar
               </Button>
-              <Button type="submit" variant="contained" disabled={loading}>
-                {loading ? "Guardando…" : "Guardar"}
+              <Button type="submit" variant="contained" loading={loading} loadingPosition="start">
+                Guardar
               </Button>
             </DialogActions>
           </Form>
