@@ -72,7 +72,8 @@ export const AccountFormDialog = ({ open, account, defaultCurrency, onClose, onS
               <FormTextField name="name" label="Nombre" placeholder="Ej: Banco Santander" />
               <FormSelect name="type" label="Tipo" options={ACCOUNT_TYPE_OPTIONS} />
             </DialogContent>
-            <DialogActions sx={{ px: 3, pb: 2 }}>
+
+            <DialogActions sx={{ px: 3, pb: 3 }}>
               <Button onClick={onClose} disabled={loading} color="inherit">
                 Cancelar
               </Button>

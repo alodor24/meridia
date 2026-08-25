@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -27,31 +28,23 @@ export const ConfirmDialog = ({
   onClose,
 }: ConfirmDialogProps) => {
   return (
-    <Dialog
-      open={open}
-      onClose={loading ? undefined : onClose}
-      maxWidth="xs"
-      fullWidth
-    >
-      <DialogTitle>{title}</DialogTitle>
-      {description && (
-        <DialogContent>
-          <DialogContentText>{description}</DialogContentText>
-        </DialogContent>
-      )}
-      <DialogActions>
-        <Button onClick={onClose} disabled={loading} color="inherit">
-          {cancelLabel}
-        </Button>
-        <Button
-          onClick={onConfirm}
-          disabled={loading}
-          color="error"
-          variant="contained"
-        >
-          {loading ? "Procesando…" : confirmLabel}
-        </Button>
-      </DialogActions>
+    <Dialog open={open} onClose={loading ? undefined : onClose} maxWidth="xs" fullWidth>
+      <Box sx={{ p: 1 }}>
+        <DialogTitle>{title}</DialogTitle>
+        {description && (
+          <DialogContent>
+            <DialogContentText>{description}</DialogContentText>
+          </DialogContent>
+        )}
+        <DialogActions sx={{ p: 2 }}>
+          <Button onClick={onClose} disabled={loading} color="inherit">
+            {cancelLabel}
+          </Button>
+          <Button onClick={onConfirm} color="error" variant="contained" loading={loading} loadingPosition="start">
+            {confirmLabel}
+          </Button>
+        </DialogActions>
+      </Box>
     </Dialog>
   );
 };
