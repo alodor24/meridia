@@ -1,12 +1,9 @@
 import { NAVBAR_DARK, NAVBAR_LIGHT } from "@/styles/globalStyles";
 import { AppBar, Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import PersonIcon from "@mui/icons-material/Person";
-import CustomTooltip from "./CustomTooltip";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { PATHS } from "@/conts";
 import { useState } from "react";
@@ -19,7 +16,6 @@ const NavbarApp = () => {
   const logoutUser = useAuthStore((s) => s.logoutUser);
   const toggleDrawer = useUiStore((s) => s.toggleDrawer);
   const themeMode = useUiStore((s) => s.themeMode);
-  const toggleTheme = useUiStore((s) => s.toggleTheme);
 
   const [profileMenuAnchor, setProfileMenuAnchor] = useState<null | HTMLElement>(null);
   const [loggingOut, setLoggingOut] = useState(false);
@@ -53,12 +49,6 @@ const NavbarApp = () => {
           </Typography>
         </Box>
 
-        <CustomTooltip title="Cambiar tema">
-          <IconButton onClick={toggleTheme} color="inherit">
-            {themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
-          </IconButton>
-        </CustomTooltip>
-
         <IconButton onClick={(e) => setProfileMenuAnchor(e.currentTarget)} sx={{ ml: 1 }} data-testid="profile-menu">
           <Avatar
             sx={{
@@ -66,6 +56,7 @@ const NavbarApp = () => {
               height: 32,
               bgcolor: "primary.main",
               fontSize: 14,
+              color: "primary.contrastText",
             }}>
             {user?.name?.charAt(0).toUpperCase() ?? "?"}
           </Avatar>
