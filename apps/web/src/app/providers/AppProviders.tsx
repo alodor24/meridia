@@ -77,6 +77,31 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
           }),
         },
       },
+      MuiListItemButton: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            "&.Mui-selected": {
+              backgroundColor: theme.palette.action.selected,
+              color: theme.palette.primary.main,
+
+              "&:hover": {
+                backgroundColor: theme.palette.action.selected,
+              },
+            },
+          }),
+        },
+      },
+      MuiListItemIcon: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            color: theme.palette.text.secondary,
+
+            ".Mui-selected &": {
+              color: theme.palette.primary.main,
+            },
+          }),
+        },
+      },
     },
   });
 
