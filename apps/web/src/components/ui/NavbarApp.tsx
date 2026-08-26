@@ -1,4 +1,4 @@
-import { NAVBAR_DARK, NAVBAR_LIGHT } from "@/styles/globalStyles";
+import { NAVBAR_DARK, NAVBAR_LIGHT } from "@/theme/globalStyles";
 import { AppBar, Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";

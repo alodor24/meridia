@@ -6,7 +6,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Outlet } from "@tanstack/react-router";
 import { useUiStore } from "@/stores/uiStore";
-import { DRAWER_WIDTH } from "@/styles/globalStyles";
+import { DRAWER_WIDTH } from "@/theme/globalStyles";
 import DrawerContent from "../ui/DrawerContent";
 import NavbarApp from "../ui/NavbarApp";
 

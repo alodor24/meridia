@@ -19,7 +19,7 @@ import { useUiStore } from "@/stores/uiStore";
 import CustomTooltip from "./CustomTooltip";
 import { NAV_LINKS, PATHS } from "@/conts";
 import { Container } from "@mui/material";
-import { NAVBAR_DARK, NAVBAR_LIGHT } from "@/styles/globalStyles";
+import { NAVBAR_DARK, NAVBAR_LIGHT } from "@/theme/globalStyles";
 
 const Navbar = () => {
   const theme = useTheme();
