@@ -68,13 +68,7 @@ const CategoriesPage = () => {
           <Box sx={{ overflowX: "auto", maxHeight: 400 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
-                <TableRow
-                  sx={{
-                    "& .MuiTableCell-head": {
-                      backgroundColor: "primary.main",
-                      color: "primary.contrastText",
-                    },
-                  }}>
+                <TableRow>
                   <TableCell>Categoría</TableCell>
                   <TableCell align="right">Acciones</TableCell>
                 </TableRow>

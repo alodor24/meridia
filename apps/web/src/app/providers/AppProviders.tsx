@@ -48,23 +48,16 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
     },
 
     components: {
-      MuiTableHead: {
-        styleOverrides: {
-          root: ({ theme }) => ({
-            backgroundColor: theme.palette.primary.main,
-
-            "& .MuiTableCell-root": {
-              color: theme.palette.primary.contrastText,
-              fontWeight: 700,
-            },
-          }),
-        },
-      },
       MuiTableCell: {
         styleOverrides: {
           root: ({ theme }) => ({
             borderBottom: `1px solid ${theme.palette.divider}`,
             color: theme.palette.text.primary,
+          }),
+          head: ({ theme }) => ({
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+            fontWeight: 700,
           }),
         },
       },

@@ -76,13 +76,7 @@ const AccountsPage = () => {
             <Box sx={{ overflowX: "auto", maxHeight: 450 }}>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
-                  <TableRow
-                    sx={{
-                      "& .MuiTableCell-head": {
-                        backgroundColor: "primary.main",
-                        color: "primary.contrastText",
-                      },
-                    }}>
+                  <TableRow>
                     <TableCell>Cuenta</TableCell>
                     <TableCell>Tipo</TableCell>
                     <TableCell align="right">Balance</TableCell>
