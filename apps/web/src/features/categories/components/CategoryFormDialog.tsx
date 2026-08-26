@@ -25,14 +25,8 @@ interface FormValues {
 }
 
 const validationSchema = Yup.object({
-  name: Yup.string()
-    .trim()
-    .min(1, "El nombre es requerido")
-    .max(80, "Demasiado largo")
-    .required("El nombre es requerido"),
-  type: Yup.mixed<TransactionType>()
-    .oneOf(["income", "expense"])
-    .required("Seleccioná un tipo"),
+  name: Yup.string().trim().min(1, "El nombre es requerido").max(80, "Demasiado largo").required("El nombre es requerido"),
+  type: Yup.mixed<TransactionType>().oneOf(["income", "expense"]).required("Seleccioná un tipo"),
   color: Yup.string()
     .matches(/^#[0-9a-fA-F]{6}$/, "Color inválido")
     .required("Elegí un color"),
@@ -46,13 +40,7 @@ export interface CategoryFormDialogProps {
   onSaved: () => void;
 }
 
-export const CategoryFormDialog = ({
-  open,
-  category,
-  defaultType,
-  onClose,
-  onSaved,
-}: CategoryFormDialogProps) => {
+export const CategoryFormDialog = ({ open, category, defaultType, onClose, onSaved }: CategoryFormDialogProps) => {
   const showSnackbar = useUiStore((s) => s.showSnackbar);
   const { loading, run } = useAsyncAction();
 
@@ -76,39 +64,26 @@ export const CategoryFormDialog = ({
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={loading ? undefined : onClose}
-      maxWidth="xs"
-      fullWidth
-    >
-      <DialogTitle>
-        {category ? "Editar categoría" : "Nueva categoría"}
-      </DialogTitle>
+    <Dialog open={open} onClose={loading ? undefined : onClose} maxWidth="xs" fullWidth>
+      <DialogTitle>{category ? "Editar categoría" : "Nueva categoría"}</DialogTitle>
       <Formik
         key={category?.id ?? "new"}
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         {() => (
           <Form>
             <DialogContent>
-              <FormTextField
-                name="name"
-                label="Nombre"
-                autoFocus
-                placeholder="Ej: Súper"
-              />
+              <FormTextField name="name" label="Nombre" placeholder="Ej: Súper" />
               <FormSelect name="type" label="Tipo" options={TYPE_OPTIONS} />
               <ColorField name="color" />
             </DialogContent>
-            <DialogActions sx={{ px: 3, pb: 2 }}>
+            <DialogActions sx={{ px: 3, pb: 3 }}>
               <Button onClick={onClose} disabled={loading} color="inherit">
                 Cancelar
               </Button>
-              <Button type="submit" variant="contained" disabled={loading}>
-                {loading ? "Guardando…" : "Guardar"}
+              <Button type="submit" variant="contained" loading={loading} loadingPosition="start">
+                Guardar
               </Button>
             </DialogActions>
           </Form>

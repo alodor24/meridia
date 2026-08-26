@@ -11,7 +11,6 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import type { Category, TransactionType } from "@meridia/shared";
@@ -23,6 +22,8 @@ import { useFetch, useAsyncAction } from "@/hooks/useAsync";
 import { useUiStore } from "@/stores/uiStore";
 import { deleteCategory, listCategories } from "./api";
 import { CategoryFormDialog } from "./components/CategoryFormDialog";
+import { Grid } from "@mui/material";
+import CustomTooltip from "@/components/ui/CustomTooltip";
 
 const CategoriesPage = () => {
   useDocumentTitle("Categorías");
@@ -32,16 +33,8 @@ const CategoriesPage = () => {
 
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
-  const [defaultType, setDefaultType] = useState<TransactionType>("expense");
-  const [deletingCategory, setDeletingCategory] = useState<Category | null>(
-    null,
-  );
-
-  const openCreate = (type: TransactionType) => {
-    setEditing(null);
-    setDefaultType(type);
-    setFormOpen(true);
-  };
+  const [defaultType] = useState<TransactionType>("expense");
+  const [deletingCategory, setDeletingCategory] = useState<Category | null>(null);
 
   const handleDelete = async () => {
     if (!deletingCategory) return;
@@ -59,42 +52,29 @@ const CategoriesPage = () => {
   const income = data?.filter((c) => c.type === "income") ?? [];
   const expense = data?.filter((c) => c.type === "expense") ?? [];
 
-  const renderTable = (
-    categories: Category[],
-    title: string,
-    onAdd: () => void,
-  ) => (
-    <Card elevation={0} sx={{ border: 1, borderColor: "divider" }}>
+  const renderTable = (categories: Category[], title: string) => (
+    <Card elevation={3}>
       <CardContent>
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{ alignItems: "center", justifyContent: "space-between", mb: 1 }}
-        >
+        <Stack direction="row" spacing={1} sx={{ alignItems: "center", justifyContent: "space-between", mb: 1 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
             {title}
           </Typography>
-          <IconButton
-            size="small"
-            onClick={onAdd}
-            aria-label={`Agregar ${title.toLowerCase()}`}
-          >
-            <AddIcon />
-          </IconButton>
         </Stack>
         {categories.length === 0 ? (
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ py: 2, textAlign: "center" }}
-          >
+          <Typography variant="body2" color="text.secondary" sx={{ py: 2, textAlign: "center" }}>
             Sin categorías.
           </Typography>
         ) : (
-          <Box sx={{ overflowX: "auto" }}>
-            <Table size="small">
+          <Box sx={{ overflowX: "auto", maxHeight: 400 }}>
+            <Table stickyHeader aria-label="sticky table">
               <TableHead>
-                <TableRow>
+                <TableRow
+                  sx={{
+                    "& .MuiTableCell-head": {
+                      backgroundColor: "primary.main",
+                      color: "primary.contrastText",
+                    },
+                  }}>
                   <TableCell>Categoría</TableCell>
                   <TableCell align="right">Acciones</TableCell>
                 </TableRow>
@@ -103,41 +83,38 @@ const CategoriesPage = () => {
                 {categories.map((category) => (
                   <TableRow key={category.id} hover>
                     <TableCell>
-                      <Stack
-                        direction="row"
-                        spacing={1}
-                        sx={{ alignItems: "center" }}
-                      >
+                      <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
                         <Avatar
                           sx={{
                             width: 24,
                             height: 24,
                             bgcolor: category.color,
                             fontSize: 12,
-                          }}
-                        >
+                            color: "primary.contrastText",
+                          }}>
                           {category.name.charAt(0)}
                         </Avatar>
                         <Typography variant="body1">{category.name}</Typography>
                       </Stack>
                     </TableCell>
                     <TableCell align="right">
-                      <IconButton
-                        aria-label="Editar categoría"
-                        onClick={() => {
-                          setEditing(category);
-                          setFormOpen(true);
-                        }}
-                      >
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton
-                        aria-label="Eliminar categoría"
-                        color="error"
-                        onClick={() => setDeletingCategory(category)}
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
+                      <CustomTooltip title="Editar categoría">
+                        <IconButton
+                          aria-label="Editar categoría"
+                          color="info"
+                          onClick={() => {
+                            setEditing(category);
+                            setFormOpen(true);
+                          }}>
+                          <EditIcon fontSize="small" />
+                        </IconButton>
+                      </CustomTooltip>
+
+                      <CustomTooltip title="Eliminar categoría">
+                        <IconButton aria-label="Eliminar categoría" color="error" onClick={() => setDeletingCategory(category)}>
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </CustomTooltip>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -153,21 +130,26 @@ const CategoriesPage = () => {
     <>
       <PageHeader
         title="Categorías"
-        subtitle="Organizá tus movimientos por categorías de ingresos y gastos"
+        subtitle="Organiza tus movimientos por categorías de ingresos y gastos"
+        actionLabel="Nueva categoría"
+        onAction={() => {
+          setEditing(null);
+          setFormOpen(true);
+        }}
       />
 
       {loading && <LoadingState />}
       {error && <ErrorState message={error} onRetry={refetch} />}
 
       {data && data.length === 0 && (
-        <EmptyState message="No tenés categorías. Creá tus primeras categorías para organizar tus finanzas." />
+        <EmptyState message="No tienes categorías. Crea tus primeras categorías para organizar tus finanzas." />
       )}
 
       {data && (
-        <Stack spacing={3}>
-          {renderTable(expense, "Gastos", () => openCreate("expense"))}
-          {renderTable(income, "Ingresos", () => openCreate("income"))}
-        </Stack>
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, md: 6 }}>{renderTable(expense, "Gastos")}</Grid>
+          <Grid size={{ xs: 12, md: 6 }}>{renderTable(income, "Ingresos")}</Grid>
+        </Grid>
       )}
 
       <CategoryFormDialog

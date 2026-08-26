@@ -24,11 +24,7 @@ import { formatDate, getCurrencySymbol } from "@/utils/format";
 import { toApiError } from "@/services/api/errors";
 
 const profileValidationSchema = Yup.object({
-  name: Yup.string()
-    .trim()
-    .min(1, "El nombre es requerido")
-    .max(80, "Demasiado largo")
-    .required("El nombre es requerido"),
+  name: Yup.string().trim().min(1, "El nombre es requerido").max(80, "Demasiado largo").required("El nombre es requerido"),
 });
 
 const ProfilePage = () => {
@@ -58,7 +54,7 @@ const ProfilePage = () => {
       <PageHeader title="Perfil" subtitle="Tu información personal" />
 
       <Stack spacing={3} sx={{ maxWidth: 600 }}>
-        <Card elevation={0} sx={{ border: 1, borderColor: "divider" }}>
+        <Card elevation={3}>
           <CardContent>
             <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
               <Avatar
@@ -67,8 +63,8 @@ const ProfilePage = () => {
                   height: 56,
                   bgcolor: "primary.main",
                   fontSize: 24,
-                }}
-              >
+                  color: "primary.contrastText",
+                }}>
                 {user.name.charAt(0).toUpperCase()}
               </Avatar>
               <Box>
@@ -81,37 +77,24 @@ const ProfilePage = () => {
             <Divider />
             <List dense>
               <ListItem>
-                <ListItemText
-                  primary="País"
-                  secondary={getCountryName(user.country)}
-                />
+                <ListItemText primary="País" secondary={getCountryName(user.country)} />
               </ListItem>
               <ListItem>
-                <ListItemText
-                  primary="Moneda"
-                  secondary={getCurrencySymbol(user.currency)}
-                />
+                <ListItemText primary="Moneda" secondary={getCurrencySymbol(user.currency)} />
               </ListItem>
               <ListItem>
-                <ListItemText
-                  primary="Miembro desde"
-                  secondary={formatDate(user.createdAt)}
-                />
+                <ListItemText primary="Miembro desde" secondary={formatDate(user.createdAt)} />
               </ListItem>
             </List>
           </CardContent>
         </Card>
 
-        <Card elevation={0} sx={{ border: 1, borderColor: "divider" }}>
+        <Card elevation={3}>
           <CardContent>
             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
               Actualizar nombre
             </Typography>
-            <Formik
-              initialValues={{ name: user.name }}
-              validationSchema={profileValidationSchema}
-              onSubmit={handleSubmit}
-            >
+            <Formik initialValues={{ name: user.name }} validationSchema={profileValidationSchema} onSubmit={handleSubmit}>
               {({ values }) => (
                 <Form>
                   <FormTextField name="name" label="Nombre" />
@@ -120,8 +103,7 @@ const ProfilePage = () => {
                     variant="contained"
                     startIcon={<SaveIcon />}
                     disabled={submitting || values.name === user.name}
-                    sx={{ mt: 1 }}
-                  >
+                    sx={{ mt: 1 }}>
                     {submitting ? "Guardando…" : "Guardar cambios"}
                   </Button>
                 </Form>

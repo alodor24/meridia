@@ -18,12 +18,7 @@ import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearFiltersIcon from "@mui/icons-material/FilterAltOff";
-import type {
-  Account,
-  Category,
-  Transaction,
-  TransactionType,
-} from "@meridia/shared";
+import type { Account, Category, Transaction, TransactionType } from "@meridia/shared";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";
@@ -35,6 +30,7 @@ import { deleteTransaction, listTransactions } from "./api";
 import { TransactionFormDialog } from "./components/TransactionFormDialog";
 import { listAccounts } from "@/features/accounts/api";
 import { listCategories } from "@/features/categories/api";
+import CustomTooltip from "@/components/ui/CustomTooltip";
 
 const PAGE_SIZE = 20;
 
@@ -77,23 +73,13 @@ const TransactionsPage = () => {
 
   const { data, loading, error, refetch } = useFetch(
     () => listTransactions({ ...activeFilters, limit }),
-    [
-      filters.from,
-      filters.to,
-      filters.accountId,
-      filters.categoryId,
-      filters.type,
-      limit,
-    ],
+    [filters.from, filters.to, filters.accountId, filters.categoryId, filters.type, limit],
   );
 
   useEffect(() => {
     let active = true;
     const load = async () => {
-      const [accountList, categoryList] = await Promise.all([
-        listAccounts(),
-        listCategories(),
-      ]);
+      const [accountList, categoryList] = await Promise.all([listAccounts(), listCategories()]);
       if (!active) return;
       setAccounts(accountList);
       setCategories(categoryList);
@@ -126,10 +112,7 @@ const TransactionsPage = () => {
 
   const total = data?.total ?? 0;
   const items = data?.items ?? [];
-  const accountsByCurrency = useMemo(
-    () => new Map(accounts.map((a) => [a.id, a.currency])),
-    [accounts],
-  );
+  const accountsByCurrency = useMemo(() => new Map(accounts.map((a) => [a.id, a.currency])), [accounts]);
 
   return (
     <>
@@ -143,13 +126,9 @@ const TransactionsPage = () => {
         }}
       />
 
-      <Card elevation={0} sx={{ border: 1, borderColor: "divider", mb: 2 }}>
+      <Card elevation={3} sx={{ mb: 2 }}>
         <CardContent>
-          <Stack
-            direction={{ xs: "column", md: "row" }}
-            spacing={1.5}
-            sx={{ alignItems: "flex-start" }}
-          >
+          <Stack direction={{ xs: "column", md: "row" }} spacing={1.5} sx={{ alignItems: "flex-start" }}>
             <Box sx={{ width: { xs: "100%", md: 150 } }}>
               <TextField
                 label="Desde"
@@ -158,9 +137,7 @@ const TransactionsPage = () => {
                 slotProps={{ inputLabel: { shrink: true } }}
                 fullWidth
                 value={filters.from}
-                onChange={(e) =>
-                  setFilters((f) => ({ ...f, from: e.target.value }))
-                }
+                onChange={(e) => setFilters((f) => ({ ...f, from: e.target.value }))}
               />
             </Box>
             <Box sx={{ width: { xs: "100%", md: 150 } }}>
@@ -171,9 +148,7 @@ const TransactionsPage = () => {
                 slotProps={{ inputLabel: { shrink: true } }}
                 fullWidth
                 value={filters.to}
-                onChange={(e) =>
-                  setFilters((f) => ({ ...f, to: e.target.value }))
-                }
+                onChange={(e) => setFilters((f) => ({ ...f, to: e.target.value }))}
               />
             </Box>
             <Box sx={{ width: { xs: "100%", md: 200 } }}>
@@ -183,10 +158,7 @@ const TransactionsPage = () => {
                 size="small"
                 fullWidth
                 value={filters.accountId}
-                onChange={(e) =>
-                  setFilters((f) => ({ ...f, accountId: e.target.value }))
-                }
-              >
+                onChange={(e) => setFilters((f) => ({ ...f, accountId: e.target.value }))}>
                 <MenuItem value="">Todas</MenuItem>
                 {accounts.map((a) => (
                   <MenuItem key={a.id} value={a.id}>
@@ -202,10 +174,7 @@ const TransactionsPage = () => {
                 size="small"
                 fullWidth
                 value={filters.categoryId}
-                onChange={(e) =>
-                  setFilters((f) => ({ ...f, categoryId: e.target.value }))
-                }
-              >
+                onChange={(e) => setFilters((f) => ({ ...f, categoryId: e.target.value }))}>
                 <MenuItem value="">Todas</MenuItem>
                 {categories.map((c) => (
                   <MenuItem key={c.id} value={c.id}>
@@ -226,19 +195,14 @@ const TransactionsPage = () => {
                     ...f,
                     type: e.target.value as Filters["type"],
                   }))
-                }
-              >
+                }>
                 <MenuItem value="">Todos</MenuItem>
                 <MenuItem value="income">Ingresos</MenuItem>
                 <MenuItem value="expense">Gastos</MenuItem>
               </TextField>
             </Box>
             {hasFilters && (
-              <Button
-                startIcon={<ClearFiltersIcon />}
-                onClick={resetFilters}
-                sx={{ mt: 1.5 }}
-              >
+              <Button startIcon={<ClearFiltersIcon />} onClick={resetFilters} sx={{ mt: 1.5 }}>
                 Limpiar
               </Button>
             )}
@@ -249,17 +213,21 @@ const TransactionsPage = () => {
       {loading && !data && <LoadingState />}
       {error && <ErrorState message={error} onRetry={refetch} />}
 
-      {data && items.length === 0 && (
-        <EmptyState message="No hay movimientos que coincidan con los filtros." />
-      )}
+      {data && items.length === 0 && <EmptyState message="No hay movimientos que coincidan con los filtros." />}
 
       {data && items.length > 0 && (
-        <Card elevation={0} sx={{ border: 1, borderColor: "divider" }}>
+        <Card elevation={3}>
           <CardContent>
-            <Box sx={{ overflowX: "auto" }}>
-              <Table size="small">
+            <Box sx={{ overflowX: "auto", maxHeight: 450 }}>
+              <Table stickyHeader aria-label="sticky table">
                 <TableHead>
-                  <TableRow>
+                  <TableRow
+                    sx={{
+                      "& .MuiTableCell-head": {
+                        backgroundColor: "primary.main",
+                        color: "primary.contrastText",
+                      },
+                    }}>
                     <TableCell>Fecha</TableCell>
                     <TableCell>Categoría</TableCell>
                     <TableCell>Cuenta</TableCell>
@@ -273,24 +241,17 @@ const TransactionsPage = () => {
                     <TableRow key={transaction.id} hover>
                       <TableCell>{formatDate(transaction.date)}</TableCell>
                       <TableCell>
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          sx={{ alignItems: "center" }}
-                        >
+                        <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
                           <Avatar
                             sx={{
                               width: 22,
                               height: 22,
                               bgcolor: transaction.categoryColor ?? "#607d8b",
                               fontSize: 11,
-                            }}
-                          >
+                            }}>
                             {transaction.categoryName?.charAt(0) ?? "?"}
                           </Avatar>
-                          <Typography variant="body2">
-                            {transaction.categoryName}
-                          </Typography>
+                          <Typography variant="body2">{transaction.categoryName}</Typography>
                         </Stack>
                       </TableCell>
                       <TableCell>{transaction.accountName}</TableCell>
@@ -298,34 +259,29 @@ const TransactionsPage = () => {
                       <TableCell align="right">
                         <Chip
                           size="small"
-                          label={formatCurrency(
-                            transaction.amount,
-                            accountsByCurrency.get(transaction.accountId) ??
-                              "USD",
-                          )}
-                          color={
-                            transaction.type === "income" ? "success" : "error"
-                          }
+                          label={formatCurrency(transaction.amount, accountsByCurrency.get(transaction.accountId) ?? "USD")}
+                          color={transaction.type === "income" ? "success" : "error"}
                           variant="outlined"
                         />
                       </TableCell>
                       <TableCell align="right">
-                        <IconButton
-                          aria-label="Editar movimiento"
-                          onClick={() => {
-                            setEditing(transaction);
-                            setFormOpen(true);
-                          }}
-                        >
-                          <EditIcon fontSize="small" />
-                        </IconButton>
-                        <IconButton
-                          aria-label="Eliminar movimiento"
-                          color="error"
-                          onClick={() => setDeleting(transaction)}
-                        >
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
+                        <CustomTooltip title="Editar movimiento">
+                          <IconButton
+                            aria-label="Editar movimiento"
+                            color="info"
+                            onClick={() => {
+                              setEditing(transaction);
+                              setFormOpen(true);
+                            }}>
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </CustomTooltip>
+
+                        <CustomTooltip title="Eliminar movimiento">
+                          <IconButton aria-label="Eliminar movimiento" color="error" onClick={() => setDeleting(transaction)}>
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </CustomTooltip>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -334,16 +290,10 @@ const TransactionsPage = () => {
             </Box>
             {items.length < total && (
               <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-                <Button onClick={() => setLimit((l) => l + PAGE_SIZE)}>
-                  Cargar más
-                </Button>
+                <Button onClick={() => setLimit((l) => l + PAGE_SIZE)}>Cargar más</Button>
               </Box>
             )}
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{ display: "block", textAlign: "right", mt: 1 }}
-            >
+            <Typography variant="caption" color="text.secondary" sx={{ display: "block", textAlign: "right", mt: 1 }}>
               {items.length} de {total} movimientos
             </Typography>
           </CardContent>

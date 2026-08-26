@@ -26,6 +26,7 @@ import { formatCurrency, getCurrencySymbol } from "@/utils/format";
 import { ACCOUNT_TYPE_LABELS } from "@/utils/labels";
 import { deleteAccount, listAccounts } from "./api";
 import { AccountFormDialog } from "./components/AccountFormDialog";
+import CustomTooltip from "@/components/ui/CustomTooltip";
 
 const AccountsPage = () => {
   useDocumentTitle("Cuentas");
@@ -67,15 +68,21 @@ const AccountsPage = () => {
       {loading && <LoadingState />}
       {error && <ErrorState message={error} onRetry={refetch} />}
 
-      {data && data.length === 0 && <EmptyState message="Todavía no tenés cuentas. Creá la primera para empezar." />}
+      {data && data.length === 0 && <EmptyState message="Todavía no tienes cuentas. Crea la primera para empezar." />}
 
       {data && data.length > 0 && (
         <Card elevation={3}>
           <CardContent>
-            <Box sx={{ overflowX: "auto" }}>
-              <Table>
+            <Box sx={{ overflowX: "auto", maxHeight: 450 }}>
+              <Table stickyHeader aria-label="sticky table">
                 <TableHead>
-                  <TableRow>
+                  <TableRow
+                    sx={{
+                      "& .MuiTableCell-head": {
+                        backgroundColor: "primary.main",
+                        color: "primary.contrastText",
+                      },
+                    }}>
                     <TableCell>Cuenta</TableCell>
                     <TableCell>Tipo</TableCell>
                     <TableCell align="right">Balance</TableCell>
@@ -105,17 +112,23 @@ const AccountsPage = () => {
                         </Typography>
                       </TableCell>
                       <TableCell align="right">
-                        <IconButton
-                          aria-label="Editar cuenta"
-                          onClick={() => {
-                            setEditing(account);
-                            setFormOpen(true);
-                          }}>
-                          <EditIcon fontSize="small" />
-                        </IconButton>
-                        <IconButton aria-label="Eliminar cuenta" color="error" onClick={() => setDeletingAccount(account)}>
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
+                        <CustomTooltip title="Editar cuenta">
+                          <IconButton
+                            aria-label="Editar cuenta"
+                            color="info"
+                            onClick={() => {
+                              setEditing(account);
+                              setFormOpen(true);
+                            }}>
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </CustomTooltip>
+
+                        <CustomTooltip title="Eliminar cuenta">
+                          <IconButton aria-label="Eliminar cuenta" color="error" onClick={() => setDeletingAccount(account)}>
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </CustomTooltip>
                       </TableCell>
                     </TableRow>
                   ))}

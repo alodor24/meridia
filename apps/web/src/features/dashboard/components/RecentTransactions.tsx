@@ -37,7 +37,7 @@ export const RecentTransactions = ({ transactions = [], currency }: RecentTransa
           Últimos movimientos
         </Typography>
 
-        <Box sx={{ maxHeight: "400px", overflow: "hidden", overflowY: "auto", px: 2, backgroundColor: "background.paper" }}>
+        <Box sx={{ maxHeight: 400, overflow: "hidden", overflowY: "auto", px: 2, backgroundColor: "background.paper" }}>
           {transactions.map((transaction, index) => (
             <RowTransaction key={transaction.id} transaction={transaction} currency={currency} index={index} />
           ))}
