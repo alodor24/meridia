@@ -18,6 +18,8 @@ import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearFiltersIcon from "@mui/icons-material/FilterAltOff";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { format as dateFnsFormat, parseISO } from "date-fns";
 import type { Account, Category, Transaction, TransactionType } from "@meridia/shared";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -130,25 +132,25 @@ const TransactionsPage = () => {
         <CardContent>
           <Stack direction={{ xs: "column", md: "row" }} spacing={1.5} sx={{ alignItems: "flex-start" }}>
             <Box sx={{ width: { xs: "100%", md: 150 } }}>
-              <TextField
+              <DesktopDatePicker
                 label="Desde"
-                type="date"
-                size="small"
-                slotProps={{ inputLabel: { shrink: true } }}
-                fullWidth
-                value={filters.from}
-                onChange={(e) => setFilters((f) => ({ ...f, from: e.target.value }))}
+                value={filters.from ? parseISO(filters.from) : null}
+                onChange={(newDate) => {
+                  const dateStr = newDate ? dateFnsFormat(newDate, "yyyy-MM-dd") : "";
+                  setFilters((f) => ({ ...f, from: dateStr }));
+                }}
+                slotProps={{ textField: { size: "small", fullWidth: true } }}
               />
             </Box>
             <Box sx={{ width: { xs: "100%", md: 150 } }}>
-              <TextField
+              <DesktopDatePicker
                 label="Hasta"
-                type="date"
-                size="small"
-                slotProps={{ inputLabel: { shrink: true } }}
-                fullWidth
-                value={filters.to}
-                onChange={(e) => setFilters((f) => ({ ...f, to: e.target.value }))}
+                value={filters.to ? parseISO(filters.to) : null}
+                onChange={(newDate) => {
+                  const dateStr = newDate ? dateFnsFormat(newDate, "yyyy-MM-dd") : "";
+                  setFilters((f) => ({ ...f, to: dateStr }));
+                }}
+                slotProps={{ textField: { size: "small", fullWidth: true } }}
               />
             </Box>
             <Box sx={{ width: { xs: "100%", md: 200 } }}>

@@ -9,6 +9,8 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { format as dateFnsFormat, parseISO } from "date-fns";
 import type { Account, Category, Transaction, TransactionType } from "@meridia/shared";
 import { FormTextField } from "@/components/ui/FormTextField";
 import { FormSelect } from "@/components/ui/FormSelect";
@@ -110,71 +112,86 @@ export const TransactionFormDialog = ({
         initialValues={initialValues}
         validationSchema={buildValidationSchema()}
         onSubmit={handleSubmit}>
-        {({ values, setFieldValue }) => (
-          <Form>
-            <DialogContent>
-              <ToggleButtonGroup
-                exclusive
-                fullWidth
-                value={values.type}
-                onChange={(_, next: TransactionType | null) => {
-                  if (next) {
-                    void setFieldValue("type", next);
-                    void setFieldValue("categoryId", "");
-                  }
-                }}
-                aria-label="Tipo de movimiento"
-                sx={{ mb: 2, mt: 1 }}>
-                <ToggleButton value="expense" color="error">
-                  Gasto
-                </ToggleButton>
-                <ToggleButton value="income" color="success">
-                  Ingreso
-                </ToggleButton>
-              </ToggleButtonGroup>
+        {({ values, setFieldValue }) => {
+          const selectedAccount = accounts.find((a) => a.id === values.accountId);
+          //const currencySymbol = getCurrencySymbol(selectedAccount?.currency ?? "USD");
+          const currencySymbol = getCurrencySymbol(selectedAccount?.currency ?? "");
 
-              <FormSelect
-                name="accountId"
-                label="Cuenta"
-                options={accounts.map((a) => ({
-                  value: a.id,
-                  label: `${a.name} (${getCurrencySymbol(a.currency)})`,
-                }))}
-              />
-
-              <FormSelect
-                name="categoryId"
-                label="Categoría"
-                options={categories.filter((c) => c.type === values.type).map((c) => ({ value: c.id, label: c.name }))}
-              />
-
-              <Box sx={{ display: "flex", gap: 1 }}>
-                <FormTextField
-                  name="amount"
-                  label="Monto"
-                  type="number"
-                  slotProps={{
-                    htmlInput: { step: "0.01", min: "0" },
-                    input: {
-                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                    },
+          return (
+            <Form>
+              <DialogContent>
+                <ToggleButtonGroup
+                  exclusive
+                  fullWidth
+                  value={values.type}
+                  onChange={(_, next: TransactionType | null) => {
+                    if (next) {
+                      void setFieldValue("type", next);
+                      void setFieldValue("categoryId", "");
+                    }
                   }}
-                />
-                <FormTextField name="date" label="Fecha" type="date" slotProps={{ inputLabel: { shrink: true } }} />
-              </Box>
+                  aria-label="Tipo de movimiento"
+                  sx={{ mb: 2, mt: 1 }}>
+                  <ToggleButton value="expense" color="error">
+                    Gasto
+                  </ToggleButton>
+                  <ToggleButton value="income" color="success">
+                    Ingreso
+                  </ToggleButton>
+                </ToggleButtonGroup>
 
-              <FormTextField name="note" label="Nota (opcional)" placeholder="Ej: supermercado" multiline rows={2} />
-            </DialogContent>
-            <DialogActions sx={{ px: 3, pb: 3 }}>
-              <Button onClick={onClose} disabled={loading} color="inherit">
-                Cancelar
-              </Button>
-              <Button type="submit" variant="contained" loading={loading} loadingPosition="start">
-                Guardar
-              </Button>
-            </DialogActions>
-          </Form>
-        )}
+                <FormSelect
+                  name="accountId"
+                  label="Cuenta"
+                  options={accounts.map((a) => ({
+                    value: a.id,
+                    label: `${a.name} (${getCurrencySymbol(a.currency)})`,
+                  }))}
+                />
+
+                <FormSelect
+                  name="categoryId"
+                  label="Categoría"
+                  options={categories.filter((c) => c.type === values.type).map((c) => ({ value: c.id, label: c.name }))}
+                />
+
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <FormTextField
+                    name="amount"
+                    label="Monto"
+                    type="number"
+                    slotProps={{
+                      htmlInput: { step: "0.01", min: "0" },
+                      input: {
+                        startAdornment: <InputAdornment position="start">{currencySymbol}</InputAdornment>,
+                      },
+                    }}
+                  />
+                  <DesktopDatePicker
+                    label="Fecha"
+                    value={values.date ? parseISO(values.date) : null}
+                    onChange={(newDate) => {
+                      const dateStr = newDate ? dateFnsFormat(newDate, "yyyy-MM-dd") : "";
+                      void setFieldValue("date", dateStr);
+                    }}
+                    slotProps={{ textField: { fullWidth: true } }}
+                    sx={{ mt: 2 }}
+                  />
+                </Box>
+
+                <FormTextField name="note" label="Nota (opcional)" placeholder="Ej: supermercado" multiline rows={2} />
+              </DialogContent>
+              <DialogActions sx={{ px: 3, pb: 3 }}>
+                <Button onClick={onClose} disabled={loading} color="inherit">
+                  Cancelar
+                </Button>
+                <Button type="submit" variant="contained" loading={loading} loadingPosition="start">
+                  Guardar
+                </Button>
+              </DialogActions>
+            </Form>
+          );
+        }}
       </Formik>
     </Dialog>
   );

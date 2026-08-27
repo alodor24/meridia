@@ -1,15 +1,9 @@
 import { es } from "date-fns/locale";
 import { format as dateFnsFormat, isValid, parseISO } from "date-fns";
 
-const currencyFormatterCache = new Map<string, Intl.NumberFormat>();
-
-const CURRENCY_SYMBOLS: Record<string, string> = {
-  VES: "VES",
-};
-
 export const getCurrencySymbol = (currency: string): string => {
   const code = currency.toUpperCase();
-  return CURRENCY_SYMBOLS[code] ?? code;
+  return code;
 };
 
 let decimalFormatter: Intl.NumberFormat | undefined;
@@ -25,28 +19,10 @@ const getDecimalFormatter = (): Intl.NumberFormat => {
   return decimalFormatter;
 };
 
-const getFormatter = (currency: string): Intl.NumberFormat => {
-  const key = currency.toUpperCase();
-  let formatter = currencyFormatterCache.get(key);
-  if (!formatter) {
-    formatter = new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: key,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-    currencyFormatterCache.set(key, formatter);
-  }
-  return formatter;
-};
-
 export const formatCurrency = (amount: number, currency = "USD"): string => {
   const code = currency.toUpperCase();
   const symbol = getCurrencySymbol(code);
-  if (CURRENCY_SYMBOLS[code]) {
-    return `${symbol} ${getDecimalFormatter().format(amount)}`;
-  }
-  return getFormatter(currency).format(amount);
+  return `${symbol} ${getDecimalFormatter().format(amount)}`;
 };
 
 export const formatDate = (
