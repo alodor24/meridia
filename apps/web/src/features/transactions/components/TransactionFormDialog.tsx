@@ -114,7 +114,6 @@ export const TransactionFormDialog = ({
         onSubmit={handleSubmit}>
         {({ values, setFieldValue }) => {
           const selectedAccount = accounts.find((a) => a.id === values.accountId);
-          //const currencySymbol = getCurrencySymbol(selectedAccount?.currency ?? "USD");
           const currencySymbol = getCurrencySymbol(selectedAccount?.currency ?? "");
 
           return (

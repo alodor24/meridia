@@ -41,7 +41,12 @@ export const useUiStore = create<UiState>()(
 
       showSnackbar: (message, severity = 'success') =>
         set({ snackbar: { open: true, message, severity } }),
-      hideSnackbar: () => set({ snackbar: initialSnackbar }),
+      hideSnackbar: () => set((state) => ({
+          snackbar: {
+            ...state.snackbar,
+            open: false,
+          },
+        })),
     }),
     {
       name: 'meridia-ui',
