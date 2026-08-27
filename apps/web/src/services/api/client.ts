@@ -50,6 +50,14 @@ const refreshAccessToken = (): Promise<string> => {
   return refreshPromise;
 };
 
+tokenManager.setOnRefreshNeeded(async () => {
+  try {
+    await refreshAccessToken();
+  } catch {
+    tokenManager.handleUnauthorized();
+  }
+});
+
 client.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
