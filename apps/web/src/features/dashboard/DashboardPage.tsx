@@ -20,7 +20,6 @@ import { monthRangeFor } from "./monthRange";
 const DashboardPage = () => {
   useDocumentTitle("Dashboard");
   const currency = useAuthStore((s) => s.user?.currency ?? "USD");
-  console.log(currency);
   const [anchor, setAnchor] = useState(new Date());
   const [range, setRange] = useState(monthRangeFor(new Date()));
 

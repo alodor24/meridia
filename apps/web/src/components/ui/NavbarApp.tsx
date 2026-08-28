@@ -1,14 +1,14 @@
 import { NAVBAR_DARK, NAVBAR_LIGHT } from "@/theme/globalStyles";
-import { AppBar, Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { AppBar, Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Toolbar } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
-import PaymentsIcon from "@mui/icons-material/Payments";
 import PersonIcon from "@mui/icons-material/Person";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { PATHS } from "@/conts";
 import { useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { useUiStore } from "@/stores/uiStore";
+import LogoApp from "./LogoApp";
 
 const NavbarApp = () => {
   const navigate = useNavigate();
@@ -41,12 +41,8 @@ const NavbarApp = () => {
           <MenuIcon />
         </IconButton>
 
-        <Box sx={{ display: "flex", flexGrow: 1, width: "fit-content", alignItems: "center", gap: "0.5rem" }}>
-          <PaymentsIcon color="primary" />
-
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1, fontWeight: 700 }}>
-            Meridia
-          </Typography>
+        <Box sx={{ display: "flex", flexGrow: 1, width: "fit-content", alignItems: "center", gap: "0.5rem", py: 1 }}>
+          <LogoApp />
         </Box>
 
         <IconButton onClick={(e) => setProfileMenuAnchor(e.currentTarget)} sx={{ ml: 1 }} data-testid="profile-menu">

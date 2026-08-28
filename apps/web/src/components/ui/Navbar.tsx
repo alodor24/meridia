@@ -7,19 +7,18 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import MenuIcon from "@mui/icons-material/Menu";
-import PaymentsIcon from "@mui/icons-material/Payments";
 import { Link } from "@tanstack/react-router";
 import { useUiStore } from "@/stores/uiStore";
 import CustomTooltip from "./CustomTooltip";
 import { NAV_LINKS, PATHS } from "@/conts";
 import { Container } from "@mui/material";
 import { NAVBAR_DARK, NAVBAR_LIGHT } from "@/theme/globalStyles";
+import LogoApp from "./LogoApp";
 
 const Navbar = () => {
   const theme = useTheme();
@@ -41,12 +40,8 @@ const Navbar = () => {
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: "flex", width: "fit-content" }}>
             <Link to={PATHS.HOME}>
-              <Box sx={{ display: "flex", width: "fit-content", alignItems: "center", gap: "0.5rem" }}>
-                <PaymentsIcon color="primary" />
-
-                <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 700 }}>
-                  Meridia
-                </Typography>
+              <Box sx={{ py: 0.5 }}>
+                <LogoApp />
               </Box>
             </Link>
           </Box>

@@ -5,11 +5,11 @@ import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
 import MuiLink from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import PaymentsIcon from "@mui/icons-material/Payments";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { Alert, Snackbar } from "@mui/material";
 import { useUiStore } from "@/stores/uiStore";
 import { PATHS } from "@/conts";
+import LogoApp from "@/components/ui/LogoApp";
 
 export const AuthLayout = ({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) => {
   const snackbar = useUiStore((s) => s.snackbar);
@@ -42,11 +42,7 @@ export const AuthLayout = ({ title, subtitle, children }: { title: string; subti
             underline="none"
             color="inherit"
             sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <PaymentsIcon color="primary" sx={{ fontSize: 36 }} />
-
-            <Typography variant="h5" sx={{ fontWeight: 700 }}>
-              Meridia
-            </Typography>
+            <LogoApp />
           </MuiLink>
 
           <Typography variant="body2" color="text.secondary" align="center">
