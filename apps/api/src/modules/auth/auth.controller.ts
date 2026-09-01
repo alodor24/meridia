@@ -3,6 +3,7 @@ import { env } from '../../config/env';
 import { sendNoContent, sendSuccess } from '../../shared/http/http';
 import { expiresInToMs } from '../../shared/utils/time';
 import { asyncHandler } from '../../shared/utils/asyncHandler';
+import { isAppError } from '../../shared/errors';
 import * as authService from './auth.service';
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
@@ -18,10 +19,28 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const refresh = asyncHandler(async (req: Request, res: Response) => {
-  const token = readRefreshCookie(req);
-  const { user, accessToken, refreshToken } = await authService.refresh(token);
-  setRefreshCookie(res, refreshToken);
-  sendSuccess(res, { user, accessToken });
+  try {
+    const token = readRefreshCookie(req);
+    const result = await authService.refresh(token);
+    setRefreshCookie(res, result.refreshToken);
+    sendSuccess(res, { user: result.user, accessToken: result.accessToken });
+  } catch (error) {
+    if (isAppError(error)) {
+      res.status(error.statusCode).json({
+        success: false,
+        error: {
+          code: error.code,
+          message: error.message,
+          ...(error.details !== undefined ? { details: error.details } : {}),
+        },
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: { code: 'INTERNAL_ERROR', message: 'Error interno del servidor' },
+      });
+    }
+  }
 });
 
 export const logout = asyncHandler(async (req: Request, res: Response) => {
@@ -48,7 +67,8 @@ const setRefreshCookie = (res: Response, token: string): void => {
     httpOnly: true,
     secure: env.COOKIE_SECURE,
     sameSite: env.COOKIE_SAME_SITE,
-    path: '/api/auth',
+    path: '/',
+    domain: env.COOKIE_DOMAIN,
     maxAge: expiresInToMs(env.JWT_REFRESH_EXPIRES_IN),
   });
 };
@@ -58,6 +78,7 @@ const clearRefreshCookie = (res: Response): void => {
     httpOnly: true,
     secure: env.COOKIE_SECURE,
     sameSite: env.COOKIE_SAME_SITE,
-    path: '/api/auth',
+    path: '/',
+    domain: env.COOKIE_DOMAIN,
   });
 };

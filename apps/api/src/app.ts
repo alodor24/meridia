@@ -40,8 +40,8 @@ export const createApp = () => {
     });
   });
 
-  app.use(csrfProtection);
   app.use('/api/auth', authRouter);
+  app.use(csrfProtection);
   app.use('/api/accounts', accountsRouter);
   app.use('/api/categories', categoriesRouter);
   app.use('/api/transactions', transactionsRouter);

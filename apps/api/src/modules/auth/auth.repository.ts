@@ -102,10 +102,32 @@ export const revokeRefreshToken = async (
 export const revokeRefreshTokenById = async (
   db: Db,
   id: string,
+): Promise<boolean> => {
+  const result = await db.query(
+    `
+      UPDATE refresh_tokens
+      SET revoked_at = now()
+      WHERE id = $1
+        AND revoked_at IS NULL
+      RETURNING id
+    `,
+    [id],
+  );
+
+  return result.rowCount === 1;
+};
+
+export const deleteExpiredRefreshTokensByUser = async (
+  db: Db,
+  userId: UserId,
 ): Promise<void> => {
   await db.query(
-    'UPDATE refresh_tokens SET revoked_at = now() WHERE id = $1',
-    [id],
+    `
+      DELETE FROM refresh_tokens
+      WHERE user_id = $1
+        AND expires_at <= now()
+    `,
+    [userId],
   );
 };
 

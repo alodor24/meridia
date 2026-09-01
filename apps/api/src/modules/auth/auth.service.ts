@@ -22,8 +22,11 @@ const signAccessToken = (userId: UserId, email: string): string =>
   );
 
 const issueTokenPair = async (db: Db, userId: UserId, email: string): Promise<TokenPair> => {
+  await authRepository.deleteExpiredRefreshTokensByUser(db, userId);
+  
   const accessToken = signAccessToken(userId, email);
   const refreshToken = generateRefreshToken();
+
   await authRepository.createRefreshToken(db, {
     userId,
     tokenHash: hashRefreshToken(refreshToken),
@@ -86,15 +89,35 @@ export const refresh = async (refreshToken: string) => {
     throw new AuthenticationError('Refresh token inválido o expirado', 'INVALID_REFRESH_TOKEN');
   }
 
-  const tokens = await withTransaction(async (client) => {
-    await authRepository.revokeRefreshTokenById(client, record.id);
-    return issueTokenPair(client, record.user.id as UserId, record.user.email);
-  });
+  try {
+    const tokens = await withTransaction(async (client) => {
+      const revoked = await authRepository.revokeRefreshTokenById(
+        client,
+        record.id,
+      );
 
-  return {
-    user: usersRepository.mapUserRow(record.user),
-    ...tokens,
-  };
+      if (!revoked) {
+        throw new AuthenticationError(
+          'Refresh token ya utilizado',
+          'INVALID_REFRESH_TOKEN',
+        );
+      }
+
+      return issueTokenPair(
+        client,
+        record.user.id as UserId,
+        record.user.email,
+      );
+    });
+
+    return {
+      user: usersRepository.mapUserRow(record.user),
+      ...tokens,
+    };
+  } catch (error: unknown) {
+    const message = (error as Error).message;
+    throw new AuthenticationError(`Error al renovar el refresh token: ${message}`, 'REFRESH_TOKEN_ERROR');
+  }
 };
 
 export const logout = async (refreshToken: string | undefined): Promise<void> => {

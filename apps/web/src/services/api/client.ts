@@ -31,22 +31,41 @@ let refreshPromise: Promise<string> | null = null;
 const refreshAccessToken = (): Promise<string> => {
   if (!refreshPromise) {
     refreshPromise = (async () => {
-      const response = await axios.post(
-        `${API_BASE_URL}/api/auth/refresh`,
-        null,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        },
-      );
-      const data = response.data?.data;
-      if (!data?.accessToken) throw new Error("Respuesta de refresh inválida");
-      tokenManager.setAccessToken(data.accessToken as string);
-      return data.accessToken as string;
+      try {
+        const response = await axios.post(
+          `${API_BASE_URL}/api/auth/refresh`,
+          undefined,
+          {
+            withCredentials: true,
+          },
+        );
+
+        const data = response.data?.data;
+
+        if (!data?.accessToken) {
+          throw new Error("Respuesta de refresh inválida");
+        }
+
+        tokenManager.setAccessToken(data.accessToken);
+
+        return data.accessToken;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error("[AUTH] Refresh falló:", {
+            status: error.response?.status,
+            data: error.response?.data,
+          });
+        } else {
+          console.error("[AUTH] Refresh falló:", error);
+        }
+
+        throw error;
+      }
     })().finally(() => {
       refreshPromise = null;
     });
   }
+
   return refreshPromise;
 };
 
