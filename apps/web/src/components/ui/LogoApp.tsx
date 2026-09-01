@@ -5,7 +5,7 @@ import { useUiStore } from "@/stores/uiStore";
 const LogoApp = () => {
   const themeMode = useUiStore((s) => s.themeMode);
 
-  return <img src={themeMode === "light" ? LogoLight : LogoDark} alt="Logo" width={150} />;
+  return <img src={themeMode === "light" ? LogoLight : LogoDark} alt="Logo" width={120} />;
 };
 
 export default LogoApp;
