@@ -50,15 +50,7 @@ const refreshAccessToken = (): Promise<string> => {
 
         return data.accessToken;
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.error("[AUTH] Refresh falló:", {
-            status: error.response?.status,
-            data: error.response?.data,
-          });
-        } else {
-          console.error("[AUTH] Refresh falló:", error);
-        }
-
+        console.error("Refresh falló:", error);
         throw error;
       }
     })().finally(() => {
