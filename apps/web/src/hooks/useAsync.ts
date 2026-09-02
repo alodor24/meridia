@@ -19,11 +19,11 @@ export const useFetch = <T>(
   const [reloadToken, setReloadToken] = useState(0);
 
   const fetcherRef = useRef(fetcher);
+  // eslint-disable-next-line react-hooks/refs
   fetcherRef.current = fetcher;
 
   useEffect(() => {
     let active = true;
-    setState((s) => ({ ...s, loading: true, error: null }));
 
     const load = async () => {
       try {
