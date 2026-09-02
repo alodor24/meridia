@@ -22,6 +22,7 @@ import { updateProfile } from "@/features/auth/api";
 import { getCountryName } from "@/utils/labels";
 import { formatDate, getCurrencySymbol } from "@/utils/format";
 import { toApiError } from "@/services/api/errors";
+import ReactCountryFlag from "react-country-flag";
 
 const profileValidationSchema = Yup.object({
   name: Yup.string().trim().min(1, "El nombre es requerido").max(80, "Demasiado largo").required("El nombre es requerido"),
@@ -77,7 +78,30 @@ const ProfilePage = () => {
             <Divider />
             <List dense>
               <ListItem>
-                <ListItemText primary="País" secondary={getCountryName(user.country)} />
+                <ListItemText
+                  primary="País"
+                  secondary={
+                    <>
+                      <ReactCountryFlag
+                        countryCode={user.country}
+                        svg
+                        style={{
+                          width: "1.7em",
+                          height: "1.7em",
+                          marginRight: "0.5em",
+                        }}
+                        title={user.country}
+                      />
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ position: "relative", top: "2px" }}>
+                        {getCountryName(user.country)}
+                      </Typography>
+                    </>
+                  }
+                />
               </ListItem>
               <ListItem>
                 <ListItemText primary="Moneda" secondary={getCurrencySymbol(user.currency)} />

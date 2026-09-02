@@ -15,6 +15,7 @@ import { useUiStore } from "@/stores/uiStore";
 import { toApiError } from "@/services/api/errors";
 import { getCurrencySymbol } from "@/utils/format";
 import { PATHS } from "@/conts";
+import { ReactCountryFlag } from "react-country-flag";
 
 const RegisterPage = () => {
   const status = useAuthStore((s) => s.status);
@@ -29,7 +30,24 @@ const RegisterPage = () => {
 
   const countryOptions = COUNTRIES.map((c) => ({
     value: c.code,
-    label: `${c.name} (${getCurrencySymbol(c.currency)})`,
+    label: (
+      <>
+        <ReactCountryFlag
+          countryCode={c.code}
+          svg
+          style={{
+            width: "1.2em",
+            height: "1.2em",
+            marginRight: "0.5em",
+          }}
+          title={c.code}
+        />
+
+        <span>
+          {c.name} ({getCurrencySymbol(c.currency)})
+        </span>
+      </>
+    ),
   }));
 
   const initialValues: RegisterFormValues = {

@@ -5,13 +5,10 @@ import { useField } from "formik";
 
 export interface SelectOption {
   value: string;
-  label: string;
+  label: string | React.ReactNode;
 }
 
-export interface FormSelectProps extends Omit<
-  TextFieldProps,
-  "name" | "value" | "onChange" | "onBlur" | "select"
-> {
+export interface FormSelectProps extends Omit<TextFieldProps, "name" | "value" | "onChange" | "onBlur" | "select"> {
   name: string;
   options: SelectOption[];
 }
@@ -28,8 +25,7 @@ export const FormSelect = ({ name, options, ...props }: FormSelectProps) => {
       fullWidth
       margin="normal"
       error={showError}
-      helperText={showError ? meta.error : props.helperText}
-    >
+      helperText={showError ? meta.error : props.helperText}>
       {options.map((option) => (
         <MenuItem key={option.value} value={option.value}>
           {option.label}
