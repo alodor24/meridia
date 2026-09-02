@@ -6,6 +6,7 @@ export const ACCOUNT_TYPE_LABELS: Record<AccountType, string> = {
   credit_card: 'Tarjeta de crédito',
   savings: 'Ahorro',
   investment: 'Inversión',
+  wallet: 'Billetera virtual',
 };
 
 export const ACCOUNT_TYPE_OPTIONS: Array<{ value: AccountType; label: string }> = Object.entries(
