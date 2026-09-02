@@ -4,22 +4,22 @@ const globalStyles = {
         borderRadius: "5rem",
     },
     "::-webkit-scrollbar": {
-        width: "0.4rem",
+        width: "0.3rem",
         height: "0.4rem",
     },
     "::-webkit-scrollbar-thumb": {
-        backgroundColor: "#607d8b",
+        backgroundColor: "#90a4ae",
         borderRadius: "5rem",
     },
     "::-webkit-scrollbar-thumb:hover": {
-        backgroundColor: "#42a5f5",
+        backgroundColor: "#448aff",
     },
     "::selection": {
         backgroundColor: "#42a5f5",
         color: "#fff",
     },
     ":focus-visible": {
-        outline: "2px solid #4f6bff",
+        outline: "2px solid #0050de",
         outlineOffset: 2,
     },
     "@media (prefers-reduced-motion: reduce)": {

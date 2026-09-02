@@ -8,11 +8,11 @@ const createAppTheme = (themeMode: PaletteMode) => {
     palette: {
       mode: themeMode,
       primary: {
-        main: themeMode === "light" ? "#5e35b1" : "#2962ff",
+        main: "#0050de",
         contrastText: "#fff",
       },
       secondary: {
-        main: "#4dd0e1",
+        main: "#42a5f5",
         contrastText: "#fff",
       },
       error: {
@@ -36,7 +36,7 @@ const createAppTheme = (themeMode: PaletteMode) => {
       },
       divider: themeMode === "light" ? "#e0e0e0" : "#424242",
     },
-    shape: { borderRadius: 3 },
+    shape: { borderRadius: 5 },
     typography: {
       fontFamily: fontFamily,
     },
