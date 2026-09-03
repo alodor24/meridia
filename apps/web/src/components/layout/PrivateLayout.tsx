@@ -1,7 +1,4 @@
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+import { Box, Drawer, Snackbar, Alert } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Outlet } from "@tanstack/react-router";
