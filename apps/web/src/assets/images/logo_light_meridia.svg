@@ -25,9 +25,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.46324354"
-     inkscape:cx="173.77468"
-     inkscape:cy="308.69292"
+     inkscape:zoom="0.6551253"
+     inkscape:cx="621.2552"
+     inkscape:cy="309.86439"
      inkscape:window-width="1366"
      inkscape:window-height="690"
      inkscape:window-x="0"
@@ -102,24 +102,24 @@
        id="text118"
        style="white-space:pre;shape-inside:url(#rect120);display:inline;fill:#000000" />
     <g
-       id="g4688">
+       id="g889">
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.219px;font-family:Mulish;-inkscape-font-specification:'Mulish, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;fill:#535d6c;fill-opacity:1;stroke-width:3.10157"
-         x="72.924393"
-         y="68.745743"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:44.6297px;font-family:Mulish;-inkscape-font-specification:'Mulish, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;fill:#535d6c;fill-opacity:1;stroke-width:3.71963;stroke-dasharray:none"
+         x="60.404572"
+         y="70.52314"
          id="text126"
-         transform="matrix(1.1306304,-0.00593215,-0.0081073,0.88450487,0,0)"
-         inkscape:transform-center-x="70.284025"
-         inkscape:transform-center-y="2.9969211"><tspan
+         transform="matrix(1.0497101,-0.00638945,-0.00752705,0.95268982,0,0)"
+         inkscape:transform-center-x="77.045184"
+         inkscape:transform-center-y="3.8075691"><tspan
            sodipodi:role="line"
            id="tspan124"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.219px;font-family:Mulish;-inkscape-font-specification:'Mulish, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;fill:#535d6c;fill-opacity:1;stroke-width:3.10157"
-           x="72.924393"
-           y="68.745743">Meridia</tspan></text>
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:44.6297px;font-family:Mulish;-inkscape-font-specification:'Mulish, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;fill:#535d6c;fill-opacity:1;stroke-width:3.71963;stroke-dasharray:none"
+           x="60.404572"
+           y="70.52314">Meridia</tspan></text>
       <g
          id="g2412"
-         transform="translate(-17.861332,-54.723235)">
+         transform="matrix(0.67652594,0,0,0.67717862,-3.7223828,-20.807383)">
         <g
            id="g1781"
            transform="matrix(0.66992637,-0.14914845,0.1378317,0.69356489,2.8779296,44.743433)"

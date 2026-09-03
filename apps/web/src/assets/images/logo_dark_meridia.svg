@@ -25,9 +25,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.46324354"
-     inkscape:cx="173.77468"
-     inkscape:cy="308.69292"
+     inkscape:zoom="0.6551253"
+     inkscape:cx="683.83865"
+     inkscape:cy="309.86439"
      inkscape:window-width="1366"
      inkscape:window-height="690"
      inkscape:window-x="0"
@@ -101,63 +101,67 @@
        transform="scale(0.26458333)"
        id="text118"
        style="white-space:pre;shape-inside:url(#rect120);display:inline;fill:#000000" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.219px;font-family:Mulish;-inkscape-font-specification:'Mulish, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;fill:#dbe2e3;fill-opacity:1;stroke-width:3.10157"
-       x="72.924393"
-       y="68.745743"
-       id="text126"
-       transform="matrix(1.1306304,-0.00593215,-0.0081073,0.88450487,0,0)"
-       inkscape:transform-center-x="70.284025"
-       inkscape:transform-center-y="2.9969211"><tspan
-         sodipodi:role="line"
-         id="tspan124"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.219px;font-family:Mulish;-inkscape-font-specification:'Mulish, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;fill:#dbe2e3;fill-opacity:1;stroke-width:3.10157"
-         x="72.924393"
-         y="68.745743">Meridia</tspan></text>
     <g
-       id="g2412"
-       transform="translate(-17.861332,-54.723235)">
+       id="g1225"
+       transform="matrix(1.0155929,0,0,1.0165727,-3.5493721,-0.35705804)">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:43.9233px;font-family:Mulish;-inkscape-font-specification:'Mulish, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;fill:#dbe2e3;fill-opacity:1;stroke-width:3.66076;stroke-dasharray:none"
+         x="62.779057"
+         y="69.798088"
+         id="text126"
+         transform="matrix(1.0502163,-0.00638637,-0.00753068,0.95223059,0,0)"
+         inkscape:transform-center-x="77.045184"
+         inkscape:transform-center-y="3.8075691"><tspan
+           sodipodi:role="line"
+           id="tspan124"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:43.9233px;font-family:Mulish;-inkscape-font-specification:'Mulish, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;fill:#dbe2e3;fill-opacity:1;stroke-width:3.66076;stroke-dasharray:none"
+           x="62.779057"
+           y="69.798088">Meridia</tspan></text>
       <g
-         id="g1781"
-         transform="matrix(0.66992637,-0.14914845,0.1378317,0.69356489,2.8779296,44.743433)"
-         style="mix-blend-mode:normal;fill:url(#linearGradient951);fill-opacity:1;fill-rule:nonzero;stroke-width:1.00063;stroke-dasharray:none">
-        <path
-           sodipodi:type="star"
-           style="font-variation-settings:'wght' 700;fill:url(#linearGradient2422);fill-opacity:1;fill-rule:nonzero;stroke-width:1.12945;stroke-dasharray:none"
-           id="path1730"
-           inkscape:flatsided="true"
-           sodipodi:sides="3"
-           sodipodi:cx="38.958984"
-           sodipodi:cy="77.525177"
-           sodipodi:r1="48.874413"
-           sodipodi:r2="8.5602493"
-           sodipodi:arg1="-0.019419637"
-           sodipodi:arg2="1.0277778"
-           inkscape:rounded="0.08"
-           inkscape:randomized="2.8622937e-17"
-           d="M 87.824181,76.576113 C 87.955688,83.347074 21.277876,123.5898 15.348299,120.31821 9.4187224,117.04662 7.906402,39.180575 13.704473,35.681207 c 5.79807,-3.499368 73.988202,34.123946 74.119708,40.894906 z"
-           inkscape:transform-center-x="-3.4937046"
-           inkscape:transform-center-y="-3.2647402"
-           transform="matrix(0.66640348,0,0,1.1778121,56.866382,-1.6866069)" />
-        <path
-           sodipodi:type="star"
-           style="font-variation-settings:'wght' 700;fill:url(#linearGradient2424);fill-opacity:1;fill-rule:nonzero;stroke-width:1.73164;stroke-dasharray:none"
-           id="path1730-3"
-           inkscape:flatsided="true"
-           sodipodi:sides="3"
-           sodipodi:cx="38.958984"
-           sodipodi:cy="77.525177"
-           sodipodi:r1="48.874413"
-           sodipodi:r2="8.5602493"
-           sodipodi:arg1="-0.019419637"
-           sodipodi:arg2="1.0277778"
-           inkscape:rounded="0.08"
-           inkscape:randomized="2.8622937e-17"
-           d="M 87.824181,76.576113 C 87.955688,83.347074 21.277876,123.5898 15.348299,120.31821 9.4187224,117.04662 7.906402,39.180575 13.704473,35.681207 c 5.79807,-3.499368 73.988202,34.123946 74.119708,40.894906 z"
-           inkscape:transform-center-x="2.229197"
-           inkscape:transform-center-y="1.8019299"
-           transform="matrix(-0.45644291,0.00800417,-0.0156061,-0.73128392,66.209886,186.83119)" />
+         id="g2412"
+         transform="matrix(0.6661389,0,0,0.6661389,-0.17035436,-20.116933)">
+        <g
+           id="g1781"
+           transform="matrix(0.66992637,-0.14914845,0.1378317,0.69356489,2.8779296,44.743433)"
+           style="mix-blend-mode:normal;fill:url(#linearGradient951);fill-opacity:1;fill-rule:nonzero;stroke-width:1.00063;stroke-dasharray:none">
+          <path
+             sodipodi:type="star"
+             style="font-variation-settings:'wght' 700;fill:url(#linearGradient2422);fill-opacity:1;fill-rule:nonzero;stroke-width:1.12945;stroke-dasharray:none"
+             id="path1730"
+             inkscape:flatsided="true"
+             sodipodi:sides="3"
+             sodipodi:cx="38.958984"
+             sodipodi:cy="77.525177"
+             sodipodi:r1="48.874413"
+             sodipodi:r2="8.5602493"
+             sodipodi:arg1="-0.019419637"
+             sodipodi:arg2="1.0277778"
+             inkscape:rounded="0.08"
+             inkscape:randomized="2.8622937e-17"
+             d="M 87.824181,76.576113 C 87.955688,83.347074 21.277876,123.5898 15.348299,120.31821 9.4187224,117.04662 7.906402,39.180575 13.704473,35.681207 c 5.79807,-3.499368 73.988202,34.123946 74.119708,40.894906 z"
+             inkscape:transform-center-x="-3.4937046"
+             inkscape:transform-center-y="-3.2647402"
+             transform="matrix(0.66640348,0,0,1.1778121,56.866382,-1.6866069)" />
+          <path
+             sodipodi:type="star"
+             style="font-variation-settings:'wght' 700;fill:url(#linearGradient2424);fill-opacity:1;fill-rule:nonzero;stroke-width:1.73164;stroke-dasharray:none"
+             id="path1730-3"
+             inkscape:flatsided="true"
+             sodipodi:sides="3"
+             sodipodi:cx="38.958984"
+             sodipodi:cy="77.525177"
+             sodipodi:r1="48.874413"
+             sodipodi:r2="8.5602493"
+             sodipodi:arg1="-0.019419637"
+             sodipodi:arg2="1.0277778"
+             inkscape:rounded="0.08"
+             inkscape:randomized="2.8622937e-17"
+             d="M 87.824181,76.576113 C 87.955688,83.347074 21.277876,123.5898 15.348299,120.31821 9.4187224,117.04662 7.906402,39.180575 13.704473,35.681207 c 5.79807,-3.499368 73.988202,34.123946 74.119708,40.894906 z"
+             inkscape:transform-center-x="2.229197"
+             inkscape:transform-center-y="1.8019299"
+             transform="matrix(-0.45644291,0.00800417,-0.0156061,-0.73128392,66.209886,186.83119)" />
+        </g>
       </g>
     </g>
   </g>
