@@ -33,7 +33,7 @@ const refreshAccessToken = (): Promise<string> => {
     refreshPromise = (async () => {
       try {
         const response = await axios.post(
-          `${API_BASE_URL}/api/auth/refresh`,
+          `${API_BASE_URL + AUTH_PATHS[2]}`,
           undefined,
           {
             withCredentials: true,
