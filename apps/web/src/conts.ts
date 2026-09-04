@@ -1,4 +1,4 @@
-import {Category, Dashboard, Receipt, Wallet} from "@mui/icons-material";
+import {Category, Dashboard, Receipt, Wallet, Analytics, Article} from "@mui/icons-material";
 
 export const PATHS = {
   HOME: "/",
@@ -9,6 +9,9 @@ export const PATHS = {
   TRANSACTIONS: "/app/transactions",
   CATEGORIES: "/app/categories",
   PROFILE: "/app/profile",
+  ABOUT: "/app/about",
+  ANALYTICS: "/app/analytics",
+  REPORTS: "/app/reports",
 };
 
 export const AUTH_PATHS = [
@@ -29,4 +32,25 @@ export const NAV_ITEMS = [
   { label: "Cuentas", to: PATHS.ACCOUNTS, icon: Wallet },
   { label: "Movimientos", to: PATHS.TRANSACTIONS, icon: Receipt },
   { label: "Categorías", to: PATHS.CATEGORIES, icon: Category },
+  { label: "Gráficos", to: PATHS.ANALYTICS, icon: Analytics },
+  { label: "Reportes", to: PATHS.REPORTS, icon: Article },
+];
+
+export const PRESET_COLORS = [
+  "#2e7d32",
+  "#43a047",
+  "#66bb6a",
+  "#81c784",
+  "#d32f2f",
+  "#f57c00",
+  "#0288d1",
+  "#7b1fa2",
+  "#f06292",
+  "#3949ab",
+  "#00838f",
+  "#757575",
+  "#d81b60",
+  "#e53935",
+  "#8e24aa",
+  "#6d4c41",
 ];

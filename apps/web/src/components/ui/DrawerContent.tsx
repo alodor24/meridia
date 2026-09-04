@@ -1,15 +1,23 @@
-import { NAV_ITEMS } from "@/conts";
+import {
+  Box,
+  Divider,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+} from "@mui/material";
+import {
+  DarkMode as DarkModeIcon,
+  LightMode as LightModeIcon,
+  Info as InfoIcon,
+} from "@mui/icons-material";
+import { NAV_ITEMS, PATHS } from "@/conts";
 import { useUiStore } from "@/stores/uiStore";
-import { Box, Divider, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, useMediaQuery, useTheme } from "@mui/material";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
 import { Link, useLocation } from "@tanstack/react-router";
 
 const DrawerContent = () => {
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
-  const location = useLocation();
-  const setDrawerOpen = useUiStore((s) => s.setDrawerOpen);
+  const { pathname } = useLocation();
   const themeMode = useUiStore((s) => s.themeMode);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
 
@@ -17,9 +25,9 @@ const DrawerContent = () => {
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <Toolbar />
 
-      <List sx={{ flexGrow: 1, pt: 1 }}>
+      <List sx={{ flexGrow: 1, pt: 1.5 }}>
         {NAV_ITEMS.map((item) => {
-          const active = location.pathname.startsWith(item.to);
+          const active = pathname.startsWith(item.to);
           const Icon = item.icon;
 
           return (
@@ -27,10 +35,9 @@ const DrawerContent = () => {
               key={item.to}
               component={Link}
               to={item.to}
-              selected={active}
-              onClick={() => !isDesktop && setDrawerOpen(false)}>
+              selected={active}>
               <ListItemIcon>
-                <Icon />
+                <Icon fontSize="small" />
               </ListItemIcon>
               <ListItemText primary={item.label} />
             </ListItemButton>
@@ -42,8 +49,26 @@ const DrawerContent = () => {
 
       <List>
         <ListItemButton onClick={toggleTheme}>
-          <ListItemIcon>{themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />}</ListItemIcon>
-          <ListItemText primary={themeMode === "light" ? "Modo oscuro" : "Modo claro"} />
+          <ListItemIcon>
+            {themeMode === "light" ? (
+              <DarkModeIcon fontSize="small" />
+            ) : (
+              <LightModeIcon fontSize="small" />
+            )}
+          </ListItemIcon>
+          <ListItemText
+            primary={themeMode === "light" ? "Modo oscuro" : "Modo claro"}
+          />
+        </ListItemButton>
+
+        <ListItemButton
+          component={Link}
+          to={PATHS.ABOUT}
+          selected={pathname.startsWith(PATHS.ABOUT)}>
+          <ListItemIcon>
+            <InfoIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Acerca de" />
         </ListItemButton>
       </List>
     </Box>

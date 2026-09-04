@@ -12,7 +12,7 @@ const globalStyles = {
         borderRadius: "5rem",
     },
     "::-webkit-scrollbar-thumb:hover": {
-        backgroundColor: "#448aff",
+        backgroundColor: "#42a5f5",
     },
     "::selection": {
         backgroundColor: "#42a5f5",
@@ -39,6 +39,8 @@ export const NAVBAR_LIGHT = "rgba(255, 255, 255, 0.9)";
 
 export const NAVBAR_DARK = "rgba(14, 19, 26, 0.9)";
 
-export const DRAWER_WIDTH = 240;
+export const DRAWER_WIDTH = 260;
+
+export const SHADOW = "0px 5px 15px 0px rgba(31, 40, 54, 0.2)";
 
 export default globalStyles;

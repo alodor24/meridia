@@ -30,17 +30,31 @@ const PrivateLayout = () => {
             "& .MuiDrawer-paper": {
               width: DRAWER_WIDTH,
               boxSizing: "border-box",
+              px: 2,
             },
           }}>
           <DrawerContent />
         </Drawer>
       ) : (
-        <Drawer variant="temporary" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <Drawer
+          variant="temporary"
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          sx={{
+            "& .MuiDrawer-paper": {
+              width: DRAWER_WIDTH,
+              px: 2,
+            },
+          }}>
           <DrawerContent />
         </Drawer>
       )}
 
-      <Box component="main" id="main-content" tabIndex={-1} sx={{ flexGrow: 1, p: { xs: 2, md: 3 }, pt: { xs: 10, md: 12 } }}>
+      <Box
+        component="main"
+        id="main-content"
+        tabIndex={-1}
+        sx={{ flexGrow: 1, p: { xs: 2, md: 3 }, pt: { xs: 10, md: 12 } }}>
         <Outlet />
       </Box>
 

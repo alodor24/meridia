@@ -36,7 +36,7 @@ const createAppTheme = (themeMode: PaletteMode) => {
       },
       divider: themeMode === "light" ? "#e0e0e0" : "#424242",
     },
-    shape: { borderRadius: 5 },
+    shape: { borderRadius: 8 },
     typography: {
       fontFamily: fontFamily,
     },
@@ -73,12 +73,19 @@ const createAppTheme = (themeMode: PaletteMode) => {
       MuiListItemButton: {
         styleOverrides: {
           root: ({ theme }) => ({
+            borderRadius: theme.shape.borderRadius,
+            ".MuiListItemText-root": {
+              "span": {
+                fontSize: "0.9rem",
+              },
+            },
             "&.Mui-selected": {
-              backgroundColor: theme.palette.action.selected,
-              color: theme.palette.primary.main,
+              backgroundColor: theme.palette.secondary,
+              color: theme.palette.secondary.main,
 
               "&:hover": {
-                backgroundColor: theme.palette.action.selected,
+                backgroundColor: theme.palette.secondary,
+                color: theme.palette.secondary.main,
               },
             },
           }),
@@ -90,7 +97,7 @@ const createAppTheme = (themeMode: PaletteMode) => {
             color: theme.palette.text.secondary,
 
             ".Mui-selected &": {
-              color: theme.palette.primary.main,
+              color: theme.palette.secondary.main,
             },
           }),
         },
