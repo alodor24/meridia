@@ -1,5 +1,4 @@
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
+import { MenuItem, TextField } from "@mui/material";
 import type { TextFieldProps } from "@mui/material/TextField";
 import { useField } from "formik";
 
@@ -8,7 +7,10 @@ export interface SelectOption {
   label: string | React.ReactNode;
 }
 
-export interface FormSelectProps extends Omit<TextFieldProps, "name" | "value" | "onChange" | "onBlur" | "select"> {
+export interface FormSelectProps extends Omit<
+  TextFieldProps,
+  "name" | "value" | "onChange" | "onBlur" | "select"
+> {
   name: string;
   options: SelectOption[];
 }

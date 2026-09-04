@@ -1,8 +1,5 @@
 import type { ReactNode } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import Typography from "@mui/material/Typography";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import InboxIcon from "@mui/icons-material/Inbox";
 
 export const LoadingState = ({ label = "Cargando…" }: { label?: string }) => {
@@ -14,8 +11,7 @@ export const LoadingState = ({ label = "Cargando…" }: { label?: string }) => {
         alignItems: "center",
         gap: 2,
         py: 8,
-      }}
-    >
+      }}>
       <CircularProgress />
       <Typography variant="body2" color="text.secondary">
         {label}
@@ -40,8 +36,7 @@ export const EmptyState = ({
         gap: 2,
         py: 8,
         textAlign: "center",
-      }}
-    >
+      }}>
       <InboxIcon color="disabled" sx={{ fontSize: 48 }} />
       <Typography variant="body1" color="text.secondary">
         {message}
@@ -68,8 +63,7 @@ export const ErrorState = ({
         gap: 2,
         py: 8,
         textAlign: "center",
-      }}
-    >
+      }}>
       <Typography variant="body1" color="error">
         {message}
       </Typography>

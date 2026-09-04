@@ -1,26 +1,6 @@
-import Box from "@mui/material/Box";
-import FormHelperText from "@mui/material/FormHelperText";
-import Typography from "@mui/material/Typography";
+import { Box, FormHelperText, Typography } from "@mui/material";
+import { PRESET_COLORS } from "@/conts";
 import { useField } from "formik";
-
-const PRESET_COLORS = [
-  "#2e7d32",
-  "#43a047",
-  "#66bb6a",
-  "#81c784",
-  "#d32f2f",
-  "#f57c00",
-  "#0288d1",
-  "#7b1fa2",
-  "#f06292",
-  "#3949ab",
-  "#00838f",
-  "#757575",
-  "#d81b60",
-  "#e53935",
-  "#8e24aa",
-  "#6d4c41",
-];
 
 export const ColorField = ({
   name,
@@ -43,8 +23,7 @@ export const ColorField = ({
           gap: 0.75,
           flexWrap: "wrap",
           alignItems: "center",
-        }}
-      >
+        }}>
         {PRESET_COLORS.map((color) => {
           const selected = field.value === color;
           return (
@@ -89,8 +68,7 @@ export const ColorField = ({
             cursor: "pointer",
             bgcolor: "background.paper",
           }}
-          title="Color personalizado"
-        >
+          title="Color personalizado">
           <input
             type="color"
             value={field.value || "#607d8b"}
