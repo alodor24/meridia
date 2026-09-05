@@ -21,6 +21,14 @@ export const AUTH_PATHS = [
   "/api/auth/logout",
 ];
 
+export const ENDPOINT_ROUTES = {
+  LOGIN: "/api/auth/login",
+  REGISTER: "/api/auth/register",
+  REFRESH: "/api/auth/refresh",
+  LOGOUT: "/api/auth/logout",
+  ME: "/api/auth/me",
+};
+
 export const NAV_LINKS = [
   { label: "Inicio", to: PATHS.HOME },
   { label: "Iniciar sesión", to: PATHS.LOGIN },

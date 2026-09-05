@@ -1,0 +1,90 @@
+import { useState } from "react";
+import { Button, InputAdornment, IconButton } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "@tanstack/react-router";
+import { Formik, Form } from "formik";
+import { FormTextField } from "@/components/ui/FormTextField";
+import {
+  loginValidationSchema,
+  type LoginFormValues,
+} from "@/features/auth/validations";
+import { useAuthStore } from "@/stores/authStore";
+import { useUiStore } from "@/stores/uiStore";
+import { toApiError } from "@/services/api/errors";
+import { PATHS } from "@/conts";
+import useShowPassword from "../hooks/useShowPassword";
+
+const FormLogin = () => {
+  const loginUser = useAuthStore((s) => s.loginUser);
+  const showSnackbar = useUiStore((s) => s.showSnackbar);
+  const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
+  const { showPassword, handleClickShowPassword } = useShowPassword();
+
+  const initialValues: LoginFormValues = { email: "", password: "" };
+
+  const handleSubmit = async (values: LoginFormValues) => {
+    setSubmitting(true);
+
+    try {
+      await loginUser({ email: values.email, password: values.password });
+      await navigate({ to: PATHS.DASHBOARD });
+    } catch (error) {
+      showSnackbar(toApiError(error).message, "error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={loginValidationSchema}
+      onSubmit={handleSubmit}>
+      {() => (
+        <Form>
+          <FormTextField
+            name="email"
+            label="Email"
+            type="email"
+            autoComplete="email"
+          />
+          <FormTextField
+            name="password"
+            label="Contraseña"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleClickShowPassword}>
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            size="large"
+            loading={submitting}
+            loadingPosition="start"
+            sx={{
+              mt: 2,
+              background: (theme) =>
+                `linear-gradient(45deg,${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 100%)`,
+            }}>
+            Ingresar
+          </Button>
+        </Form>
+      )}
+    </Formik>
+  );
+};
+
+export default FormLogin;

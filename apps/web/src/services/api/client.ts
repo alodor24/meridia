@@ -5,7 +5,7 @@ import axios, {
 } from "axios";
 import { tokenManager } from "./tokenManager";
 import { toApiError } from "./errors";
-import { AUTH_PATHS } from "@/conts";
+import { AUTH_PATHS, ENDPOINT_ROUTES } from "@/conts";
 
 export const API_BASE_URL = import.meta.env.VITE_API_URL ?? "";
 
@@ -33,7 +33,7 @@ const refreshAccessToken = (): Promise<string> => {
     refreshPromise = (async () => {
       try {
         const response = await axios.post(
-          `${API_BASE_URL + AUTH_PATHS[2]}`,
+          `${API_BASE_URL + ENDPOINT_ROUTES.REFRESH}`,
           undefined,
           {
             withCredentials: true,

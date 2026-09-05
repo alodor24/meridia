@@ -14,8 +14,8 @@ export const registerValidationSchema = Yup.object({
     .required('La contraseña es requerida'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Las contraseñas no coinciden')
-    .required('Confirmá tu contraseña'),
-  country: Yup.string().required('Seleccioná tu país'),
+    .required('Confirma tu contraseña'),
+  country: Yup.string().required('Selecciona tu país'),
 });
 
 export type LoginFormValues = Yup.InferType<typeof loginValidationSchema>;

@@ -18,14 +18,18 @@ import { FormTextField } from "@/components/ui/FormTextField";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useAuthStore } from "@/stores/authStore";
 import { useUiStore } from "@/stores/uiStore";
-import { updateProfile } from "@/features/auth/api";
+import { updateProfile } from "@/features/auth/services/api";
 import { getCountryName } from "@/utils/labels";
 import { formatDate, getCurrencySymbol } from "@/utils/format";
 import { toApiError } from "@/services/api/errors";
 import ReactCountryFlag from "react-country-flag";
 
 const profileValidationSchema = Yup.object({
-  name: Yup.string().trim().min(1, "El nombre es requerido").max(80, "Demasiado largo").required("El nombre es requerido"),
+  name: Yup.string()
+    .trim()
+    .min(1, "El nombre es requerido")
+    .max(80, "Demasiado largo")
+    .required("El nombre es requerido"),
 });
 
 const ProfilePage = () => {
@@ -104,10 +108,16 @@ const ProfilePage = () => {
                 />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Moneda" secondary={getCurrencySymbol(user.currency)} />
+                <ListItemText
+                  primary="Moneda"
+                  secondary={getCurrencySymbol(user.currency)}
+                />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Miembro desde" secondary={formatDate(user.createdAt)} />
+                <ListItemText
+                  primary="Miembro desde"
+                  secondary={formatDate(user.createdAt)}
+                />
               </ListItem>
             </List>
           </CardContent>
@@ -118,7 +128,10 @@ const ProfilePage = () => {
             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
               Actualizar nombre
             </Typography>
-            <Formik initialValues={{ name: user.name }} validationSchema={profileValidationSchema} onSubmit={handleSubmit}>
+            <Formik
+              initialValues={{ name: user.name }}
+              validationSchema={profileValidationSchema}
+              onSubmit={handleSubmit}>
               {({ values }) => (
                 <Form>
                   <FormTextField name="name" label="Nombre" />

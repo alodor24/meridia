@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import type { User } from '@meridia/shared';
 import { tokenManager } from '@/services/api/tokenManager';
-import * as authApi from '@/features/auth/api';
-import type { LoginPayload, RegisterPayload } from '@/features/auth/api';
+import * as authApi from '@/features/auth/services/api';
+import type { LoginPayload, RegisterPayload } from '@/features/auth/services/api';
 
 export type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated';
 

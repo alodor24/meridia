@@ -1,5 +1,5 @@
 import { format, startOfMonth as dateFnsStartOfMonth } from 'date-fns';
-import type { DashboardRange } from './api';
+import type { DashboardRange } from './services/api';
 
 export const monthRangeFor = (date: Date): DashboardRange => {
   const first = dateFnsStartOfMonth(date);

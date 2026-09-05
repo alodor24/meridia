@@ -1,17 +1,28 @@
 import type { ReactNode } from "react";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Container from "@mui/material/Container";
-import MuiLink from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  Link as MuiLink,
+  Typography,
+} from "@mui/material";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { Alert, Snackbar } from "@mui/material";
 import { useUiStore } from "@/stores/uiStore";
 import { PATHS } from "@/conts";
 import LogoApp from "@/components/ui/LogoApp";
+import { SHADOW } from "@/theme/globalStyles";
 
-export const AuthLayout = ({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) => {
+export const AuthLayout = ({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle: string;
+  children: ReactNode;
+}) => {
   const snackbar = useUiStore((s) => s.snackbar);
   const hideSnackbar = useUiStore((s) => s.hideSnackbar);
 
@@ -34,7 +45,6 @@ export const AuthLayout = ({ title, subtitle, children }: { title: string; subti
             flexDirection: "column",
             alignItems: "center",
             mb: 3,
-            gap: 1,
           }}>
           <MuiLink
             component={RouterLink}
@@ -50,7 +60,7 @@ export const AuthLayout = ({ title, subtitle, children }: { title: string; subti
           </Typography>
         </Box>
 
-        <Card elevation={3}>
+        <Card sx={{ boxShadow: SHADOW }}>
           <CardContent sx={{ p: { xs: 2, sm: 4 } }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
               {title}

@@ -5,17 +5,17 @@ import BalanceIcon from "@mui/icons-material/Timeline";
 import TrendDownIcon from "@mui/icons-material/TrendingDown";
 import TrendUpIcon from "@mui/icons-material/TrendingUp";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { StatCard } from "@/components/ui/StatCard";
+import { StatCard } from "@/features/dashboard/components/StatCard";
 import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useFetch } from "@/hooks/useAsync";
 import { useAuthStore } from "@/stores/authStore";
 import { formatCurrency, formatMonth } from "@/utils/format";
-import { getDashboard } from "./api";
-import { ExpensesByCategory } from "./components/ExpensesByCategory";
-import { RecentTransactions } from "./components/RecentTransactions";
-import { MonthSwitcher } from "./components/MonthSwitcher";
-import { monthRangeFor } from "./monthRange";
+import { getDashboard } from "../services/api";
+import { ExpensesByCategory } from "../components/ExpensesByCategory";
+import { RecentTransactions } from "../components/RecentTransactions";
+import { MonthSwitcher } from "../components/MonthSwitcher";
+import { monthRangeFor } from "../utils/monthRange";
 
 const DashboardPage = () => {
   useDocumentTitle("Dashboard");
@@ -23,7 +23,10 @@ const DashboardPage = () => {
   const [anchor, setAnchor] = useState(new Date());
   const [range, setRange] = useState(monthRangeFor(new Date()));
 
-  const { data, loading, error, refetch } = useFetch(() => getDashboard(range), [range.from, range.to]);
+  const { data, loading, error, refetch } = useFetch(
+    () => getDashboard(range),
+    [range.from, range.to],
+  );
 
   if (loading && !data) return <LoadingState />;
   if (error && !data) return <ErrorState message={error} onRetry={refetch} />;
@@ -31,7 +34,10 @@ const DashboardPage = () => {
 
   return (
     <>
-      <PageHeader title="Dashboard" subtitle={`Resumen de ${formatMonth(anchor)}`} />
+      <PageHeader
+        title="Dashboard"
+        subtitle={`Resumen de ${formatMonth(anchor)}`}
+      />
 
       <MonthSwitcher
         anchor={anchor}
@@ -79,11 +85,17 @@ const DashboardPage = () => {
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
-          <RecentTransactions transactions={data.lastTransactions} currency={currency} />
+          <RecentTransactions
+            transactions={data.lastTransactions}
+            currency={currency}
+          />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
-          <ExpensesByCategory items={data.expensesByCategory} currency={currency} />
+          <ExpensesByCategory
+            items={data.expensesByCategory}
+            currency={currency}
+          />
         </Grid>
       </Grid>
     </>

@@ -5,8 +5,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import type { DashboardRange } from "../api";
-import { monthRangeFor } from "../monthRange";
+import type { DashboardRange } from "../services/api";
+import { monthRangeFor } from "../utils/monthRange";
 
 export interface MonthSwitcherProps {
   anchor: Date;

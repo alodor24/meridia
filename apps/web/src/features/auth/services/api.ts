@@ -1,5 +1,6 @@
 import type { User } from "@meridia/shared";
 import { http } from "@/services/api/client";
+import { ENDPOINT_ROUTES } from "@/conts";
 
 export interface AuthResponse {
   user: User;
@@ -20,19 +21,19 @@ export interface RegisterPayload {
 }
 
 export const register = (payload: RegisterPayload) =>
-  http.post<AuthResponse>("/api/auth/register", payload);
+  http.post<AuthResponse>(ENDPOINT_ROUTES.REGISTER, payload);
 
 export const login = (payload: LoginPayload) =>
-  http.post<AuthResponse>("/api/auth/login", payload);
+  http.post<AuthResponse>(ENDPOINT_ROUTES.LOGIN, payload);
 
-export const logout = () => http.post<null>("/api/auth/logout");
+export const logout = () => http.post<null>(ENDPOINT_ROUTES.LOGOUT);
 
 export const getMe = async () => {
-  const result = await http.get<{ user: User }>("/api/auth/me");
+  const result = await http.get<{ user: User }>(ENDPOINT_ROUTES.ME);
   return result.user;
 };
 
 export const updateProfile = async (name: string) => {
-  const result = await http.patch<{ user: User }>("/api/auth/me", { name });
+  const result = await http.patch<{ user: User }>(ENDPOINT_ROUTES.ME, { name });
   return result.user;
 };
