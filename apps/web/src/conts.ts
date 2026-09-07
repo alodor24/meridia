@@ -27,6 +27,9 @@ export const ENDPOINT_ROUTES = {
   REFRESH: "/api/auth/refresh",
   LOGOUT: "/api/auth/logout",
   ME: "/api/auth/me",
+  DASHBOARD: "/api/dashboard",
+  ACCOUNTS: "/api/accounts",
+  TRANSACTIONS: "/api/transactions",
 };
 
 export const NAV_LINKS = [

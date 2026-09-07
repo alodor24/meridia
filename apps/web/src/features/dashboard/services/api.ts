@@ -1,5 +1,6 @@
 import type { DashboardSummary } from "@meridia/shared";
 import { http } from "@/services/api/client";
+import { ENDPOINT_ROUTES } from "@/conts";
 
 export interface DashboardRange {
   from: string;
@@ -8,7 +9,7 @@ export interface DashboardRange {
 
 export const getDashboard = async (range?: DashboardRange) => {
   const result = await http.get<{ dashboard: DashboardSummary }>(
-    "/api/dashboard",
+    ENDPOINT_ROUTES.DASHBOARD,
     {
       params: range,
     },

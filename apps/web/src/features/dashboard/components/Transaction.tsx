@@ -9,7 +9,11 @@ interface RecentTransactionProps {
   index: number;
 }
 
-const RowTransaction = ({ transaction, currency, index }: RecentTransactionProps) => {
+const RowTransaction = ({
+  transaction,
+  currency,
+  index,
+}: RecentTransactionProps) => {
   return (
     <Box>
       {index > 0 && <Divider />}
@@ -21,8 +25,14 @@ const RowTransaction = ({ transaction, currency, index }: RecentTransactionProps
           justifyContent: "space-between",
           py: 1,
         }}>
-        <Stack direction="row" spacing={1.5} sx={{ alignItems: "center", minWidth: 0 }}>
-          <Avatar categoryColor={transaction.categoryColor} categoryName={transaction.categoryName} />
+        <Stack
+          direction="row"
+          spacing={1.5}
+          sx={{ alignItems: "center", minWidth: 0 }}>
+          <Avatar
+            categoryColor={transaction.categoryColor}
+            categoryName={transaction.categoryName}
+          />
 
           <Stack sx={{ minWidth: 0 }}>
             <Typography variant="body2" noWrap>
