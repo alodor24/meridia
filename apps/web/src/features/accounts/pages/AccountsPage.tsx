@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Box, Card, CardContent } from "@mui/material";
-import { Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 import type { Account } from "@meridia/shared";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -12,7 +11,7 @@ import { useUiStore } from "@/stores/uiStore";
 import { deleteAccount, listAccounts } from "../services/api";
 import { AccountFormDialog } from "../components/AccountFormDialog";
 import AccountTable from "../components/AccountTable";
-import { ActionProps } from "@/components/ui/ActionTable";
+import { SHADOW } from "@/theme/globalStyles";
 
 const AccountsPage = () => {
   useDocumentTitle("Cuentas");
@@ -39,26 +38,6 @@ const AccountsPage = () => {
     }
   };
 
-  const optionButtons: ActionProps<Account>[] = [
-    {
-      label: "Editar cuenta",
-      icon: EditIcon,
-      color: "info" as const,
-      onClick: (account) => {
-        setEditing(account);
-        setFormOpen(true);
-      },
-    },
-    {
-      label: "Eliminar cuenta",
-      icon: DeleteIcon,
-      color: "error" as const,
-      onClick: (account) => {
-        setDeletingAccount(account);
-      },
-    },
-  ];
-
   return (
     <>
       <PageHeader
@@ -79,10 +58,21 @@ const AccountsPage = () => {
       )}
 
       {data && data.length > 0 && (
-        <Card elevation={3}>
+        <Card sx={{ boxShadow: SHADOW }}>
           <CardContent>
             <Box sx={{ overflowX: "auto", maxHeight: 450 }}>
-              <AccountTable data={data || []} actions={optionButtons} />
+              <AccountTable
+                data={data || []}
+                actions={{
+                  onClickEditar: (account) => {
+                    setEditing(account);
+                    setFormOpen(true);
+                  },
+                  onClickEliminar: (account) => {
+                    setDeletingAccount(account);
+                  },
+                }}
+              />
             </Box>
           </CardContent>
         </Card>

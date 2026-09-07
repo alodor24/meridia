@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Grid } from "@mui/material";
-import { Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 import type { Category, TransactionType } from "@meridia/shared";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -11,7 +10,6 @@ import { useUiStore } from "@/stores/uiStore";
 import { deleteCategory, listCategories } from "../services/api";
 import { CategoryFormDialog } from "../components/CategoryFormDialog";
 import CategoryTable from "../components/CategoryTable";
-import { ActionProps } from "@/components/ui/ActionTable";
 
 const CategoriesPage = () => {
   useDocumentTitle("Categorías");
@@ -42,23 +40,14 @@ const CategoriesPage = () => {
   const income = data?.filter((c) => c.type === "income") ?? [];
   const expense = data?.filter((c) => c.type === "expense") ?? [];
 
-  const optionButtons: ActionProps<Category>[] = [
-    {
-      label: "Editar categoría",
-      icon: EditIcon,
-      color: "info" as const,
-      onClick: (category) => {
-        setEditing(category);
-        setFormOpen(true);
-      },
+  const actions = {
+    onClickEditar: (category: SetStateAction<Category | null>) => {
+      setEditing(category);
+      setFormOpen(true);
     },
-    {
-      label: "Eliminar categoría",
-      icon: DeleteIcon,
-      color: "error" as const,
-      onClick: (category) => setDeletingCategory(category),
-    },
-  ];
+    onClickEliminar: (category: SetStateAction<Category | null>) =>
+      setDeletingCategory(category),
+  };
 
   return (
     <>
@@ -85,14 +74,14 @@ const CategoriesPage = () => {
             <CategoryTable
               categories={expense}
               title="Gastos"
-              actions={optionButtons}
+              actions={actions}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <CategoryTable
               categories={income}
               title="Ingresos"
-              actions={optionButtons}
+              actions={actions}
             />
           </Grid>
         </Grid>

@@ -13,16 +13,36 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
+import { SHADOW } from "@/theme/globalStyles";
 
 interface CategoryTableProps {
   categories: Category[];
   title: string;
-  actions: ActionProps<Category>[];
+  actions: {
+    onClickEditar: (data: Category) => void;
+    onClickEliminar: (data: Category) => void;
+  };
 }
 
 const CategoryTable = ({ categories, title, actions }: CategoryTableProps) => {
+  const optionButtons: ActionProps<Category>[] = [
+    {
+      label: "Editar categoría",
+      icon: EditIcon,
+      color: "info" as const,
+      onClick: (category) => actions.onClickEditar(category),
+    },
+    {
+      label: "Eliminar categoría",
+      icon: DeleteIcon,
+      color: "error" as const,
+      onClick: (category) => actions.onClickEliminar(category),
+    },
+  ];
+
   return (
-    <Card elevation={3}>
+    <Card sx={{ boxShadow: SHADOW }}>
       <CardContent>
         <Stack
           direction="row"
@@ -69,7 +89,7 @@ const CategoryTable = ({ categories, title, actions }: CategoryTableProps) => {
                         <Typography variant="body1">{category.name}</Typography>
                       </Stack>
                     </TableCell>
-                    <ActionTable data={category} actions={actions} />
+                    <ActionTable data={category} actions={optionButtons} />
                   </TableRow>
                 ))}
               </TableBody>

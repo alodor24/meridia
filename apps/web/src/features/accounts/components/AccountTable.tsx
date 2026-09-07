@@ -9,7 +9,11 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { AccountBalance as AccountIcon } from "@mui/icons-material";
+import {
+  AccountBalance as AccountIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+} from "@mui/icons-material";
 import { formatCurrency, getCurrencySymbol } from "@/utils/format";
 import { ACCOUNT_TYPE_LABELS } from "@/utils/labels";
 import { Account } from "@meridia/shared";
@@ -17,10 +21,28 @@ import ActionTable, { ActionProps } from "@/components/ui/ActionTable";
 
 interface AccountTableProps {
   data: Account[];
-  actions: ActionProps<Account>[];
+  actions: {
+    onClickEditar: (data: Account) => void;
+    onClickEliminar: (data: Account) => void;
+  };
 }
 
 const AccountTable = ({ data, actions }: AccountTableProps) => {
+  const optionButtons: ActionProps<Account>[] = [
+    {
+      label: "Editar cuenta",
+      icon: EditIcon,
+      color: "info" as const,
+      onClick: (account) => actions.onClickEditar(account),
+    },
+    {
+      label: "Eliminar cuenta",
+      icon: DeleteIcon,
+      color: "error" as const,
+      onClick: (account) => actions.onClickEliminar(account),
+    },
+  ];
+
   return (
     <Table stickyHeader aria-label="sticky table">
       <TableHead>
@@ -53,14 +75,14 @@ const AccountTable = ({ data, actions }: AccountTableProps) => {
               />
             </TableCell>
             <TableCell align="right">
-              <Typography
-                variant="body1"
+              <Chip
+                size="small"
                 color={account.balance >= 0 ? "success" : "error"}
-                sx={{ fontWeight: 600 }}>
-                {formatCurrency(account.balance, account.currency)}
-              </Typography>
+                label={formatCurrency(account.balance, account.currency)}
+                variant="outlined"
+              />
             </TableCell>
-            <ActionTable data={account} actions={actions} />
+            <ActionTable data={account} actions={optionButtons} />
           </TableRow>
         ))}
       </TableBody>
