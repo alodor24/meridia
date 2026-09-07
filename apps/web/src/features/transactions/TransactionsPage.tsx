@@ -36,7 +36,7 @@ import { formatCurrency, formatDate } from "@/utils/format";
 import { deleteTransaction, listTransactions } from "./api";
 import { TransactionFormDialog } from "./components/TransactionFormDialog";
 import { listAccounts } from "@/features/accounts/services/api";
-import { listCategories } from "@/features/categories/api";
+import { listCategories } from "@/features/categories/services/api";
 import CustomTooltip from "@/components/ui/CustomTooltip";
 
 const PAGE_SIZE = 20;

@@ -44,7 +44,7 @@ const AccountsPage = () => {
       label: "Editar cuenta",
       icon: EditIcon,
       color: "info" as const,
-      onClick: (account: Account) => {
+      onClick: (account) => {
         setEditing(account);
         setFormOpen(true);
       },
@@ -53,7 +53,7 @@ const AccountsPage = () => {
       label: "Eliminar cuenta",
       icon: DeleteIcon,
       color: "error" as const,
-      onClick: (account: Account) => {
+      onClick: (account) => {
         setDeletingAccount(account);
       },
     },
