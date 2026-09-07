@@ -1,31 +1,25 @@
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
 import type { Account, AccountType } from "@meridia/shared";
 import { ACCOUNT_TYPE_OPTIONS } from "@/utils/labels";
 import { FormTextField } from "@/components/ui/FormTextField";
 import { FormSelect } from "@/components/ui/FormSelect";
 import { useAsyncAction } from "@/hooks/useAsync";
 import { useUiStore } from "@/stores/uiStore";
-import { createAccount, updateAccount } from "../api";
+import { createAccount, updateAccount } from "../services/api";
+import { validationSchema } from "../validations";
 
 interface FormValues {
   name: string;
   type: AccountType;
   currency: string;
 }
-
-const validationSchema = Yup.object({
-  name: Yup.string().trim().min(1, "El nombre es requerido").max(80, "Demasiado largo").required("El nombre es requerido"),
-  type: Yup.mixed<AccountType>()
-    .oneOf(ACCOUNT_TYPE_OPTIONS.map((o) => o.value))
-    .required("Seleccioná un tipo"),
-  currency: Yup.string().trim().length(3, "Moneda inválida").required("La moneda es requerida"),
-});
 
 export interface AccountFormDialogProps {
   open: boolean;
@@ -35,7 +29,13 @@ export interface AccountFormDialogProps {
   onSaved: () => void;
 }
 
-export const AccountFormDialog = ({ open, account, defaultCurrency, onClose, onSaved }: AccountFormDialogProps) => {
+export const AccountFormDialog = ({
+  open,
+  account,
+  defaultCurrency,
+  onClose,
+  onSaved,
+}: AccountFormDialogProps) => {
   const showSnackbar = useUiStore((s) => s.showSnackbar);
   const { loading, run } = useAsyncAction();
 
@@ -59,7 +59,11 @@ export const AccountFormDialog = ({ open, account, defaultCurrency, onClose, onS
   };
 
   return (
-    <Dialog open={open} onClose={loading ? undefined : onClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={open}
+      onClose={loading ? undefined : onClose}
+      maxWidth="xs"
+      fullWidth>
       <DialogTitle>{account ? "Editar cuenta" : "Nueva cuenta"}</DialogTitle>
       <Formik
         key={account?.id ?? "new"}
@@ -69,15 +73,27 @@ export const AccountFormDialog = ({ open, account, defaultCurrency, onClose, onS
         {() => (
           <Form>
             <DialogContent>
-              <FormTextField name="name" label="Nombre" placeholder="Ej: Banco Santander" />
-              <FormSelect name="type" label="Tipo" options={ACCOUNT_TYPE_OPTIONS} />
+              <FormTextField
+                name="name"
+                label="Nombre"
+                placeholder="Ej: Banco Santander"
+              />
+              <FormSelect
+                name="type"
+                label="Tipo"
+                options={ACCOUNT_TYPE_OPTIONS}
+              />
             </DialogContent>
 
             <DialogActions sx={{ px: 3, pb: 3 }}>
               <Button onClick={onClose} disabled={loading} color="inherit">
                 Cancelar
               </Button>
-              <Button type="submit" variant="contained" loading={loading} loadingPosition="start">
+              <Button
+                type="submit"
+                variant="contained"
+                loading={loading}
+                loadingPosition="start">
                 Guardar
               </Button>
             </DialogActions>
