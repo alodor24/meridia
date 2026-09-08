@@ -16,10 +16,13 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppAboutRouteImport } from './routes/app/about'
 import { Route as AppAccountsRouteImport } from './routes/app/accounts'
+import { Route as AppAnalyticsRouteImport } from './routes/app/analytics'
 import { Route as AppCategoriesRouteImport } from './routes/app/categories'
 import { Route as AppDashboardRouteImport } from './routes/app/dashboard'
 import { Route as AppProfileRouteImport } from './routes/app/profile'
+import { Route as AppReportsRouteImport } from './routes/app/reports'
 import { Route as AppTransactionsRouteImport } from './routes/app/transactions'
 
 const publicRouteRoute = publicRouteRouteImport.update({
@@ -56,9 +59,19 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAboutRoute = AppAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAccountsRoute = AppAccountsRouteImport.update({
   id: '/accounts',
   path: '/accounts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCategoriesRoute = AppCategoriesRouteImport.update({
@@ -76,6 +89,11 @@ const AppProfileRoute = AppProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
+const AppReportsRoute = AppReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppTransactionsRoute = AppTransactionsRouteImport.update({
   id: '/transactions',
   path: '/transactions',
@@ -87,10 +105,13 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/app/about': typeof AppAboutRoute
   '/app/accounts': typeof AppAccountsRoute
+  '/app/analytics': typeof AppAnalyticsRoute
   '/app/categories': typeof AppCategoriesRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/profile': typeof AppProfileRoute
+  '/app/reports': typeof AppReportsRoute
   '/app/transactions': typeof AppTransactionsRoute
   '/': typeof publicIndexRoute
   '/app/': typeof AppIndexRoute
@@ -99,10 +120,13 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/app/about': typeof AppAboutRoute
   '/app/accounts': typeof AppAccountsRoute
+  '/app/analytics': typeof AppAnalyticsRoute
   '/app/categories': typeof AppCategoriesRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/profile': typeof AppProfileRoute
+  '/app/reports': typeof AppReportsRoute
   '/app/transactions': typeof AppTransactionsRoute
   '/': typeof publicIndexRoute
   '/app': typeof AppIndexRoute
@@ -114,10 +138,13 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/app/about': typeof AppAboutRoute
   '/app/accounts': typeof AppAccountsRoute
+  '/app/analytics': typeof AppAnalyticsRoute
   '/app/categories': typeof AppCategoriesRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/profile': typeof AppProfileRoute
+  '/app/reports': typeof AppReportsRoute
   '/app/transactions': typeof AppTransactionsRoute
   '/(public)/': typeof publicIndexRoute
   '/app/': typeof AppIndexRoute
@@ -129,10 +156,13 @@ export interface FileRouteTypes {
     | '/auth'
     | '/login'
     | '/register'
+    | '/app/about'
     | '/app/accounts'
+    | '/app/analytics'
     | '/app/categories'
     | '/app/dashboard'
     | '/app/profile'
+    | '/app/reports'
     | '/app/transactions'
     | '/'
     | '/app/'
@@ -141,10 +171,13 @@ export interface FileRouteTypes {
     | '/auth'
     | '/login'
     | '/register'
+    | '/app/about'
     | '/app/accounts'
+    | '/app/analytics'
     | '/app/categories'
     | '/app/dashboard'
     | '/app/profile'
+    | '/app/reports'
     | '/app/transactions'
     | '/'
     | '/app'
@@ -155,10 +188,13 @@ export interface FileRouteTypes {
     | '/auth'
     | '/login'
     | '/register'
+    | '/app/about'
     | '/app/accounts'
+    | '/app/analytics'
     | '/app/categories'
     | '/app/dashboard'
     | '/app/profile'
+    | '/app/reports'
     | '/app/transactions'
     | '/(public)/'
     | '/app/'
@@ -223,11 +259,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/about': {
+      id: '/app/about'
+      path: '/about'
+      fullPath: '/app/about'
+      preLoaderRoute: typeof AppAboutRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/accounts': {
       id: '/app/accounts'
       path: '/accounts'
       fullPath: '/app/accounts'
       preLoaderRoute: typeof AppAccountsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/analytics': {
+      id: '/app/analytics'
+      path: '/analytics'
+      fullPath: '/app/analytics'
+      preLoaderRoute: typeof AppAnalyticsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/categories': {
@@ -249,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/app/profile'
       preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/reports': {
+      id: '/app/reports'
+      path: '/reports'
+      fullPath: '/app/reports'
+      preLoaderRoute: typeof AppReportsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/transactions': {
@@ -274,19 +331,25 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
+  AppAboutRoute: typeof AppAboutRoute
   AppAccountsRoute: typeof AppAccountsRoute
+  AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppCategoriesRoute: typeof AppCategoriesRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppProfileRoute: typeof AppProfileRoute
+  AppReportsRoute: typeof AppReportsRoute
   AppTransactionsRoute: typeof AppTransactionsRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAboutRoute: AppAboutRoute,
   AppAccountsRoute: AppAccountsRoute,
+  AppAnalyticsRoute: AppAnalyticsRoute,
   AppCategoriesRoute: AppCategoriesRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppProfileRoute: AppProfileRoute,
+  AppReportsRoute: AppReportsRoute,
   AppTransactionsRoute: AppTransactionsRoute,
   AppIndexRoute: AppIndexRoute,
 }
