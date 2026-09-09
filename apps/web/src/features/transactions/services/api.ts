@@ -1,5 +1,6 @@
 import type { Paginated, Transaction, TransactionType } from "@meridia/shared";
 import { http } from "@/services/api/client";
+import { ENDPOINT_ROUTES } from "@/conts";
 
 export interface TransactionFilters {
   from?: string;
@@ -29,13 +30,13 @@ const cleanParams = (filters: TransactionFilters): Record<string, unknown> => {
 };
 
 export const listTransactions = (filters: TransactionFilters = {}) =>
-  http.get<Paginated<Transaction>>("/api/transactions", {
+  http.get<Paginated<Transaction>>(ENDPOINT_ROUTES.TRANSACTIONS, {
     params: cleanParams(filters),
   });
 
 export const createTransaction = async (payload: CreateTransactionPayload) => {
   const result = await http.post<{ transaction: Transaction }>(
-    "/api/transactions",
+    ENDPOINT_ROUTES.TRANSACTIONS,
     payload,
   );
   return result.transaction;
@@ -46,11 +47,11 @@ export const updateTransaction = async (
   payload: Partial<CreateTransactionPayload>,
 ) => {
   const result = await http.patch<{ transaction: Transaction }>(
-    `/api/transactions/${id}`,
+    `${ENDPOINT_ROUTES.TRANSACTIONS}/${id}`,
     payload,
   );
   return result.transaction;
 };
 
 export const deleteTransaction = (id: string) =>
-  http.delete<null>(`/api/transactions/${id}`);
+  http.delete<null>(`${ENDPOINT_ROUTES.TRANSACTIONS}/${id}`);

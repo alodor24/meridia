@@ -65,3 +65,5 @@ export const PRESET_COLORS = [
   "#8e24aa",
   "#6d4c41",
 ];
+
+export const PAGE_SIZE = 20;
