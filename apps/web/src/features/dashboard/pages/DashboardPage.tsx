@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Grid } from "@mui/material";
 import {
-  Wallet as WalletIcon,
-  Balance as BalanceIcon,
+  AccountBalanceWallet as AccountBalanceWalletIcon,
   TrendingDown as TrendDownIcon,
   TrendingUp as TrendUpIcon,
 } from "@mui/icons-material";
@@ -14,16 +13,18 @@ import { useFetch } from "@/hooks/useAsync";
 import { useAuthStore } from "@/stores/authStore";
 import { formatCurrency, formatMonth } from "@/utils/format";
 import { getDashboard } from "../services/api";
-import { ExpensesByCategory } from "../components/ExpensesByCategory";
 import { RecentTransactions } from "../components/RecentTransactions";
 import { MonthSwitcher } from "../components/MonthSwitcher";
 import { monthRangeFor } from "../utils/monthRange";
+import AnalyticsByCategory from "../components/AnalyticsByCategory";
 
 const DashboardPage = () => {
   useDocumentTitle("Dashboard");
   const currency = useAuthStore((s) => s.user?.currency ?? "USD");
   const [anchor, setAnchor] = useState(new Date());
   const [range, setRange] = useState(monthRangeFor(new Date()));
+
+  const month = formatMonth(anchor);
 
   const { data, loading, error, refetch } = useFetch(
     () => getDashboard(range),
@@ -38,7 +39,7 @@ const DashboardPage = () => {
     <>
       <PageHeader
         title="Dashboard"
-        subtitle={`Resumen de ${formatMonth(anchor)}`}
+        subtitle={`Resumen de ${month.charAt(0).toUpperCase() + month.slice(1)}`}
       />
 
       <MonthSwitcher
@@ -49,13 +50,15 @@ const DashboardPage = () => {
         }}
       />
 
-      <Grid container spacing={2} sx={{ mt: 1 }}>
+      <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
+            main
             title="Balance total"
             value={formatCurrency(data.totalBalance, currency)}
-            icon={<WalletIcon />}
+            icon={<AccountBalanceWalletIcon />}
             color={data.totalBalance >= 0 ? "success" : "error"}
+            subtitle="lorem ipsum" // Realizar comparación con mes anterior
           />
         </Grid>
 
@@ -65,6 +68,7 @@ const DashboardPage = () => {
             value={formatCurrency(data.income, currency)}
             icon={<TrendUpIcon />}
             color="success"
+            subtitle="lorem ipsum" // Realizar comparación con mes anterior
           />
         </Grid>
 
@@ -74,6 +78,7 @@ const DashboardPage = () => {
             value={formatCurrency(data.expenses, currency)}
             icon={<TrendDownIcon />}
             color="error"
+            subtitle="lorem ipsum" // Realizar comparación con mes anterior
           />
         </Grid>
 
@@ -81,8 +86,9 @@ const DashboardPage = () => {
           <StatCard
             title="Balance del mes"
             value={formatCurrency(data.periodBalance, currency)}
-            icon={<BalanceIcon />}
+            icon={data.periodBalance >= 0 ? <TrendUpIcon /> : <TrendDownIcon />}
             color={data.periodBalance >= 0 ? "success" : "error"}
+            subtitle="lorem ipsum" // Realizar comparación con mes anterior
           />
         </Grid>
 
@@ -94,10 +100,7 @@ const DashboardPage = () => {
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
-          <ExpensesByCategory
-            items={data.expensesByCategory}
-            currency={currency}
-          />
+          <AnalyticsByCategory data={data} />
         </Grid>
       </Grid>
     </>

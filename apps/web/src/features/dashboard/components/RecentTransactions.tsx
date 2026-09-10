@@ -1,14 +1,10 @@
 import type { Transaction } from "@meridia/shared";
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Link as MuiLink,
-} from "@mui/material";
-import { Link } from "@tanstack/react-router";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import { PATHS } from "@/conts";
 import RowTransaction from "./Transaction";
+import { SHADOW } from "@/theme/globalStyles";
+import { EmptyState } from "@/components/ui/States";
+import CardLink from "./CardLink";
 
 export interface RecentTransactionsProps {
   transactions: Transaction[];
@@ -20,7 +16,7 @@ export const RecentTransactions = ({
   currency,
 }: RecentTransactionsProps) => {
   return (
-    <Card elevation={3} sx={{ height: "100%" }}>
+    <Card sx={{ height: "100%", boxShadow: SHADOW }}>
       <CardContent>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           Últimos movimientos
@@ -45,16 +41,10 @@ export const RecentTransactions = ({
             ))}
           </Box>
         ) : (
-          <Typography variant="body2" color="text.secondary">
-            No hay movimientos aún.
-          </Typography>
+          <EmptyState message=" No hay movimientos aún." />
         )}
 
-        <Box sx={{ mt: 2 }}>
-          <MuiLink component={Link} to={PATHS.TRANSACTIONS} variant="body2">
-            Ver todos los movimientos
-          </MuiLink>
-        </Box>
+        <CardLink label="Ver todos los movimientos" path={PATHS.TRANSACTIONS} />
       </CardContent>
     </Card>
   );

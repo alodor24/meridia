@@ -3,10 +3,12 @@ import { es } from "date-fns/locale";
 import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
+  CalendarMonth as CalendarMonthIcon,
 } from "@mui/icons-material";
 import { IconButton, Stack, Typography } from "@mui/material";
 import type { DashboardRange } from "../services/api";
 import { monthRangeFor } from "../utils/monthRange";
+import { SHADOW } from "@/theme/globalStyles";
 
 export interface MonthSwitcherProps {
   anchor: Date;
@@ -28,15 +30,30 @@ export const MonthSwitcher = ({ anchor, onChange }: MonthSwitcherProps) => {
         maxWidth: 420,
         mt: 2,
       }}>
-      <IconButton aria-label="Mes anterior" onClick={() => shift(-1)}>
+      <IconButton
+        aria-label="Mes anterior"
+        onClick={() => shift(-1)}
+        sx={{
+          bgcolor: "background.paper",
+          boxShadow: SHADOW,
+        }}>
         <ChevronLeftIcon />
       </IconButton>
 
-      <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-        {label}
+      <Typography
+        variant="subtitle1"
+        sx={{ fontWeight: 600, display: "flex", alignItems: "center", gap: 1 }}>
+        <CalendarMonthIcon fontSize="small" />
+        {label.charAt(0).toUpperCase() + label.slice(1)}
       </Typography>
 
-      <IconButton aria-label="Mes siguiente" onClick={() => shift(1)}>
+      <IconButton
+        aria-label="Mes siguiente"
+        onClick={() => shift(1)}
+        sx={{
+          bgcolor: "background.paper",
+          boxShadow: SHADOW,
+        }}>
         <ChevronRightIcon />
       </IconButton>
     </Stack>

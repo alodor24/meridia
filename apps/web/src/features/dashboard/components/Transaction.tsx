@@ -3,17 +3,13 @@ import { formatCurrency, formatDate } from "@/utils/format";
 import type { Transaction } from "@meridia/shared";
 import Avatar from "./Avatar";
 
-interface RecentTransactionProps {
+interface TransactionProps {
   transaction: Transaction;
   currency: string;
   index: number;
 }
 
-const RowTransaction = ({
-  transaction,
-  currency,
-  index,
-}: RecentTransactionProps) => {
+const Transaction = ({ transaction, currency, index }: TransactionProps) => {
   return (
     <Box>
       {index > 0 && <Divider />}
@@ -56,4 +52,4 @@ const RowTransaction = ({
   );
 };
 
-export default RowTransaction;
+export default Transaction;
