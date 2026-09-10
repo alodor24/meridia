@@ -117,6 +117,22 @@ export const revokeRefreshTokenById = async (
   return result.rowCount === 1;
 };
 
+export const deleteRefreshTokenById = async (
+  db: Db,
+  id: string,
+): Promise<boolean> => {
+  const result = await db.query(
+    `
+      DELETE FROM refresh_tokens
+      WHERE id = $1
+        AND revoked_at IS NULL
+    `,
+    [id],
+  );
+
+  return result.rowCount === 1;
+};
+
 export const deleteExpiredRefreshTokensByUser = async (
   db: Db,
   userId: UserId,

@@ -91,12 +91,12 @@ export const refresh = async (refreshToken: string) => {
 
   try {
     const tokens = await withTransaction(async (client) => {
-      const revoked = await authRepository.revokeRefreshTokenById(
+      const deleted = await authRepository.deleteRefreshTokenById(
         client,
         record.id,
       );
 
-      if (!revoked) {
+      if (!deleted) {
         throw new AuthenticationError(
           'Refresh token ya utilizado',
           'INVALID_REFRESH_TOKEN',
