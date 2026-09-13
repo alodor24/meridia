@@ -1,7 +1,14 @@
 import { ReactNode } from "react";
-import { Box, Card, CardContent, Typography } from "@mui/material";
-import { North as NorthIcon, South as SouthIcon } from "@mui/icons-material";
+import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
+import {
+  North as NorthIcon,
+  South as SouthIcon,
+  SyncAlt as SyncAltIcon,
+  VisibilityOff as VisibilityOffIcon,
+  Visibility as VisibilityIcon,
+} from "@mui/icons-material";
 import { SHADOW } from "@/theme/globalStyles";
+import { TrendDirection } from "@/utils/calculatePctChange";
 
 export interface StatCardProps {
   title: string;
@@ -10,6 +17,9 @@ export interface StatCardProps {
   icon?: ReactNode;
   color?: "primary" | "success" | "error" | "warning" | "info";
   main?: boolean;
+  trend?: TrendDirection;
+  amountVisibility: boolean;
+  toggleAmountVisibility: () => void;
 }
 
 const colorMap = {
@@ -20,6 +30,18 @@ const colorMap = {
   info: "info.main",
 };
 
+const trendIconMap = {
+  up: <NorthIcon sx={{ fontSize: 15 }} />,
+  down: <SouthIcon sx={{ fontSize: 15 }} />,
+  neutral: <SyncAltIcon sx={{ fontSize: 15 }} />,
+};
+
+const trendColorMap = {
+  up: "success.main",
+  down: "error.main",
+  neutral: "info.main",
+};
+
 export const StatCard = ({
   title,
   value,
@@ -27,6 +49,9 @@ export const StatCard = ({
   icon,
   color = "primary",
   main = false,
+  trend = "neutral",
+  amountVisibility,
+  toggleAmountVisibility,
 }: StatCardProps) => {
   return (
     <Card
@@ -73,15 +98,25 @@ export const StatCard = ({
           variant="h6"
           component="div"
           sx={{ fontWeight: 700, color: colorMap[color] }}>
-          {value}
+          {amountVisibility ? value : "**********"}{" "}
+          <IconButton
+            aria-label="visibility"
+            color="secondary"
+            size="small"
+            onClick={toggleAmountVisibility}>
+            {amountVisibility ? <VisibilityOffIcon /> : <VisibilityIcon />}
+          </IconButton>
         </Typography>
         {subtitle && (
           <Box sx={{ mt: 1, display: "flex", gap: 0.5 }}>
-            {color === "success" ? (
-              <NorthIcon color={color} sx={{ fontSize: 15 }} />
-            ) : (
-              <SouthIcon color={color} sx={{ fontSize: 15 }} />
-            )}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                color: trendColorMap[trend],
+              }}>
+              {trendIconMap[trend]}
+            </Box>
 
             <Typography
               variant="caption"

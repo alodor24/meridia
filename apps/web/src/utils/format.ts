@@ -1,5 +1,5 @@
 import { es } from "date-fns/locale";
-import { format as dateFnsFormat, isValid, parseISO } from "date-fns";
+import { format as dateFnsFormat, isValid, parse, parseISO, subMonths } from "date-fns";
 
 export const getCurrencySymbol = (currency: string): string => {
   const code = currency.toUpperCase();
@@ -53,3 +53,17 @@ export const formatAmountWithSign = (
   const formatted = formatCurrency(amount, currency);
   return type === "income" ? `+ ${formatted}` : `- ${formatted}`;
 };
+
+export const getPreviousMonthRange = (anchor: Date): { from: string; to: string } => {
+  const prev = subMonths(anchor, 1);
+  const first = new Date(prev.getFullYear(), prev.getMonth(), 1);
+  const last = new Date(prev.getFullYear(), prev.getMonth() + 1, 0);
+  return { from: dateFnsFormat(first, "yyyy-MM-dd"), to: dateFnsFormat(last, "yyyy-MM-dd") };
+};
+
+export const getPreviousMonth = (currentMonth: string): string => {
+  const date = parse(currentMonth, 'MMMM yyyy', new Date(), { locale: es });
+  const prev = subMonths(date, 1);
+  const prevMonthFormatted = dateFnsFormat(prev, 'MMM yyyy', { locale: es });
+  return prevMonthFormatted.charAt(0).toUpperCase() + prevMonthFormatted.slice(1)
+}

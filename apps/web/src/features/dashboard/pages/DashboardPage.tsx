@@ -11,29 +11,58 @@ import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useFetch } from "@/hooks/useAsync";
 import { useAuthStore } from "@/stores/authStore";
-import { formatCurrency, formatMonth } from "@/utils/format";
+import { formatCurrency, formatMonth, getPreviousMonth } from "@/utils/format";
+import { calculatePctChange } from "@/utils/calculatePctChange";
+import { subMonths } from "date-fns";
 import { getDashboard } from "../services/api";
 import { RecentTransactions } from "../components/RecentTransactions";
 import { MonthSwitcher } from "../components/MonthSwitcher";
 import { monthRangeFor } from "../utils/monthRange";
 import AnalyticsByCategory from "../components/AnalyticsByCategory";
+import useAmountVisibility from "../hooks/useAmountVisibility";
 
 const DashboardPage = () => {
   useDocumentTitle("Dashboard");
   const currency = useAuthStore((s) => s.user?.currency ?? "USD");
   const [anchor, setAnchor] = useState(new Date());
   const [range, setRange] = useState(monthRangeFor(new Date()));
+  const { isVisible, toggleVisibility } = useAmountVisibility();
 
   const month = formatMonth(anchor);
+  const prevRange = monthRangeFor(subMonths(anchor, 1));
 
   const { data, loading, error, refetch } = useFetch(
     () => getDashboard(range),
     [range.from, range.to],
   );
 
+  const { data: prevData } = useFetch(
+    () => getDashboard(prevRange),
+    [prevRange.from, prevRange.to],
+  );
+
   if (loading && !data) return <LoadingState />;
   if (error && !data) return <ErrorState message={error} onRetry={refetch} />;
   if (!data) return <EmptyState message="No hay datos para mostrar." />;
+
+  const monthStatCard = ` vs. ${getPreviousMonth(month)}`;
+
+  const totalBalanceChange = calculatePctChange(
+    data.totalBalance,
+    prevData?.totalBalance ?? 0,
+  );
+
+  const incomeChange = calculatePctChange(data.income, prevData?.income ?? 0);
+
+  const expensesChange = calculatePctChange(
+    data.expenses,
+    prevData?.expenses ?? 0,
+  );
+
+  const periodBalanceChange = calculatePctChange(
+    data.periodBalance,
+    prevData?.periodBalance ?? 0,
+  );
 
   return (
     <>
@@ -58,7 +87,10 @@ const DashboardPage = () => {
             value={formatCurrency(data.totalBalance, currency)}
             icon={<AccountBalanceWalletIcon />}
             color={data.totalBalance >= 0 ? "success" : "error"}
-            subtitle="lorem ipsum" // Realizar comparación con mes anterior
+            subtitle={totalBalanceChange.label + monthStatCard}
+            trend={totalBalanceChange.direction}
+            amountVisibility={isVisible}
+            toggleAmountVisibility={toggleVisibility}
           />
         </Grid>
 
@@ -68,7 +100,10 @@ const DashboardPage = () => {
             value={formatCurrency(data.income, currency)}
             icon={<TrendUpIcon />}
             color="success"
-            subtitle="lorem ipsum" // Realizar comparación con mes anterior
+            subtitle={incomeChange.label + monthStatCard}
+            trend={incomeChange.direction}
+            amountVisibility={isVisible}
+            toggleAmountVisibility={toggleVisibility}
           />
         </Grid>
 
@@ -78,7 +113,10 @@ const DashboardPage = () => {
             value={formatCurrency(data.expenses, currency)}
             icon={<TrendDownIcon />}
             color="error"
-            subtitle="lorem ipsum" // Realizar comparación con mes anterior
+            subtitle={expensesChange.label + monthStatCard}
+            trend={expensesChange.direction}
+            amountVisibility={isVisible}
+            toggleAmountVisibility={toggleVisibility}
           />
         </Grid>
 
@@ -88,7 +126,10 @@ const DashboardPage = () => {
             value={formatCurrency(data.periodBalance, currency)}
             icon={data.periodBalance >= 0 ? <TrendUpIcon /> : <TrendDownIcon />}
             color={data.periodBalance >= 0 ? "success" : "error"}
-            subtitle="lorem ipsum" // Realizar comparación con mes anterior
+            subtitle={periodBalanceChange.label + monthStatCard}
+            trend={periodBalanceChange.direction}
+            amountVisibility={isVisible}
+            toggleAmountVisibility={toggleVisibility}
           />
         </Grid>
 
