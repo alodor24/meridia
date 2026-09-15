@@ -10,6 +10,12 @@ import { useUiStore } from "@/stores/uiStore";
 import { deleteCategory, listCategories } from "../services/api";
 import { CategoryFormDialog } from "../components/CategoryFormDialog";
 import CategoryTable from "../components/CategoryTable";
+import CategoryCard from "../components/CategoryCard";
+import {
+  Category as CategoryIcon,
+  TrendingDown as TrendDownIcon,
+  TrendingUp as TrendUpIcon,
+} from "@mui/icons-material";
 
 const CategoriesPage = () => {
   useDocumentTitle("Categorías");
@@ -69,22 +75,51 @@ const CategoriesPage = () => {
       )}
 
       {data && (
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <CategoryTable
-              categories={expense}
-              title="Gastos"
-              actions={actions}
-            />
+        <>
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <CategoryCard
+                icon={<TrendDownIcon />}
+                total={expense.length}
+                subtitle="Categorías de gastos"
+                color="error.main"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <CategoryCard
+                icon={<TrendUpIcon />}
+                total={income.length}
+                subtitle="Categorías de ingresos"
+                color="success.main"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <CategoryCard
+                icon={<CategoryIcon />}
+                total={data.length}
+                subtitle="Categorías totales"
+                color="primary.main"
+              />
+            </Grid>
           </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <CategoryTable
-              categories={income}
-              title="Ingresos"
-              actions={actions}
-            />
+
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <CategoryTable
+                categories={expense}
+                title="Gastos"
+                actions={actions}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <CategoryTable
+                categories={income}
+                title="Ingresos"
+                actions={actions}
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        </>
       )}
 
       <CategoryFormDialog
