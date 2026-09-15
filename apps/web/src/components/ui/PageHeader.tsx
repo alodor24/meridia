@@ -1,5 +1,5 @@
-import { Box, Button, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, Typography } from "@mui/material";
+import CustomButtom from "./CustomButtom";
 
 export interface PageHeaderProps {
   title: string;
@@ -35,16 +35,7 @@ export const PageHeader = ({
         )}
       </Box>
       {actionLabel && onAction && (
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={onAction}
-          sx={{
-            background: (theme) =>
-              `linear-gradient(45deg,${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 100%)`,
-          }}>
-          {actionLabel}
-        </Button>
+        <CustomButtom onAction={onAction}>{actionLabel}</CustomButtom>
       )}
     </Box>
   );
