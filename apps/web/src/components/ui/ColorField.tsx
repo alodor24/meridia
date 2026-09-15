@@ -1,6 +1,7 @@
 import { Box, FormHelperText, Typography } from "@mui/material";
 import { PRESET_COLORS } from "@/conts";
 import { useField } from "formik";
+import CustomTooltip from "./CustomTooltip";
 
 export const ColorField = ({
   name,
@@ -54,42 +55,42 @@ export const ColorField = ({
             />
           );
         })}
-        <Box
-          component="label"
-          sx={{
-            width: 28,
-            height: 28,
-            borderRadius: "50%",
-            border: 1,
-            borderColor: "divider",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            bgcolor: "background.paper",
-          }}
-          title="Color personalizado">
-          <input
-            type="color"
-            value={field.value || "#607d8b"}
-            onChange={(e) => helpers.setValue(e.target.value)}
-            style={{
-              width: 0,
-              height: 0,
-              border: "none",
-              opacity: 0,
-              position: "absolute",
-            }}
-          />
+        <CustomTooltip title="Personalizar color">
           <Box
             sx={{
-              width: 16,
-              height: 16,
+              width: 28,
+              height: 28,
               borderRadius: "50%",
-              bgcolor: field.value || "#607d8b",
-            }}
-          />
-        </Box>
+              border: 1,
+              borderColor: "divider",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              bgcolor: "background.paper",
+            }}>
+            <input
+              type="color"
+              value={field.value || "#607d8b"}
+              onChange={(e) => helpers.setValue(e.target.value)}
+              style={{
+                width: 0,
+                height: 0,
+                border: "none",
+                opacity: 0,
+                position: "absolute",
+              }}
+            />
+            <Box
+              sx={{
+                width: 16,
+                height: 16,
+                borderRadius: "50%",
+                bgcolor: field.value || "#607d8b",
+              }}
+            />
+          </Box>
+        </CustomTooltip>
       </Box>
       {showError && <FormHelperText error>{meta.error}</FormHelperText>}
     </Box>
