@@ -1,6 +1,7 @@
 import {
   Box,
   Chip,
+  LinearProgress,
   Stack,
   Table,
   TableBody,
@@ -28,6 +29,8 @@ interface AccountTableProps {
 }
 
 const AccountTable = ({ data, actions }: AccountTableProps) => {
+  const total = data.reduce((sum, account) => sum + account.balance, 0);
+
   const optionButtons: ActionProps<Account>[] = [
     {
       label: "Editar cuenta",
@@ -49,6 +52,7 @@ const AccountTable = ({ data, actions }: AccountTableProps) => {
         <TableRow>
           <TableCell>Cuenta</TableCell>
           <TableCell>Tipo</TableCell>
+          <TableCell></TableCell>
           <TableCell align="right">Balance</TableCell>
           <TableCell align="right">Acciones</TableCell>
         </TableRow>
@@ -73,6 +77,32 @@ const AccountTable = ({ data, actions }: AccountTableProps) => {
                 label={ACCOUNT_TYPE_LABELS[account.type]}
                 variant="outlined"
               />
+            </TableCell>
+            <TableCell>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 1,
+                }}>
+                <LinearProgress
+                  variant="determinate"
+                  value={total > 0 ? (account.balance / total) * 100 : 0}
+                  sx={{
+                    height: 6,
+                    width: 150,
+                    borderRadius: 4,
+                    bgcolor: "divider",
+                    "& .MuiLinearProgress-bar": { bgcolor: "success.main" },
+                  }}
+                />
+                <Typography variant="caption">
+                  {(total > 0
+                    ? Math.round((account.balance / total) * 100)
+                    : 0) + "%"}
+                </Typography>
+              </Box>
             </TableCell>
             <TableCell align="right">
               <Chip
