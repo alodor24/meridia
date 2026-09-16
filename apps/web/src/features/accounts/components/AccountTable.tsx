@@ -14,6 +14,11 @@ import {
   AccountBalance as AccountIcon,
   Delete as DeleteIcon,
   Edit as EditIcon,
+  AccountBalanceWallet as AccountBalanceWalletIcon,
+  CreditCard as CreditCardIcon,
+  Savings as SavingsIcon,
+  Money as MoneyIcon,
+  Timeline as TimelineIcon,
 } from "@mui/icons-material";
 import { formatCurrency, getCurrencySymbol } from "@/utils/format";
 import { ACCOUNT_TYPE_LABELS } from "@/utils/labels";
@@ -62,7 +67,25 @@ const AccountTable = ({ data, actions }: AccountTableProps) => {
           <TableRow key={account.id} hover>
             <TableCell>
               <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-                <AccountIcon color="primary" />
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "primary.main",
+                    p: 1.5,
+                    borderRadius: 10,
+                    bgcolor: "rgba(5,6,7,.1)",
+                  }}>
+                  {account.type === "cash" && <MoneyIcon color="success" />}
+                  {account.type === "bank" && <AccountIcon />}
+                  {account.type === "credit_card" && <CreditCardIcon />}
+                  {account.type === "savings" && <SavingsIcon />}
+                  {account.type === "investment" && <TimelineIcon />}
+                  {account.type === "wallet" && (
+                    <AccountBalanceWalletIcon color="secondary" />
+                  )}
+                </Box>
+
                 <Box>
                   <Typography variant="body1">{account.name}</Typography>
                   <Typography variant="caption" color="text.secondary">
