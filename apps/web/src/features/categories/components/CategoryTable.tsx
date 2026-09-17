@@ -48,7 +48,7 @@ const CategoryTable = ({ categories, title, actions }: CategoryTableProps) => {
           direction="row"
           spacing={1}
           sx={{ alignItems: "center", justifyContent: "space-between", mb: 1 }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
             {title}
           </Typography>
         </Stack>
