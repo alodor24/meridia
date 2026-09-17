@@ -67,3 +67,23 @@ export const PRESET_COLORS = [
 ];
 
 export const PAGE_SIZE = 20;
+
+export const DONOUT_OPTIONS = {
+  responsive: true,
+  maintainAspectRatio: false,
+  aspectRatio: 1,
+  cutout: "65%",
+  layout: {
+    padding: {
+      top: 20,
+      right: 20,
+      bottom: 20,
+      left: 20,
+    },
+  },
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+};

@@ -17,6 +17,9 @@ const labels = ["Gastos por categoría", "Ingresos por categoría"];
 const AnalyticsByCategory = ({ data }: AnalyticsByCategoryProps) => {
   const currency = useAuthStore((s) => s.user?.currency ?? "USD");
 
+  // TODO: eliminar el console.log
+  console.log(data);
+
   if (!data) return null;
 
   return (
