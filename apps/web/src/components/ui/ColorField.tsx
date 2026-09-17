@@ -57,6 +57,7 @@ export const ColorField = ({
         })}
         <CustomTooltip title="Personalizar color">
           <Box
+            component="label"
             sx={{
               width: 28,
               height: 28,
