@@ -58,3 +58,21 @@ export const getExpensesByCategory = async (
   );
   return result.rows;
 };
+
+export const getIncomesByCategory = async (
+  db: Db,
+  userId: UserId,
+  from: string,
+  to: string,
+): Promise<CategoryTotalRow[]> => {
+  const result = await db.query<CategoryTotalRow>(
+    `SELECT c.id AS category_id, c.name, c.color, SUM(t.amount)::float8 AS total
+     FROM transactions t
+     JOIN categories c ON c.id = t.category_id
+     WHERE t.user_id = $1 AND t.type = 'income' AND t.date BETWEEN $2 AND $3
+     GROUP BY c.id
+     ORDER BY total DESC`,
+    [userId, from, to],
+  );
+  return result.rows;
+};

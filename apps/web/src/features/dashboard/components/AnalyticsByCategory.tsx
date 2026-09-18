@@ -17,9 +17,6 @@ const labels = ["Gastos por categoría", "Ingresos por categoría"];
 const AnalyticsByCategory = ({ data }: AnalyticsByCategoryProps) => {
   const currency = useAuthStore((s) => s.user?.currency ?? "USD");
 
-  // TODO: eliminar el console.log
-  console.log(data);
-
   if (!data) return null;
 
   return (
@@ -30,7 +27,10 @@ const AnalyticsByCategory = ({ data }: AnalyticsByCategoryProps) => {
             items={data.expensesByCategory}
             currency={currency}
           />
-          <IncomesByCategory />
+          <IncomesByCategory
+            items={data.incomesByCategory}
+            currency={currency}
+          />
         </CustomTabs>
 
         <Divider />

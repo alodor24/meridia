@@ -64,6 +64,12 @@ export interface DashboardSummary {
     color: string;
     total: number;
   }>;
+  incomesByCategory: Array<{
+    categoryId: CategoryId;
+    name: string;
+    color: string;
+    total: number;
+  }>;
 }
 
 export interface Paginated<T> {

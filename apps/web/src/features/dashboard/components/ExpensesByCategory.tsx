@@ -11,14 +11,14 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { DONOUT_OPTIONS } from "@/conts";
 
-export interface ExpensesByCategoryItem {
+interface ExpensesByCategoryItem {
   categoryId: string;
   name: string;
   color: string;
   total: number;
 }
 
-export interface ExpensesByCategoryProps {
+interface ExpensesByCategoryProps {
   items: ExpensesByCategoryItem[];
   currency: string;
 }

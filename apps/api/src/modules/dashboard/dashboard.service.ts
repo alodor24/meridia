@@ -21,10 +21,11 @@ export const getDashboard = async (userId: UserId, filters: DashboardFilters) =>
   const { from, to } = filters.from && filters.to ? { from: filters.from, to: filters.to } : defaultRange();
   const limit = filters.limit ?? 8;
 
-  const [totalBalance, period, expensesByCategory, lastTransactions] = await Promise.all([
+  const [totalBalance, period, expensesByCategory, incomesByCategory, lastTransactions] = await Promise.all([
     dashboardRepository.getTotalBalance(pool, userId),
     dashboardRepository.getPeriodSummary(pool, userId, from, to),
     dashboardRepository.getExpensesByCategory(pool, userId, from, to),
+    dashboardRepository.getIncomesByCategory(pool, userId, from, to),
     transactionsRepository.list(pool, userId, { limit, offset: 0 }),
   ]);
 
@@ -35,6 +36,12 @@ export const getDashboard = async (userId: UserId, filters: DashboardFilters) =>
     periodBalance: period.income - period.expenses,
     lastTransactions: lastTransactions.map(transactionsRepository.mapTransactionRow),
     expensesByCategory: expensesByCategory.map((row) => ({
+      categoryId: row.category_id as CategoryId,
+      name: row.name,
+      color: row.color,
+      total: row.total,
+    })),
+    incomesByCategory: incomesByCategory.map((row) => ({
       categoryId: row.category_id as CategoryId,
       name: row.name,
       color: row.color,
