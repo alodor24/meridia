@@ -20,6 +20,7 @@ import { MonthSwitcher } from "../components/MonthSwitcher";
 import { monthRangeFor } from "../utils/monthRange";
 import AnalyticsByCategory from "../components/AnalyticsByCategory";
 import useAmountVisibility from "../hooks/useAmountVisibility";
+import MonthSummary from "../components/MonthSummary";
 
 const DashboardPage = () => {
   useDocumentTitle("Dashboard");
@@ -142,6 +143,10 @@ const DashboardPage = () => {
 
         <Grid size={{ xs: 12, md: 6 }}>
           <AnalyticsByCategory data={data} />
+        </Grid>
+
+        <Grid size={{ xs: 12 }}>
+          <MonthSummary items={data.monthSummary} currency={currency} />
         </Grid>
       </Grid>
     </>

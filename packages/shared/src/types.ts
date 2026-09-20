@@ -70,6 +70,12 @@ export interface DashboardSummary {
     color: string;
     total: number;
   }>;
+  monthSummary: Array<{
+    day: number;
+    income: number;
+    expenses: number;
+    balance: number;
+  }>;
 }
 
 export interface Paginated<T> {

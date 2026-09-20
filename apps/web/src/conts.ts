@@ -1,4 +1,5 @@
 import {Category, Dashboard, Receipt, Wallet, Analytics, Article} from "@mui/icons-material";
+import { TooltipItem } from "chart.js";
 
 export const PATHS = {
   HOME: "/",
@@ -84,6 +85,36 @@ export const DONOUT_OPTIONS = {
   plugins: {
     legend: {
       display: false,
+    },
+  },
+};
+
+export const LINE_OPTIONS = {
+  responsive: true,
+  maintainAspectRatio: false,
+  aspectRatio: 1,
+  layout: {
+    padding: {
+      top: 0,
+      right: 20,
+      bottom: 10,
+      left: 10,
+    },
+  },
+  plugins: {
+    legend: {
+      display: false,
+    },
+    title: {
+      display: true,
+    },
+    tooltip: {
+      callbacks: {
+        title: (tooltipItems: TooltipItem<"line">[]) => {
+          const day = tooltipItems[0]?.label;
+          return `Día ${day}`;
+        },
+      },
     },
   },
 };
