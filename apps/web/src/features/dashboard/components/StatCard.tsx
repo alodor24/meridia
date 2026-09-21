@@ -9,6 +9,7 @@ import {
 } from "@mui/icons-material";
 import { SHADOW } from "@/theme/globalStyles";
 import { TrendDirection } from "@/utils/calculatePctChange";
+import CurrencyDisplay from "./CurrencyDisplay";
 
 export interface StatCardProps {
   title: string;
@@ -98,7 +99,7 @@ export const StatCard = ({
           variant="h6"
           component="div"
           sx={{ fontWeight: 700, color: colorMap[color] }}>
-          {amountVisibility ? value : "**********"}{" "}
+          {amountVisibility ? <CurrencyDisplay value={value} /> : "**********"}{" "}
           <IconButton
             aria-label="visibility"
             color="secondary"
