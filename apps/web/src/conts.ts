@@ -122,7 +122,7 @@ export const LINE_OPTIONS = {
       ticks: {
         autoSkip: false,
 
-        callback: function (value: unknown, index: number) {
+        callback: (value: unknown, index: number) => {
           const day = index + 1;
           if (day === 1 || day % 5 === 0 ) return day;
 
