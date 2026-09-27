@@ -7,6 +7,7 @@ export interface CategoryRow {
   name: string;
   type: TransactionType;
   color: string;
+  icon?: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -15,12 +16,14 @@ export interface CreateCategoryInput {
   name: string;
   type: TransactionType;
   color?: string;
+  icon?: string;
 }
 
 export interface UpdateCategoryInput {
   name?: string;
   type?: TransactionType;
   color?: string;
+  icon?: string;
 }
 
 export const mapCategoryRow = (row: CategoryRow): Category => ({
@@ -29,6 +32,7 @@ export const mapCategoryRow = (row: CategoryRow): Category => ({
   name: row.name,
   type: row.type,
   color: row.color,
+  icon: row.icon,
   createdAt: row.created_at.toISOString(),
   updatedAt: row.updated_at.toISOString(),
 });
@@ -67,10 +71,10 @@ export const create = async (
   input: CreateCategoryInput,
 ): Promise<CategoryRow> => {
   const result = await db.query<CategoryRow>(
-    `INSERT INTO categories (user_id, name, type, color)
-     VALUES ($1, $2, $3, $4)
+    `INSERT INTO categories (user_id, name, type, color, icon)
+     VALUES ($1, $2, $3, $4, $5)
      RETURNING *`,
-    [userId, input.name, input.type, input.color ?? '#607d8b'],
+    [userId, input.name, input.type, input.color ?? '#607d8b', input.icon],
   );
   return result.rows[0]!;
 };
@@ -94,6 +98,10 @@ export const update = async (
   if (input.color !== undefined) {
     values.push(input.color);
     fields.push(`color = $${values.length}`);
+  }
+  if (input.icon !== undefined) {
+    values.push(input.icon);
+    fields.push(`icon = $${values.length}`);
   }
   if (fields.length === 0) return undefined;
 

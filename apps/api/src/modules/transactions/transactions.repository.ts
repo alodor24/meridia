@@ -16,6 +16,7 @@ export interface TransactionRow {
   account_name?: string;
   category_name?: string;
   category_color?: string;
+  category_icon?: string;
 }
 
 export interface CreateTransactionInput {
@@ -48,6 +49,7 @@ export const mapTransactionRow = (row: TransactionRow): Transaction => ({
   accountName: row.account_name,
   categoryName: row.category_name,
   categoryColor: row.category_color,
+  categoryIcon: row.category_icon,
   createdAt: row.created_at.toISOString(),
   updatedAt: row.updated_at.toISOString(),
 });
@@ -58,7 +60,8 @@ const TRANSACTION_COLUMNS = `
   t.created_at, t.updated_at,
   a.name AS account_name,
   c.name AS category_name,
-  c.color AS category_color
+  c.color AS category_color,
+  c.icon AS category_icon
 `;
 
 export const list = async (

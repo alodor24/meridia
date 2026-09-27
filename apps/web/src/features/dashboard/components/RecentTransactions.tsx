@@ -5,6 +5,7 @@ import RowTransaction from "./Transaction";
 import { SHADOW } from "@/theme/globalStyles";
 import { EmptyState } from "@/components/ui/States";
 import CardLink from "./CardLink";
+import getCategoryIcon from "@/utils/getCategoryIcon";
 
 export interface RecentTransactionsProps {
   transactions: Transaction[];
@@ -31,14 +32,27 @@ export const RecentTransactions = ({
               px: 2,
               backgroundColor: "background.paper",
             }}>
-            {transactions.map((transaction, index) => (
-              <RowTransaction
-                key={transaction.id}
-                transaction={transaction}
-                currency={currency}
-                index={index}
-              />
-            ))}
+            {transactions.map((transaction, index) => {
+              const Icon = transaction.categoryIcon
+                ? getCategoryIcon(transaction.categoryIcon)
+                : undefined;
+
+              return (
+                <RowTransaction
+                  key={transaction.id}
+                  transaction={transaction}
+                  currency={currency}
+                  index={index}
+                  icon={
+                    Icon ? (
+                      <Icon style={{ fontSize: 16 }} />
+                    ) : (
+                      transaction.categoryName?.charAt(0)
+                    )
+                  }
+                />
+              );
+            })}
           </Box>
         ) : (
           <EmptyState message=" No hay movimientos aún." />

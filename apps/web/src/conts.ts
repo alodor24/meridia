@@ -31,6 +31,7 @@ export const ENDPOINT_ROUTES = {
   DASHBOARD: "/api/dashboard",
   ACCOUNTS: "/api/accounts",
   TRANSACTIONS: "/api/transactions",
+  CATEGORIES: "/api/categories",
 };
 
 export const NAV_LINKS = [

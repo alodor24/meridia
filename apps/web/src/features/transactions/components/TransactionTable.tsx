@@ -19,6 +19,7 @@ import { formatCurrency, formatDate } from "@/utils/format";
 import ActionTable, { ActionProps } from "@/components/ui/ActionTable";
 import { AccountId, Transaction } from "@meridia/shared";
 import { PAGE_SIZE } from "@/conts";
+import getCategoryIcon from "@/utils/getCategoryIcon";
 
 interface TransactionTableProps {
   actions: {
@@ -69,47 +70,58 @@ const TransactionTable = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((transaction) => (
-                <TableRow key={transaction.id} hover>
-                  <TableCell>{formatDate(transaction.date)}</TableCell>
-                  <TableCell>
-                    <Stack
-                      direction="row"
-                      spacing={1}
-                      sx={{ alignItems: "center" }}>
-                      <Avatar
-                        sx={{
-                          width: 22,
-                          height: 22,
-                          bgcolor: transaction.categoryColor ?? "#607d8b",
-                          color: "white",
-                          fontSize: 11,
-                        }}>
-                        {transaction.categoryName?.charAt(0) ?? "?"}
-                      </Avatar>
-                      <Typography variant="body2">
-                        {transaction.categoryName}
-                      </Typography>
-                    </Stack>
-                  </TableCell>
-                  <TableCell>{transaction.accountName}</TableCell>
-                  <TableCell>{transaction.note ?? ""}</TableCell>
-                  <TableCell align="right">
-                    <Chip
-                      size="small"
-                      label={formatCurrency(
-                        transaction.amount,
-                        accountsByCurrency.get(transaction.accountId) ?? "USD",
-                      )}
-                      color={
-                        transaction.type === "income" ? "success" : "error"
-                      }
-                      variant="outlined"
-                    />
-                  </TableCell>
-                  <ActionTable data={transaction} actions={optionButtons} />
-                </TableRow>
-              ))}
+              {items.map((transaction) => {
+                const Icon = transaction.categoryIcon
+                  ? getCategoryIcon(transaction.categoryIcon)
+                  : undefined;
+
+                return (
+                  <TableRow key={transaction.id} hover>
+                    <TableCell>{formatDate(transaction.date)}</TableCell>
+                    <TableCell>
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{ alignItems: "center" }}>
+                        <Avatar
+                          sx={{
+                            width: 24,
+                            height: 24,
+                            bgcolor: transaction.categoryColor ?? "#607d8b",
+                            color: "white",
+                            fontSize: 11,
+                          }}>
+                          {Icon ? (
+                            <Icon style={{ fontSize: 13 }} />
+                          ) : (
+                            transaction.categoryName?.charAt(0)
+                          )}
+                        </Avatar>
+                        <Typography variant="body2">
+                          {transaction.categoryName}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell>{transaction.accountName}</TableCell>
+                    <TableCell>{transaction.note ?? ""}</TableCell>
+                    <TableCell align="right">
+                      <Chip
+                        size="small"
+                        label={formatCurrency(
+                          transaction.amount,
+                          accountsByCurrency.get(transaction.accountId) ??
+                            "USD",
+                        )}
+                        color={
+                          transaction.type === "income" ? "success" : "error"
+                        }
+                        variant="outlined"
+                      />
+                    </TableCell>
+                    <ActionTable data={transaction} actions={optionButtons} />
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </Box>

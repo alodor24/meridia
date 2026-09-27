@@ -32,6 +32,7 @@ export interface Category {
   name: string;
   type: TransactionType;
   color: string;
+  icon?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -48,6 +49,7 @@ export interface Transaction {
   accountName?: string;
   categoryName?: string;
   categoryColor?: string;
+  categoryIcon?: string;
   createdAt: string;
   updatedAt: string;
 }

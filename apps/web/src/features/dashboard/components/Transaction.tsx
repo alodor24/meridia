@@ -7,9 +7,15 @@ interface TransactionProps {
   transaction: Transaction;
   currency: string;
   index: number;
+  icon: React.ReactNode;
 }
 
-const Transaction = ({ transaction, currency, index }: TransactionProps) => {
+const Transaction = ({
+  transaction,
+  currency,
+  index,
+  icon,
+}: TransactionProps) => {
   return (
     <Box>
       {index > 0 && <Divider />}
@@ -25,10 +31,7 @@ const Transaction = ({ transaction, currency, index }: TransactionProps) => {
           direction="row"
           spacing={1.5}
           sx={{ alignItems: "center", minWidth: 0 }}>
-          <Avatar
-            categoryColor={transaction.categoryColor}
-            categoryName={transaction.categoryName}
-          />
+          <Avatar color={transaction.categoryColor} icon={icon} />
 
           <Stack sx={{ minWidth: 0 }}>
             <Typography variant="body2" noWrap>

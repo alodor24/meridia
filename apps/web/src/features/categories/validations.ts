@@ -9,8 +9,9 @@ export const validationSchema = Yup.object({
     .required("El nombre es requerido"),
   type: Yup.mixed<TransactionType>()
     .oneOf(["income", "expense"])
-    .required("Seleccioná un tipo"),
+    .required("Selecciona un tipo"),
   color: Yup.string()
     .matches(/^#[0-9a-fA-F]{6}$/, "Color inválido")
-    .required("Elegí un color"),
+    .required("Elige un color"),
+  icon: Yup.string().matches(/^[A-Za-z0-9_]+$/, "Icono inválido").optional(),
 });

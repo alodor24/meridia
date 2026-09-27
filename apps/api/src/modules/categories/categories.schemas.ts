@@ -15,6 +15,7 @@ export const createCategorySchema = z.object({
     .trim()
     .regex(hexColor, 'Color inválido (usa formato #RRGGBB)')
     .optional(),
+  icon: z.string().optional(),
 });
 
 export const updateCategorySchema = createCategorySchema

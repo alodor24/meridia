@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 import { SHADOW } from "@/theme/globalStyles";
+import getCategoryIcon from "@/utils/getCategoryIcon";
 
 interface CategoryTableProps {
   categories: Category[];
@@ -69,29 +70,41 @@ const CategoryTable = ({ categories, title, actions }: CategoryTableProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {categories.map((category) => (
-                  <TableRow key={category.id} hover>
-                    <TableCell>
-                      <Stack
-                        direction="row"
-                        spacing={1}
-                        sx={{ alignItems: "center" }}>
-                        <Avatar
-                          sx={{
-                            width: 24,
-                            height: 24,
-                            bgcolor: category.color,
-                            fontSize: 12,
-                            color: "primary.contrastText",
-                          }}>
-                          {category.name.charAt(0)}
-                        </Avatar>
-                        <Typography variant="body1">{category.name}</Typography>
-                      </Stack>
-                    </TableCell>
-                    <ActionTable data={category} actions={optionButtons} />
-                  </TableRow>
-                ))}
+                {categories.map((category) => {
+                  const Icon = category.icon
+                    ? getCategoryIcon(category.icon)
+                    : undefined;
+
+                  return (
+                    <TableRow key={category.id} hover>
+                      <TableCell>
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          sx={{ alignItems: "center" }}>
+                          <Avatar
+                            sx={{
+                              width: 24,
+                              height: 24,
+                              bgcolor: category.color,
+                              fontSize: 12,
+                              color: "primary.contrastText",
+                            }}>
+                            {Icon ? (
+                              <Icon style={{ fontSize: 13 }} />
+                            ) : (
+                              category.name.charAt(0)
+                            )}
+                          </Avatar>
+                          <Typography variant="body1">
+                            {category.name}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                      <ActionTable data={category} actions={optionButtons} />
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </Box>
