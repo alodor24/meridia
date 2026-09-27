@@ -23,8 +23,6 @@ import {
   Transaction,
   TransactionType,
 } from "@meridia/shared";
-import CashInAudio from "../../../assets/sounds/cashin.wav";
-import CashOutAudio from "../../../assets/sounds/cashout.wav";
 
 interface FormValues {
   accountId: string;
@@ -52,9 +50,6 @@ const TransactionForm = ({
 }: TransactionFormProps) => {
   const showSnackbar = useUiStore((s) => s.showSnackbar);
   const { loading, run } = useAsyncAction();
-
-  const cashInAudio = new Audio(CashInAudio);
-  const cashOutAudio = new Audio(CashOutAudio);
 
   const initialValues: FormValues = transaction
     ? {
@@ -89,7 +84,6 @@ const TransactionForm = ({
         return "Movimiento actualizado";
       }
       await createTransaction(payload);
-      (values.type === "income" ? cashInAudio : cashOutAudio).play();
       return "Movimiento creado";
     });
     if (result) {
