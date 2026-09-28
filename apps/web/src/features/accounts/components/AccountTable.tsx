@@ -74,7 +74,7 @@ const AccountTable = ({ data, actions }: AccountTableProps) => {
                     color: "primary.main",
                     p: 1.5,
                     borderRadius: 10,
-                    bgcolor: "rgba(5,6,7,.1)",
+                    bgcolor: "background.default",
                   }}>
                   {account.type === "cash" && <MoneyIcon color="success" />}
                   {account.type === "bank" && <AccountIcon />}

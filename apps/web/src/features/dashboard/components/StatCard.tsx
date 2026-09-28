@@ -85,7 +85,7 @@ export const StatCard = ({
                 alignItems: "center",
                 justifyContent: "center",
                 color: () => (main ? "#cfd8dc" : colorMap[color]),
-                bgcolor: "rgba(5,6,7,.1)",
+                bgcolor: () => (main ? "rgba(5,6,7,.1)" : "background.default"),
                 width: 34,
                 height: 34,
                 borderRadius: 1,

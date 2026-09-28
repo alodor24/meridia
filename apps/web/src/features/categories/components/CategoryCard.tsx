@@ -20,7 +20,7 @@ const CategoryCard = ({ icon, total, subtitle, color }: CategoryCardProps) => {
               color: color,
               p: 1.5,
               borderRadius: 10,
-              bgcolor: "rgba(5,6,7,.1)",
+              bgcolor: "background.default",
             }}>
             {icon}
           </Box>
