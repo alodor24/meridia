@@ -26,6 +26,7 @@ export const RecentTransactions = ({
         {transactions.length > 0 ? (
           <Box
             sx={{
+              minHeight: 400,
               maxHeight: 400,
               overflow: "hidden",
               overflowY: "auto",
@@ -55,7 +56,9 @@ export const RecentTransactions = ({
             })}
           </Box>
         ) : (
-          <EmptyState message=" No hay movimientos aún." />
+          <Box sx={{ minHeight: 400 }}>
+            <EmptyState message=" No hay movimientos aún." />
+          </Box>
         )}
 
         <CardLink label="Ver todos los movimientos" path={PATHS.TRANSACTIONS} />
