@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { Doughnut } from "react-chartjs-2";
 
@@ -29,6 +30,7 @@ const IncomesByCategory = ({
   items = [],
   currency,
 }: IncomesByCategoryProps) => {
+  const theme = useTheme();
   const total = items.reduce((sum, item) => sum + item.total, 0);
 
   const chartData = {
@@ -38,7 +40,8 @@ const IncomesByCategory = ({
         label: `Total ${currency}`,
         data: items.map((item) => item.total),
         backgroundColor: items.map((item) => item.color),
-        borderWidth: 0,
+        borderWidth: 2,
+        borderColor: theme.palette.background.paper,
         hoverOffset: 10,
       },
     ],

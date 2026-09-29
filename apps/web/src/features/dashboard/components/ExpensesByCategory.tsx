@@ -5,6 +5,7 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { EmptyState } from "@/components/ui/States";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -29,6 +30,7 @@ export const ExpensesByCategory = ({
   items = [],
   currency,
 }: ExpensesByCategoryProps) => {
+  const theme = useTheme();
   const total = items.reduce((sum, item) => sum + item.total, 0);
 
   const chartData = {
@@ -38,7 +40,8 @@ export const ExpensesByCategory = ({
         label: `Total ${currency}`,
         data: items.map((item) => item.total),
         backgroundColor: items.map((item) => item.color),
-        borderWidth: 0,
+        borderWidth: 2,
+        borderColor: theme.palette.background.paper,
         hoverOffset: 10,
       },
     ],
