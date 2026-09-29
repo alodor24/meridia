@@ -167,13 +167,13 @@ export const createDefaultCategories = async (db: Db, userId: UserId): Promise<v
   const placeholders: string[] = [];
 
   DEFAULT_CATEGORIES.forEach((category, index) => {
-    const base = index * 4;
-    placeholders.push(`($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4})`);
-    values.push(userId, category.name, category.type, category.color);
+    const base = index * 5;
+    placeholders.push(`($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4}, $${base + 5})`);
+    values.push(userId, category.name, category.type, category.color, category.icon);
   });
 
   await db.query(
-    `INSERT INTO categories (user_id, name, type, color)
+    `INSERT INTO categories (user_id, name, type, color, icon)
      VALUES ${placeholders.join(', ')}`,
     values,
   );
