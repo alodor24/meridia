@@ -4,6 +4,7 @@ CREATE TABLE categories (
   name TEXT NOT NULL,
   type TEXT NOT NULL CHECK (type IN ('income', 'expense')),
   color TEXT NOT NULL DEFAULT '#607d8b',
+  icon TEXT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   CONSTRAINT uq_categories_user_name_type UNIQUE (user_id, name, type)
