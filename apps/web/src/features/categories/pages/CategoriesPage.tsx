@@ -59,7 +59,7 @@ const CategoriesPage = () => {
     <>
       <PageHeader
         title="Categorías"
-        subtitle="Organiza tus movimientos por categorías de ingresos y gastos"
+        subtitle="Organiza tus movimientos por categorías de ingresos y gastos."
         actionLabel="Nueva categoría"
         onAction={() => {
           setEditing(null);

@@ -13,7 +13,7 @@ const ProfilePage = () => {
 
   return (
     <>
-      <PageHeader title="Perfil" subtitle="Tu información personal" />
+      <PageHeader title="Perfil" subtitle="Tu información personal." />
 
       <Stack spacing={3} sx={{ maxWidth: 600 }}>
         <CardProfile user={user} />

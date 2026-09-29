@@ -64,7 +64,7 @@ const TransactionsPage = () => {
     <>
       <PageHeader
         title="Movimientos"
-        subtitle="Tus ingresos y gastos, con filtros por fecha"
+        subtitle="Registra y consulta todos tus ingresos y gastos."
         actionLabel="Nuevo movimiento"
         onAction={() => {
           setEditing(null);

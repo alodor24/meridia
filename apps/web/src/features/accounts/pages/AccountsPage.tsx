@@ -42,7 +42,7 @@ const AccountsPage = () => {
     <>
       <PageHeader
         title="Cuentas"
-        subtitle="Efectivo, bancos, tarjetas, ahorros e inversiones"
+        subtitle="Administra el saldo disponible de tus cuentas."
         actionLabel="Nueva cuenta"
         onAction={() => {
           setEditing(null);
