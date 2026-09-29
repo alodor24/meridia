@@ -39,6 +39,7 @@ import {
   DirectionsBus as DirectionsBusIcon,
   LibraryBooks as LibraryBooksIcon,
   ReceiptLong as ReceiptLongIcon,
+  BusinessCenter as BusinessCenterIcon,
 } from "@mui/icons-material";
 
 const categoryIcons = [
@@ -201,6 +202,10 @@ const categoryIcons = [
   {
     name: "ReceiptLong",
     component: ReceiptLongIcon,
+  },
+  {
+    name: "BusinessCenter",
+    component: BusinessCenterIcon,
   },
 ];
 

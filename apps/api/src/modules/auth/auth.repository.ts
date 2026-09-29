@@ -147,19 +147,19 @@ export const deleteExpiredRefreshTokensByUser = async (
   );
 };
 
-const DEFAULT_CATEGORIES: Array<{ name: string; type: 'income' | 'expense'; color: string }> = [
-  { name: 'Salario', type: 'income', color: '#2e7d32' },
-  { name: 'Negocios', type: 'income', color: '#43a047' },
-  { name: 'Inversiones', type: 'income', color: '#66bb6a' },
-  { name: 'Otros ingresos', type: 'income', color: '#81c784' },
-  { name: 'Vivienda', type: 'expense', color: '#d32f2f' },
-  { name: 'Alimentación', type: 'expense', color: '#f57c00' },
-  { name: 'Transporte', type: 'expense', color: '#0288d1' },
-  { name: 'Salud', type: 'expense', color: '#7b1fa2' },
-  { name: 'Ocio', type: 'expense', color: '#f06292' },
-  { name: 'Educación', type: 'expense', color: '#3949ab' },
-  { name: 'Servicios', type: 'expense', color: '#00838f' },
-  { name: 'Otros gastos', type: 'expense', color: '#757575' },
+const DEFAULT_CATEGORIES: Array<{ name: string; type: 'income' | 'expense'; color: string; icon?: string }> = [
+  { name: 'Salario', type: 'income', color: '#2e7d32', icon: "MonetizationOn" },
+  { name: 'Negocios', type: 'income', color: '#43a047', icon: "BusinessCenter" },
+  { name: 'Inversiones', type: 'income', color: '#66bb6a', icon: "TrendingUp" },
+  { name: 'Otros ingresos', type: 'income', color: '#81c784', icon: "Savings" },
+  { name: 'Vivienda', type: 'expense', color: '#d32f2f', icon: "Home" },
+  { name: 'Alimentación', type: 'expense', color: '#f57c00', icon: "LocalGroceryStore" },
+  { name: 'Transporte', type: 'expense', color: '#0288d1', icon: "DirectionsBus" },
+  { name: 'Salud', type: 'expense', color: '#7b1fa2', icon: "LocalHospital" },
+  { name: 'Ocio', type: 'expense', color: '#f06292', icon: "Fastfood" },
+  { name: 'Educación', type: 'expense', color: '#3949ab', icon: "School" },
+  { name: 'Servicios', type: 'expense', color: '#00838f', icon: "EmojiObjects" },
+  { name: 'Otros gastos', type: 'expense', color: '#757575', icon: "Handyman" },
 ];
 
 export const createDefaultCategories = async (db: Db, userId: UserId): Promise<void> => {
