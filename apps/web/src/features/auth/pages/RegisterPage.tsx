@@ -1,17 +1,10 @@
 import { Link as MuiLink, Stack, Typography } from "@mui/material";
-import { Link as RouterLink, Navigate } from "@tanstack/react-router";
+import { Link as RouterLink } from "@tanstack/react-router";
 import { AuthLayout } from "@/features/auth/components/AuthLayout";
 import { PATHS } from "@/conts";
 import FormRegister from "../components/FormRegister";
-import { useAuthStore } from "@/stores/authStore";
 
 const RegisterPage = () => {
-  const status = useAuthStore((s) => s.status);
-
-  if (status === "authenticated") {
-    return <Navigate to={PATHS.DASHBOARD} replace />;
-  }
-
   return (
     <AuthLayout
       title="Crear cuenta"

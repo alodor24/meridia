@@ -5,36 +5,46 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
-import { useFetch, useAsyncAction } from "@/hooks/useAsync";
-import { useAuthStore } from "@/stores/authStore";
 import { useUiStore } from "@/stores/uiStore";
-import { deleteAccount, listAccounts } from "../services/api";
 import { AccountFormDialog } from "../components/AccountFormDialog";
 import AccountTable from "../components/AccountTable";
 import { SHADOW } from "@/theme/globalStyles";
+import useGetUserCurrency from "@/hooks/useGetUserCurrency";
+import { useListAccounts } from "../hooks/useListAccounts";
+import { useDeleteAccount } from "../hooks/useDeleteAccount";
+import { toApiError } from "@/services/api/errors";
 
 const AccountsPage = () => {
   useDocumentTitle("Cuentas");
-  const currency = useAuthStore((s) => s.user?.currency ?? "USD");
+  const { currency } = useGetUserCurrency();
+  const { data, isLoading, error, refetch } = useListAccounts();
+  const { mutateAsync: deleteAccount, isPending: isDeleting } =
+    useDeleteAccount();
   const showSnackbar = useUiStore((s) => s.showSnackbar);
-  const { data, loading, error, refetch } = useFetch(listAccounts);
-  const { loading: deleting, run: runDelete } = useAsyncAction();
 
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Account | null>(null);
   const [deletingAccount, setDeletingAccount] = useState<Account | null>(null);
 
+  const actionOptions = {
+    onClickEditar: (account: Account) => {
+      setEditing(account);
+      setFormOpen(true);
+    },
+    onClickEliminar: (account: Account) => {
+      setDeletingAccount(account);
+    },
+  };
+
   const handleDelete = async () => {
     if (!deletingAccount) return;
-    const result = await runDelete(async () => {
-      await deleteAccount(deletingAccount.id);
-      return "Cuenta eliminada";
-    });
 
-    if (result) {
-      showSnackbar(result);
+    try {
+      await deleteAccount(deletingAccount.id);
+      showSnackbar("Cuenta eliminada");
       setDeletingAccount(null);
-      refetch();
+    } catch (error) {
+      showSnackbar(toApiError(error).message, "error");
     }
   };
 
@@ -50,8 +60,8 @@ const AccountsPage = () => {
         }}
       />
 
-      {loading && <LoadingState />}
-      {error && <ErrorState message={error} onRetry={refetch} />}
+      {isLoading && <LoadingState />}
+      {error && <ErrorState message={error.message} onRetry={refetch} />}
 
       {data && data.length === 0 && (
         <EmptyState message="Todavía no tienes cuentas. Crea la primera para empezar." />
@@ -61,18 +71,7 @@ const AccountsPage = () => {
         <Card sx={{ boxShadow: SHADOW }}>
           <CardContent>
             <Box sx={{ overflowX: "auto", maxHeight: 450 }}>
-              <AccountTable
-                data={data || []}
-                actions={{
-                  onClickEditar: (account) => {
-                    setEditing(account);
-                    setFormOpen(true);
-                  },
-                  onClickEliminar: (account) => {
-                    setDeletingAccount(account);
-                  },
-                }}
-              />
+              <AccountTable data={data || []} actions={actionOptions} />
             </Box>
           </CardContent>
         </Card>
@@ -98,7 +97,7 @@ const AccountsPage = () => {
             : undefined
         }
         confirmLabel="Eliminar"
-        loading={deleting}
+        loading={isDeleting}
         onConfirm={handleDelete}
         onClose={() => setDeletingAccount(null)}
       />

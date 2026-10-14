@@ -1,13 +1,16 @@
 import { Box, Drawer, Snackbar, Alert } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import { Outlet } from "@tanstack/react-router";
 import { useUiStore } from "@/stores/uiStore";
 import { DRAWER_WIDTH } from "@/theme/globalStyles";
 import DrawerContent from "../ui/DrawerContent";
 import NavbarApp from "../ui/NavbarApp";
 
-const PrivateLayout = () => {
+interface PrivateLayoutProps {
+  children: React.ReactNode;
+}
+
+const PrivateLayout = ({ children }: PrivateLayoutProps) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -55,7 +58,7 @@ const PrivateLayout = () => {
         id="main-content"
         tabIndex={-1}
         sx={{ flexGrow: 1, p: { xs: 2, md: 3 }, pt: { xs: 10, md: 12 } }}>
-        <Outlet />
+        {children}
       </Box>
 
       <Snackbar

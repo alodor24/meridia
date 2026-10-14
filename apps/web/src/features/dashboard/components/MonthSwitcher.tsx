@@ -6,9 +6,9 @@ import {
   CalendarMonth as CalendarMonthIcon,
 } from "@mui/icons-material";
 import { IconButton, Stack, Typography } from "@mui/material";
-import type { DashboardRange } from "../services/api";
 import { monthRangeFor } from "../utils/monthRange";
 import { SHADOW } from "@/theme/globalStyles";
+import { DashboardRange } from "../types";
 
 export interface MonthSwitcherProps {
   anchor: Date;

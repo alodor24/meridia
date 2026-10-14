@@ -4,11 +4,12 @@ import type { Category, TransactionType } from "@meridia/shared";
 import { FormTextField } from "@/components/ui/FormTextField";
 import { FormSelect } from "@/components/ui/FormSelect";
 import { ColorField } from "@/components/ui/ColorField";
-import { useAsyncAction } from "@/hooks/useAsync";
 import { useUiStore } from "@/stores/uiStore";
-import { createCategory, updateCategory } from "../services/api";
 import { validationSchema } from "../validations";
 import CategoryIconPicker from "./CategoryIconPicker";
+import { toApiError } from "@/services/api/errors";
+import { useCreateCategory } from "../hooks/useCreateCategory";
+import { useUpdateCategory } from "../hooks/useUpdateCategory";
 
 const TYPE_OPTIONS = [
   { value: "expense", label: "Gasto" },
@@ -36,7 +37,10 @@ const CategoryForm = ({
   onSaved,
 }: CategoryFormProps) => {
   const showSnackbar = useUiStore((s) => s.showSnackbar);
-  const { loading, run } = useAsyncAction();
+  const { mutateAsync: createCategory, isPending: isCreating } =
+    useCreateCategory();
+  const { mutateAsync: updateCategory, isPending: isUpdating } =
+    useUpdateCategory();
 
   const initialValues: FormValues = category
     ? {
@@ -48,17 +52,18 @@ const CategoryForm = ({
     : { name: "", type: defaultType, color: "#607d8b", icon: undefined };
 
   const handleSubmit = async (values: FormValues) => {
-    const result = await run(async () => {
+    try {
       if (category) {
-        await updateCategory(category.id, values);
-        return "Categoría actualizada";
+        await updateCategory({ id: category.id, payload: values });
+        showSnackbar("Categoría actualizada");
+        onSaved();
+        return;
       }
       await createCategory(values);
-      return "Categoría creada";
-    });
-    if (result) {
-      showSnackbar(result);
+      showSnackbar("Categoría creada");
       onSaved();
+    } catch (error) {
+      showSnackbar(toApiError(error).message, "error");
     }
   };
 
@@ -81,13 +86,16 @@ const CategoryForm = ({
             <CategoryIconPicker name="icon" label="Icono" />
           </DialogContent>
           <DialogActions sx={{ px: 3, pb: 3 }}>
-            <Button onClick={onClose} disabled={loading} color="inherit">
+            <Button
+              onClick={onClose}
+              disabled={isCreating || isUpdating}
+              color="inherit">
               Cancelar
             </Button>
             <Button
               type="submit"
               variant="contained"
-              loading={loading}
+              loading={isCreating || isUpdating}
               loadingPosition="start">
               Guardar
             </Button>

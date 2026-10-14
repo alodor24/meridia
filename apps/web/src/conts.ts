@@ -1,4 +1,4 @@
-import {Category, Dashboard, Receipt, Wallet, Analytics, Article} from "@mui/icons-material";
+import { Category, Dashboard, Receipt, Wallet } from "@mui/icons-material";
 import { TooltipItem } from "chart.js";
 
 export const PATHS = {
@@ -45,8 +45,6 @@ export const NAV_ITEMS = [
   { label: "Cuentas", to: PATHS.ACCOUNTS, icon: Wallet },
   { label: "Movimientos", to: PATHS.TRANSACTIONS, icon: Receipt },
   { label: "Categorías", to: PATHS.CATEGORIES, icon: Category },
-  { label: "Gráficos", to: PATHS.ANALYTICS, icon: Analytics },
-  { label: "Reportes", to: PATHS.REPORTS, icon: Article },
 ];
 
 export const PRESET_COLORS = [
@@ -125,11 +123,11 @@ export const LINE_OPTIONS = {
 
         callback: (value: unknown, index: number) => {
           const day = index + 1;
-          if (day === 1 || day % 5 === 0 ) return day;
+          if (day === 1 || day % 5 === 0) return day;
 
-          return '';
+          return "";
         },
       },
     },
-  }
+  },
 };

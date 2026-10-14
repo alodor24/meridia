@@ -3,20 +3,21 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
-import { useAsyncAction } from "@/hooks/useAsync";
 import { useUiStore } from "@/stores/uiStore";
-import { deleteTransaction } from "../services/api";
 import { TransactionFormDialog } from "../components/TransactionFormDialog";
 import TransactionTable from "../components/TransactionTable";
 import useGetDataByFilter from "../hooks/useGetDataByFilter";
 import TransactionFilter from "../components/TransactionFilter";
 import { Transaction } from "@meridia/shared";
+import { useDeleteTransaction } from "../hooks/useDeleteTransaction";
+import { toApiError } from "@/services/api/errors";
 
 const TransactionsPage = () => {
   useDocumentTitle("Movimientos");
   const showSnackbar = useUiStore((s) => s.showSnackbar);
   const [formOpen, setFormOpen] = useState(false);
-  const { loading: deletingLoading, run: runDelete } = useAsyncAction();
+  const { mutateAsync: deleteTransaction, isPending: isDeleting } =
+    useDeleteTransaction();
   const {
     deleting,
     setDeleting,
@@ -38,26 +39,25 @@ const TransactionsPage = () => {
     setLimit,
   } = useGetDataByFilter();
 
-  const handleDelete = async () => {
-    if (!deleting) return;
-    const result = await runDelete(async () => {
-      await deleteTransaction(deleting.id);
-      return "Movimiento eliminado";
-    });
-    if (result) {
-      showSnackbar(result);
-      setDeleting(null);
-      refetch();
-    }
-  };
-
-  const actions = {
+  const actionOptions = {
     onClickEditar: (transaction: SetStateAction<Transaction | null>) => {
       setEditing(transaction);
       setFormOpen(true);
     },
     onClickEliminar: (transaction: SetStateAction<Transaction | null>) =>
       setDeleting(transaction),
+  };
+
+  const handleDelete = async () => {
+    if (!deleting) return;
+
+    try {
+      await deleteTransaction(deleting.id);
+      showSnackbar("Movimiento eliminado");
+      setDeleting(null);
+    } catch (error) {
+      showSnackbar(toApiError(error).message, "error");
+    }
   };
 
   return (
@@ -82,7 +82,7 @@ const TransactionsPage = () => {
       />
 
       {loading && !data && <LoadingState />}
-      {error && <ErrorState message={error} onRetry={refetch} />}
+      {error && <ErrorState message={error.message} onRetry={refetch} />}
 
       {data && items.length === 0 && (
         <EmptyState message="No hay movimientos que coincidan con los filtros." />
@@ -90,7 +90,7 @@ const TransactionsPage = () => {
 
       {data && items.length > 0 && (
         <TransactionTable
-          actions={actions}
+          actions={actionOptions}
           items={items}
           accountsByCurrency={accountsByCurrency}
           total={total}
@@ -115,7 +115,7 @@ const TransactionsPage = () => {
         title="Eliminar movimiento"
         description="¿Eliminar este movimiento? Esta acción no se puede deshacer."
         confirmLabel="Eliminar"
-        loading={deletingLoading}
+        loading={isDeleting}
         onConfirm={handleDelete}
         onClose={() => setDeleting(null)}
       />

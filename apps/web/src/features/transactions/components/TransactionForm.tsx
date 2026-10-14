@@ -12,10 +12,8 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { format as dateFnsFormat, parseISO } from "date-fns";
 import { FormTextField } from "@/components/ui/FormTextField";
 import { FormSelect } from "@/components/ui/FormSelect";
-import { useAsyncAction } from "@/hooks/useAsync";
 import { useUiStore } from "@/stores/uiStore";
 import { getCurrencySymbol, today } from "@/utils/format";
-import { createTransaction, updateTransaction } from "../services/api";
 import { buildValidationSchema } from "../validations";
 import {
   Account,
@@ -23,6 +21,9 @@ import {
   Transaction,
   TransactionType,
 } from "@meridia/shared";
+import { toApiError } from "@/services/api/errors";
+import { useCreateTransaction } from "../hooks/useCreateTransaction";
+import { useUpdateTransaction } from "../hooks/useUpdateTransaction";
 
 interface FormValues {
   accountId: string;
@@ -49,7 +50,10 @@ const TransactionForm = ({
   onSaved,
 }: TransactionFormProps) => {
   const showSnackbar = useUiStore((s) => s.showSnackbar);
-  const { loading, run } = useAsyncAction();
+  const { mutateAsync: createTransaction, isPending: isCreating } =
+    useCreateTransaction();
+  const { mutateAsync: updateTransaction, isPending: isUpdating } =
+    useUpdateTransaction();
 
   const initialValues: FormValues = transaction
     ? {
@@ -78,17 +82,19 @@ const TransactionForm = ({
       date: values.date,
       note: values.note.trim() || undefined,
     };
-    const result = await run(async () => {
+
+    try {
       if (transaction) {
-        await updateTransaction(transaction.id, payload);
-        return "Movimiento actualizado";
+        await updateTransaction({ id: transaction.id, payload });
+        showSnackbar("Movimiento actualizado");
+        onSaved();
+        return;
       }
       await createTransaction(payload);
-      return "Movimiento creado";
-    });
-    if (result) {
-      showSnackbar(result);
+      showSnackbar("Movimiento creado");
       onSaved();
+    } catch (error) {
+      showSnackbar(toApiError(error).message, "error");
     }
   };
 
@@ -183,13 +189,16 @@ const TransactionForm = ({
               />
             </DialogContent>
             <DialogActions sx={{ px: 3, pb: 3 }}>
-              <Button onClick={onClose} disabled={loading} color="inherit">
+              <Button
+                onClick={onClose}
+                disabled={isCreating || isUpdating}
+                color="inherit">
                 Cancelar
               </Button>
               <Button
                 type="submit"
                 variant="contained"
-                loading={loading}
+                loading={isCreating || isUpdating}
                 loadingPosition="start">
                 Guardar
               </Button>

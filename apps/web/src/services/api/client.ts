@@ -29,34 +29,34 @@ client.interceptors.request.use((config) => {
 let refreshPromise: Promise<string> | null = null;
 
 const refreshAccessToken = (): Promise<string> => {
-  if (!refreshPromise) {
-    refreshPromise = (async () => {
-      try {
-        const response = await axios.post(
-          `${API_BASE_URL + ENDPOINT_ROUTES.REFRESH}`,
-          undefined,
-          {
-            withCredentials: true,
-          },
-        );
-
-        const data = response.data?.data;
-
-        if (!data?.accessToken) {
-          throw new Error("Respuesta de refresh inválida");
-        }
-
-        tokenManager.setAccessToken(data.accessToken);
-
-        return data.accessToken;
-      } catch (error) {
-        console.error("Refresh falló:", error);
-        throw error;
-      }
-    })().finally(() => {
-      refreshPromise = null;
-    });
+  if (refreshPromise) {
+    return refreshPromise;
   }
+
+  refreshPromise = (async () => {
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}${ENDPOINT_ROUTES.REFRESH}`,
+        undefined,
+        { withCredentials: true },
+      );
+
+      const accessToken = response.data?.data?.accessToken;
+
+      if (typeof accessToken !== "string" || !accessToken) {
+        throw new Error("Respuesta de refresh inválida");
+      }
+
+      tokenManager.setAccessToken(accessToken);
+
+      return accessToken;
+    } catch (error) {
+      tokenManager.clear();
+      throw error;
+    }
+  })().finally(() => {
+    refreshPromise = null;
+  });
 
   return refreshPromise;
 };

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "@tanstack/react-router";
@@ -8,31 +7,29 @@ import {
   loginValidationSchema,
   type LoginFormValues,
 } from "@/features/auth/validations";
-import { useAuthStore } from "@/stores/authStore";
 import { useUiStore } from "@/stores/uiStore";
 import { toApiError } from "@/services/api/errors";
 import { PATHS } from "@/conts";
 import useShowPassword from "../hooks/useShowPassword";
+import { useLogin } from "../hooks/useLogin";
 
 const FormLogin = () => {
-  const loginUser = useAuthStore((s) => s.loginUser);
+  const loginUser = useLogin();
   const showSnackbar = useUiStore((s) => s.showSnackbar);
   const navigate = useNavigate();
-  const [submitting, setSubmitting] = useState(false);
   const { showPassword, handleClickShowPassword } = useShowPassword();
 
   const initialValues: LoginFormValues = { email: "", password: "" };
 
   const handleSubmit = async (values: LoginFormValues) => {
-    setSubmitting(true);
-
     try {
-      await loginUser({ email: values.email, password: values.password });
+      await loginUser.mutateAsync({
+        email: values.email,
+        password: values.password,
+      });
       await navigate({ to: PATHS.DASHBOARD });
     } catch (error) {
       showSnackbar(toApiError(error).message, "error");
-    } finally {
-      setSubmitting(false);
     }
   };
 
@@ -72,7 +69,7 @@ const FormLogin = () => {
             variant="contained"
             fullWidth
             size="large"
-            loading={submitting}
+            loading={loginUser.isPending}
             loadingPosition="start"
             sx={{
               mt: 2,

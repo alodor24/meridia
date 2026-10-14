@@ -1,8 +1,9 @@
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import type { Account, Category, Transaction } from "@meridia/shared";
-import { useAsyncAction } from "@/hooks/useAsync";
 import TransactionForm from "./TransactionForm";
+import { useCreateTransaction } from "../hooks/useCreateTransaction";
+import { useUpdateTransaction } from "../hooks/useUpdateTransaction";
 
 export interface TransactionFormDialogProps {
   open: boolean;
@@ -21,12 +22,13 @@ export const TransactionFormDialog = ({
   onClose,
   onSaved,
 }: TransactionFormDialogProps) => {
-  const { loading } = useAsyncAction();
+  const { isPending: isCreating } = useCreateTransaction();
+  const { isPending: isUpdating } = useUpdateTransaction();
 
   return (
     <Dialog
       open={open}
-      onClose={loading ? undefined : onClose}
+      onClose={isCreating || isUpdating ? undefined : onClose}
       maxWidth="xs"
       fullWidth>
       <DialogTitle>

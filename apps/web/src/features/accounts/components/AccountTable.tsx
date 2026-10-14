@@ -51,6 +51,15 @@ const AccountTable = ({ data, actions }: AccountTableProps) => {
     },
   ];
 
+  const accountIcons = {
+    cash: <MoneyIcon color="success" />,
+    bank: <AccountIcon />,
+    credit_card: <CreditCardIcon />,
+    savings: <SavingsIcon />,
+    investment: <TimelineIcon />,
+    wallet: <AccountBalanceWalletIcon color="secondary" />,
+  };
+
   return (
     <Table stickyHeader aria-label="sticky table">
       <TableHead>
@@ -76,14 +85,7 @@ const AccountTable = ({ data, actions }: AccountTableProps) => {
                     borderRadius: 10,
                     bgcolor: "background.default",
                   }}>
-                  {account.type === "cash" && <MoneyIcon color="success" />}
-                  {account.type === "bank" && <AccountIcon />}
-                  {account.type === "credit_card" && <CreditCardIcon />}
-                  {account.type === "savings" && <SavingsIcon />}
-                  {account.type === "investment" && <TimelineIcon />}
-                  {account.type === "wallet" && (
-                    <AccountBalanceWalletIcon color="secondary" />
-                  )}
+                  {accountIcons[account.type]}
                 </Box>
 
                 <Box>

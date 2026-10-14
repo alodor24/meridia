@@ -1,39 +1,40 @@
 import type { User } from "@meridia/shared";
 import { http } from "@/services/api/client";
 import { ENDPOINT_ROUTES } from "@/conts";
+import { AuthResponse, LoginPayload, RegisterPayload } from "../types";
 
-export interface AuthResponse {
-  user: User;
-  accessToken: string;
-}
+export const authApi = {
+  login: (payload: LoginPayload) =>
+    http.post<AuthResponse>(
+      ENDPOINT_ROUTES.LOGIN,
+      payload,
+    ),
 
-export interface LoginPayload {
-  email: string;
-  password: string;
-}
+  register: (payload: RegisterPayload) =>
+    http.post<AuthResponse>(
+      ENDPOINT_ROUTES.REGISTER,
+      payload,
+    ),
 
-export interface RegisterPayload {
-  name: string;
-  email: string;
-  password: string;
-  country: string;
-  currency: string;
-}
+  logout: () =>
+    http.post<null>(
+      ENDPOINT_ROUTES.LOGOUT,
+    ),
 
-export const register = (payload: RegisterPayload) =>
-  http.post<AuthResponse>(ENDPOINT_ROUTES.REGISTER, payload);
+  getMe: async (): Promise<User> => {
+    const result = await http.get<{ user: User }>(
+      ENDPOINT_ROUTES.ME,
+    );
 
-export const login = (payload: LoginPayload) =>
-  http.post<AuthResponse>(ENDPOINT_ROUTES.LOGIN, payload);
+    return result.user;
+  },
 
-export const logout = () => http.post<null>(ENDPOINT_ROUTES.LOGOUT);
+  updateProfile: async (name: string): Promise<User> => {
+    const result = await http.patch<{ user: User }>(
+      ENDPOINT_ROUTES.ME,
+      { name },
+    );
 
-export const getMe = async () => {
-  const result = await http.get<{ user: User }>(ENDPOINT_ROUTES.ME);
-  return result.user;
-};
-
-export const updateProfile = async (name: string) => {
-  const result = await http.patch<{ user: User }>(ENDPOINT_ROUTES.ME, { name });
-  return result.user;
+    return result.user;
+  },
 };

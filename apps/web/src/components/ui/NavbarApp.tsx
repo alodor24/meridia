@@ -1,7 +1,6 @@
 import {
   AppBar,
   Avatar,
-  Badge,
   Box,
   IconButton,
   ListItemIcon,
@@ -14,31 +13,27 @@ import {
   Logout as LogoutIcon,
   Menu as MenuIcon,
   Person as PersonIcon,
-  Notifications as NotificationsIcon,
 } from "@mui/icons-material";
 import { NAVBAR_DARK, NAVBAR_LIGHT, SHADOW } from "@/theme/globalStyles";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { PATHS } from "@/conts";
 import { useState } from "react";
-import { useAuthStore } from "@/stores/authStore";
 import { useUiStore } from "@/stores/uiStore";
 import LogoApp from "./LogoApp";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 
 const NavbarApp = () => {
-  const navigate = useNavigate();
-  const user = useAuthStore((s) => s.user);
-  const logoutUser = useAuthStore((s) => s.logoutUser);
+  const { data: user } = useCurrentUser();
+  const logout = useLogout();
   const toggleDrawer = useUiStore((s) => s.toggleDrawer);
   const themeMode = useUiStore((s) => s.themeMode);
 
   const [profileMenuAnchor, setProfileMenuAnchor] =
     useState<null | HTMLElement>(null);
-  const [loggingOut, setLoggingOut] = useState(false);
 
   const handleLogout = async () => {
-    setLoggingOut(true);
-    await logoutUser();
-    await navigate({ to: PATHS.LOGIN });
+    logout.mutate();
   };
 
   return (
@@ -95,29 +90,21 @@ const NavbarApp = () => {
           </Typography>
         </Box>
 
-        <IconButton sx={{ ml: 1 }} color="inherit">
-          <Badge color="warning" variant="dot">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-
         <IconButton
           onClick={(e) => setProfileMenuAnchor(e.currentTarget)}
           sx={{ ml: 1 }}
           data-testid="profile-menu">
-          <Badge color="success" variant="dot">
-            <Avatar
-              sx={{
-                width: 32,
-                height: 32,
-                bgcolor: "secondary.main",
-                fontSize: 14,
-                color: "primary.contrastText",
-                fontWeight: 700,
-              }}>
-              {user?.name?.charAt(0).toUpperCase() ?? "?"}
-            </Avatar>
-          </Badge>
+          <Avatar
+            sx={{
+              width: 32,
+              height: 32,
+              bgcolor: "secondary.main",
+              fontSize: 14,
+              color: "primary.contrastText",
+              fontWeight: 700,
+            }}>
+            {user?.name?.charAt(0).toUpperCase() ?? "?"}
+          </Avatar>
         </IconButton>
 
         <Menu
@@ -136,7 +123,7 @@ const NavbarApp = () => {
           </MenuItem>
 
           <MenuItem
-            disabled={loggingOut}
+            disabled={logout.isPending}
             onClick={handleLogout}
             sx={{ mx: 1, borderRadius: 1, width: 200 }}>
             <ListItemIcon>

@@ -5,9 +5,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
-import { useFetch, useAsyncAction } from "@/hooks/useAsync";
 import { useUiStore } from "@/stores/uiStore";
-import { deleteCategory, listCategories } from "../services/api";
 import { CategoryFormDialog } from "../components/CategoryFormDialog";
 import CategoryTable from "../components/CategoryTable";
 import CategoryCard from "../components/CategoryCard";
@@ -16,12 +14,15 @@ import {
   TrendingDown as TrendDownIcon,
   TrendingUp as TrendUpIcon,
 } from "@mui/icons-material";
+import { useListCategories } from "../hooks/useListCategories";
+import { useDeleteCategory } from "../hooks/useDeleteCategory";
+import { toApiError } from "@/services/api/errors";
 
 const CategoriesPage = () => {
   useDocumentTitle("Categorías");
   const showSnackbar = useUiStore((s) => s.showSnackbar);
-  const { data, loading, error, refetch } = useFetch(() => listCategories());
-  const { loading: deleting, run: runDelete } = useAsyncAction();
+  const { data, isLoading, error, refetch } = useListCategories();
+  const { mutateAsync: deleteCategory, isPending } = useDeleteCategory();
 
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
@@ -30,29 +31,28 @@ const CategoriesPage = () => {
     null,
   );
 
-  const handleDelete = async () => {
-    if (!deletingCategory) return;
-    const result = await runDelete(async () => {
-      await deleteCategory(deletingCategory.id);
-      return "Categoría eliminada";
-    });
-    if (result) {
-      showSnackbar(result);
-      setDeletingCategory(null);
-      refetch();
-    }
-  };
-
   const income = data?.filter((c) => c.type === "income") ?? [];
   const expense = data?.filter((c) => c.type === "expense") ?? [];
 
-  const actions = {
+  const actionOptions = {
     onClickEditar: (category: SetStateAction<Category | null>) => {
       setEditing(category);
       setFormOpen(true);
     },
     onClickEliminar: (category: SetStateAction<Category | null>) =>
       setDeletingCategory(category),
+  };
+
+  const handleDelete = async () => {
+    if (!deletingCategory) return;
+
+    try {
+      await deleteCategory(deletingCategory.id);
+      showSnackbar("Categoría eliminada");
+      setDeletingCategory(null);
+    } catch (error) {
+      showSnackbar(toApiError(error).message, "error");
+    }
   };
 
   return (
@@ -67,8 +67,8 @@ const CategoriesPage = () => {
         }}
       />
 
-      {loading && <LoadingState />}
-      {error && <ErrorState message={error} onRetry={refetch} />}
+      {isLoading && <LoadingState />}
+      {error && <ErrorState message={error.message} onRetry={refetch} />}
 
       {data && data.length === 0 && (
         <EmptyState message="No tienes categorías. Crea tus primeras categorías para organizar tus finanzas." />
@@ -108,14 +108,14 @@ const CategoriesPage = () => {
               <CategoryTable
                 categories={expense}
                 title="Gastos"
-                actions={actions}
+                actions={actionOptions}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <CategoryTable
                 categories={income}
                 title="Ingresos"
-                actions={actions}
+                actions={actionOptions}
               />
             </Grid>
           </Grid>
@@ -142,7 +142,7 @@ const CategoriesPage = () => {
             : undefined
         }
         confirmLabel="Eliminar"
-        loading={deleting}
+        loading={isPending}
         onConfirm={handleDelete}
         onClose={() => setDeletingCategory(null)}
       />

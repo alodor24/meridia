@@ -10,10 +10,11 @@ import type { Account, AccountType } from "@meridia/shared";
 import { ACCOUNT_TYPE_OPTIONS } from "@/utils/labels";
 import { FormTextField } from "@/components/ui/FormTextField";
 import { FormSelect } from "@/components/ui/FormSelect";
-import { useAsyncAction } from "@/hooks/useAsync";
 import { useUiStore } from "@/stores/uiStore";
-import { createAccount, updateAccount } from "../services/api";
 import { validationSchema } from "../validations";
+import { useCreateAccount } from "../hooks/useCreateAccount";
+import { useUpdateAccount } from "../hooks/useUpdateAccount";
+import { toApiError } from "@/services/api/errors";
 
 interface FormValues {
   name: string;
@@ -37,31 +38,38 @@ export const AccountFormDialog = ({
   onSaved,
 }: AccountFormDialogProps) => {
   const showSnackbar = useUiStore((s) => s.showSnackbar);
-  const { loading, run } = useAsyncAction();
+  const { mutateAsync: createAccount, isPending: isCreating } =
+    useCreateAccount();
+  const { mutateAsync: updateAccount, isPending: isUpdating } =
+    useUpdateAccount();
 
   const initialValues: FormValues = account
     ? { name: account.name, type: account.type, currency: account.currency }
     : { name: "", type: "bank", currency: defaultCurrency };
 
   const handleSubmit = async (values: FormValues) => {
-    const result = await run(async () => {
+    try {
       if (account) {
-        await updateAccount(account.id, values);
-        return "Cuenta actualizada";
+        await updateAccount({
+          id: account.id,
+          payload: values,
+        });
+        showSnackbar("Cuenta actualizada");
+        onSaved();
+        return;
       }
       await createAccount(values);
-      return "Cuenta creada";
-    });
-    if (result) {
-      showSnackbar(result);
+      showSnackbar("Cuenta creada");
       onSaved();
+    } catch (error) {
+      showSnackbar(toApiError(error).message, "error");
     }
   };
 
   return (
     <Dialog
       open={open}
-      onClose={loading ? undefined : onClose}
+      onClose={isCreating || isUpdating ? undefined : onClose}
       maxWidth="xs"
       fullWidth>
       <DialogTitle>{account ? "Editar cuenta" : "Nueva cuenta"}</DialogTitle>
@@ -86,13 +94,16 @@ export const AccountFormDialog = ({
             </DialogContent>
 
             <DialogActions sx={{ px: 3, pb: 3 }}>
-              <Button onClick={onClose} disabled={loading} color="inherit">
+              <Button
+                onClick={onClose}
+                disabled={isCreating || isUpdating}
+                color="inherit">
                 Cancelar
               </Button>
               <Button
                 type="submit"
                 variant="contained"
-                loading={loading}
+                loading={isCreating || isUpdating}
                 loadingPosition="start">
                 Guardar
               </Button>

@@ -1,7 +1,8 @@
 import { Dialog, DialogTitle } from "@mui/material";
 import type { Category, TransactionType } from "@meridia/shared";
-import { useAsyncAction } from "@/hooks/useAsync";
 import CategoryForm from "./CategoryForm";
+import { useUpdateCategory } from "../hooks/useUpdateCategory";
+import { useCreateCategory } from "../hooks/useCreateCategory";
 
 export interface CategoryFormDialogProps {
   open: boolean;
@@ -18,12 +19,13 @@ export const CategoryFormDialog = ({
   onClose,
   onSaved,
 }: CategoryFormDialogProps) => {
-  const { loading } = useAsyncAction();
+  const { isPending: isCreating } = useCreateCategory();
+  const { isPending: isUpdating } = useUpdateCategory();
 
   return (
     <Dialog
       open={open}
-      onClose={loading ? undefined : onClose}
+      onClose={isCreating || isUpdating ? undefined : onClose}
       maxWidth="xs"
       fullWidth>
       <DialogTitle>

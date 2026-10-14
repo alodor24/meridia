@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "@tanstack/react-router";
@@ -10,19 +9,18 @@ import {
   registerValidationSchema,
   type RegisterFormValues,
 } from "@/features/auth/validations";
-import { useAuthStore } from "@/stores/authStore";
 import { useUiStore } from "@/stores/uiStore";
 import { toApiError } from "@/services/api/errors";
 import { getCurrencySymbol } from "@/utils/format";
 import { PATHS } from "@/conts";
 import { ReactCountryFlag } from "react-country-flag";
 import useShowPassword from "../hooks/useShowPassword";
+import { useRegister } from "../hooks/useRegister";
 
 const FormRegister = () => {
-  const registerUser = useAuthStore((s) => s.registerUser);
+  const registerUser = useRegister();
   const showSnackbar = useUiStore((s) => s.showSnackbar);
   const navigate = useNavigate();
-  const [submitting, setSubmitting] = useState(false);
   const { showPassword, handleClickShowPassword } = useShowPassword();
 
   const countryOptions = COUNTRIES.map((c) => ({
@@ -56,11 +54,9 @@ const FormRegister = () => {
   };
 
   const handleSubmit = async (values: RegisterFormValues) => {
-    setSubmitting(true);
-
     try {
       const country = COUNTRIES.find((c) => c.code === values.country);
-      await registerUser({
+      await registerUser.mutateAsync({
         name: values.name,
         email: values.email,
         password: values.password,
@@ -70,8 +66,6 @@ const FormRegister = () => {
       await navigate({ to: PATHS.DASHBOARD });
     } catch (error) {
       showSnackbar(toApiError(error).message, "error");
-    } finally {
-      setSubmitting(false);
     }
   };
 
@@ -130,7 +124,7 @@ const FormRegister = () => {
             variant="contained"
             fullWidth
             size="large"
-            loading={submitting}
+            loading={registerUser.isPending}
             loadingPosition="start"
             sx={{
               mt: 2,

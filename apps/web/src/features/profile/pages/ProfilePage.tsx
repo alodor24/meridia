@@ -1,13 +1,13 @@
 import { Stack } from "@mui/material";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
-import { useAuthStore } from "@/stores/authStore";
 import CardProfile from "../components/CardProfile";
 import FormProfile from "../components/FormProfile";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
 const ProfilePage = () => {
   useDocumentTitle("Perfil");
-  const user = useAuthStore((s) => s.user);
+  const { data: user } = useCurrentUser();
 
   if (!user) return null;
 

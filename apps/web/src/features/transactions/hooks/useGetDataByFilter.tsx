@@ -1,15 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { PAGE_SIZE } from "@/conts";
 import type {
   Account,
+  AccountId,
   Category,
+  CategoryId,
   Transaction,
+  TransactionFilters,
   TransactionType,
 } from "@meridia/shared";
-import { useFetch } from "@/hooks/useAsync";
-import { listTransactions } from "../services/api";
-import { listAccounts } from "@/features/accounts/services/api";
-import { listCategories } from "@/features/categories/services/api";
+import { useListTransactions } from "./useListTransactions";
+import { useListAccounts } from "@/features/accounts/hooks/useListAccounts";
+import { useListCategories } from "@/features/categories/hooks/useListCategories";
 
 export interface Filters {
   from: string;
@@ -27,64 +29,67 @@ const emptyFilters: Filters = {
   type: "",
 };
 
+const EMPTY_ACCOUNTS: Account[] = [];
+const EMPTY_CATEGORIES: Category[] = [];
+
 const useGetDataByFilter = () => {
-  const [accounts, setAccounts] = useState<Account[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [filters, setFilters] = useState<Filters>(emptyFilters);
   const [editing, setEditing] = useState<Transaction | null>(null);
   const [deleting, setDeleting] = useState<Transaction | null>(null);
   const [limit, setLimit] = useState(PAGE_SIZE);
+  const {
+    data: accountsData,
+    isLoading: isAccountsLoading,
+    error: accountsError,
+  } = useListAccounts();
+  const {
+    data: categoriesData,
+    isLoading: isCategoriesLoading,
+    error: categoriesError,
+  } = useListCategories();
 
-  const activeFilters = {
+  const activeFilters: TransactionFilters = {
     from: filters.from || undefined,
     to: filters.to || undefined,
-    accountId: filters.accountId || undefined,
-    categoryId: filters.categoryId || undefined,
+    accountId: filters.accountId ? (filters.accountId as AccountId) : undefined,
+    categoryId: filters.categoryId
+      ? (filters.categoryId as CategoryId)
+      : undefined,
     type: filters.type || undefined,
   };
 
-  const { data, loading, error, refetch } = useFetch(
-    () => listTransactions({ ...activeFilters, limit }),
-    [
-      filters.from,
-      filters.to,
-      filters.accountId,
-      filters.categoryId,
-      filters.type,
-      limit,
-    ],
+  const {
+    data: transactionsData,
+    isLoading: isTransactionsLoading,
+    error: transactionsError,
+    refetch: transactionsQueryRefetch,
+  } = useListTransactions({
+    ...activeFilters,
+    limit,
+  });
+
+  const accounts: Account[] = accountsData ?? EMPTY_ACCOUNTS;
+  const categories: Category[] = categoriesData ?? EMPTY_CATEGORIES;
+  const data = transactionsData;
+  const items = data?.items ?? [];
+  const total = data?.total ?? 0;
+
+  const accountsByCurrency = useMemo(
+    () => new Map(accounts.map((account) => [account.id, account.currency])),
+    [accounts],
   );
 
-  useEffect(() => {
-    let active = true;
-    const load = async () => {
-      const [accountList, categoryList] = await Promise.all([
-        listAccounts(),
-        listCategories(),
-      ]);
-      if (!active) return;
-      setAccounts(accountList);
-      setCategories(categoryList);
-    };
-    void load();
-    return () => {
-      active = false;
-    };
-  }, []);
+  const hasFilters = Object.values(filters).some((value) => value !== "");
 
   const resetFilters = () => {
     setFilters(emptyFilters);
     setLimit(PAGE_SIZE);
   };
 
-  const hasFilters = Object.values(filters).some((value) => value !== "");
+  const loading =
+    isTransactionsLoading || isAccountsLoading || isCategoriesLoading;
 
-  const total = data?.total ?? 0;
-  const items = data?.items ?? [];
-  const accountsByCurrency = useMemo(
-    () => new Map(accounts.map((a) => [a.id, a.currency])),
-    [accounts],
-  );
+  const error = transactionsError ?? accountsError ?? categoriesError;
 
   return {
     data,
@@ -96,7 +101,7 @@ const useGetDataByFilter = () => {
     setDeleting,
     loading,
     error,
-    refetch,
+    refetch: transactionsQueryRefetch,
     filters,
     setFilters,
     resetFilters,
