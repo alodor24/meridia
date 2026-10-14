@@ -40,21 +40,22 @@ const DashboardPage = () => {
 
   const monthStatCard = ` vs. ${getPreviousMonth(month)}`;
 
-  const totalBalanceChange = calculatePctChange(
-    data.totalBalance,
-    prevData?.totalBalance ?? 0,
+  const incomeComparison = calculatePctChange(
+    data.income,
+    prevData?.income ?? 0,
+    "income",
   );
 
-  const incomeChange = calculatePctChange(data.income, prevData?.income ?? 0);
-
-  const expensesChange = calculatePctChange(
+  const expensesComparison = calculatePctChange(
     data.expenses,
     prevData?.expenses ?? 0,
+    "expense",
   );
 
-  const periodBalanceChange = calculatePctChange(
+  const periodBalanceComparison = calculatePctChange(
     data.periodBalance,
     prevData?.periodBalance ?? 0,
+    "balance",
   );
 
   return (
@@ -80,8 +81,6 @@ const DashboardPage = () => {
             value={formatCurrency(data.totalBalance, currency)}
             icon={<AccountBalanceWalletIcon />}
             color={data.totalBalance >= 0 ? "success" : "error"}
-            subtitle={totalBalanceChange.label + monthStatCard}
-            trend={totalBalanceChange.direction}
             amountVisibility={isVisible}
             toggleAmountVisibility={toggleVisibility}
           />
@@ -93,8 +92,8 @@ const DashboardPage = () => {
             value={formatCurrency(data.income, currency)}
             icon={<TrendUpIcon />}
             color="success"
-            subtitle={incomeChange.label + monthStatCard}
-            trend={incomeChange.direction}
+            subtitle={monthStatCard}
+            comparison={incomeComparison}
             amountVisibility={isVisible}
             toggleAmountVisibility={toggleVisibility}
           />
@@ -106,8 +105,8 @@ const DashboardPage = () => {
             value={formatCurrency(data.expenses, currency)}
             icon={<TrendDownIcon />}
             color="error"
-            subtitle={expensesChange.label + monthStatCard}
-            trend={expensesChange.direction}
+            subtitle={monthStatCard}
+            comparison={expensesComparison}
             amountVisibility={isVisible}
             toggleAmountVisibility={toggleVisibility}
           />
@@ -119,8 +118,8 @@ const DashboardPage = () => {
             value={formatCurrency(data.periodBalance, currency)}
             icon={data.periodBalance >= 0 ? <TrendUpIcon /> : <TrendDownIcon />}
             color={data.periodBalance >= 0 ? "success" : "error"}
-            subtitle={periodBalanceChange.label + monthStatCard}
-            trend={periodBalanceChange.direction}
+            subtitle={monthStatCard}
+            comparison={periodBalanceComparison}
             amountVisibility={isVisible}
             toggleAmountVisibility={toggleVisibility}
           />

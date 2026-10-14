@@ -8,7 +8,11 @@ import {
   Visibility as VisibilityIcon,
 } from "@mui/icons-material";
 import { SHADOW } from "@/theme/globalStyles";
-import { TrendDirection } from "@/utils/calculatePctChange";
+import {
+  PercentageChange,
+  TrendDirection,
+  TrendStatus,
+} from "@/utils/calculatePctChange";
 import CurrencyDisplay from "./CurrencyDisplay";
 
 export interface StatCardProps {
@@ -18,7 +22,7 @@ export interface StatCardProps {
   icon?: ReactNode;
   color?: "primary" | "success" | "error" | "warning" | "info";
   main?: boolean;
-  trend?: TrendDirection;
+  comparison?: PercentageChange;
   amountVisibility: boolean;
   toggleAmountVisibility: () => void;
 }
@@ -31,16 +35,17 @@ const colorMap = {
   info: "info.main",
 };
 
-const trendIconMap = {
+const trendIconMap: Record<TrendDirection, ReactNode> = {
   up: <NorthIcon sx={{ fontSize: 15 }} />,
   down: <SouthIcon sx={{ fontSize: 15 }} />,
   neutral: <SyncAltIcon sx={{ fontSize: 15 }} />,
 };
 
-const trendColorMap = {
-  up: "success.main",
-  down: "error.main",
+const trendColorMap: Record<TrendStatus, string> = {
+  positive: "success.main",
+  negative: "error.main",
   neutral: "info.main",
+  unavailable: "info.main",
 };
 
 export const StatCard = ({
@@ -50,19 +55,24 @@ export const StatCard = ({
   icon,
   color = "primary",
   main = false,
-  trend = "neutral",
+  comparison,
   amountVisibility,
   toggleAmountVisibility,
 }: StatCardProps) => {
+  const trend = comparison?.direction ?? "neutral";
+  const status = comparison?.status ?? "neutral";
+
+  const trendColor = trendColorMap[status];
+
   return (
     <Card
       elevation={main ? 0 : undefined}
       sx={{
         height: "100%",
         borderLeft: 5,
-        borderColor: () => (main ? "#0e131a" : colorMap[color]),
+        borderColor: main ? "#0e131a" : colorMap[color],
         boxShadow: SHADOW,
-        bgcolor: () => (main ? "#0e131a" : null),
+        bgcolor: main ? "#0e131a" : null,
       }}>
       <CardContent>
         <Box
@@ -74,18 +84,21 @@ export const StatCard = ({
           }}>
           <Typography
             variant="body2"
-            color="text.secondary"
-            sx={{ fontWeight: 700, color: () => (main ? "#cfd8dc" : null) }}>
+            sx={{
+              fontWeight: 700,
+              color: main ? "#cfd8dc" : "text.primary",
+            }}>
             {title}
           </Typography>
+
           {icon && (
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: () => (main ? "#cfd8dc" : colorMap[color]),
-                bgcolor: () => (main ? "rgba(5,6,7,.1)" : "background.default"),
+                color: main ? "#cfd8dc" : colorMap[color],
+                bgcolor: main ? "rgba(5,6,7,.1)" : "background.default",
                 width: 34,
                 height: 34,
                 borderRadius: 1,
@@ -95,11 +108,16 @@ export const StatCard = ({
             </Box>
           )}
         </Box>
+
         <Typography
           variant="h6"
           component="div"
-          sx={{ fontWeight: 700, color: colorMap[color] }}>
-          {amountVisibility ? <CurrencyDisplay value={value} /> : "**********"}{" "}
+          sx={{
+            fontWeight: 700,
+            color: colorMap[color],
+          }}>
+          {amountVisibility ? <CurrencyDisplay value={value} /> : "**********"}
+
           <IconButton
             aria-label="visibility"
             color="secondary"
@@ -108,21 +126,33 @@ export const StatCard = ({
             {amountVisibility ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </IconButton>
         </Typography>
-        {subtitle && (
-          <Box sx={{ mt: 1, display: "flex", gap: 0.5 }}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                color: trendColorMap[trend],
-              }}>
-              {trendIconMap[trend]}
-            </Box>
+
+        {(comparison || subtitle) && (
+          <Box
+            sx={{
+              mt: 1,
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+            }}>
+            {comparison && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  color: trendColor,
+                }}>
+                {trendIconMap[trend]}
+              </Box>
+            )}
 
             <Typography
               variant="caption"
-              sx={{ color: () => (main ? "#cfd8dc" : null) }}>
-              {subtitle}
+              sx={{
+                color: main ? "#cfd8dc" : "text.secondary",
+              }}>
+              {comparison?.label ?? subtitle}
+              {comparison && subtitle ? ` ${subtitle}` : ""}
             </Typography>
           </Box>
         )}
