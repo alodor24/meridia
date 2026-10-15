@@ -21,6 +21,7 @@ import {
 import { Line } from "react-chartjs-2";
 import { LINE_OPTIONS } from "@/conts";
 import { HorizontalRule as HorizontalRuleIcon } from "@mui/icons-material";
+import { EmptyState } from "@/components/ui/States";
 
 ChartJS.register(
   CategoryScale,
@@ -42,6 +43,7 @@ interface MonthSummaryItem {
 interface MonthSummaryProps {
   items: MonthSummaryItem[];
   currency: string;
+  isEmptyData: boolean;
 }
 
 const legends = [
@@ -59,7 +61,11 @@ const legends = [
   },
 ];
 
-const MonthSummary = ({ items = [], currency }: MonthSummaryProps) => {
+const MonthSummary = ({
+  items = [],
+  currency,
+  isEmptyData,
+}: MonthSummaryProps) => {
   const theme = useTheme();
 
   const chartData = {
@@ -118,19 +124,33 @@ const MonthSummary = ({ items = [], currency }: MonthSummaryProps) => {
         </Typography>
 
         <Box sx={{ height: 300, bgcolor: "background.paper", pb: 4 }}>
-          <Box
-            sx={{ display: "flex", justifyContent: "flex-end", pt: 1, pr: 2 }}>
-            <List sx={{ p: 0, display: "flex", gap: 2 }}>
-              {legends.map((legend, index) => (
-                <ListItem key={index} disablePadding>
-                  <HorizontalRuleIcon fontSize="small" color={legend.color} />
-                  <Typography variant="caption">{legend.title}</Typography>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
+          {!isEmptyData ? (
+            <>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  pt: 1,
+                  pr: 2,
+                }}>
+                <List sx={{ p: 0, display: "flex", gap: 2 }}>
+                  {legends.map((legend, index) => (
+                    <ListItem key={index} disablePadding>
+                      <HorizontalRuleIcon
+                        fontSize="small"
+                        color={legend.color}
+                      />
+                      <Typography variant="caption">{legend.title}</Typography>
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
 
-          <Line data={chartData} options={LINE_OPTIONS} />
+              <Line data={chartData} options={LINE_OPTIONS} />
+            </>
+          ) : (
+            <EmptyState message="No hay datos para mostrar." />
+          )}
         </Box>
       </CardContent>
     </Card>

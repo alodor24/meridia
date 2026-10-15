@@ -40,6 +40,8 @@ const DashboardPage = () => {
   if (!data) return <EmptyState message="No hay datos para mostrar." />;
 
   const monthStatCard = ` vs. ${getPreviousMonth(month)}`;
+  const isEmptyData =
+    data.income === 0 && data.expenses === 0 && data.periodBalance === 0;
 
   const incomeComparison = calculatePctChange(
     data.income,
@@ -74,7 +76,7 @@ const DashboardPage = () => {
         }}
       />
 
-      <Grid container spacing={2} sx={{ mt: 2 }}>
+      <Grid container spacing={2} sx={{ mt: 3 }}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
             main
@@ -144,7 +146,11 @@ const DashboardPage = () => {
         </Grid>
 
         <Grid size={{ xs: 12 }}>
-          <MonthSummary items={data.monthSummary} currency={currency} />
+          <MonthSummary
+            items={data.monthSummary}
+            currency={currency}
+            isEmptyData={isEmptyData}
+          />
         </Grid>
       </Grid>
     </>
