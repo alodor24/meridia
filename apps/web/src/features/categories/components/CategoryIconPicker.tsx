@@ -11,6 +11,8 @@ const CategoryIconPicker = ({ name, label }: CategoryIconPickerProps) => {
   const [field, meta, helpers] = useField<string>(name);
   const showError = meta.touched && Boolean(meta.error);
 
+  const [colorField] = useField<string>("color");
+
   return (
     <Box sx={{ mt: 2 }}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -35,7 +37,7 @@ const CategoryIconPicker = ({ name, label }: CategoryIconPickerProps) => {
               aria-label={icon.name}
               disabled={selected}
               onClick={() => helpers.setValue(icon.name)}>
-              <Icon color={selected ? "secondary" : "action"} />
+              <Icon sx={{ color: selected ? colorField.value : "action" }} />
             </IconButton>
           );
         })}

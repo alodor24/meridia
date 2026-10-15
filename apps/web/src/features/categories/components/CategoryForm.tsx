@@ -1,8 +1,13 @@
-import { Button, DialogActions, DialogContent } from "@mui/material";
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import { Formik, Form } from "formik";
 import type { Category, TransactionType } from "@meridia/shared";
 import { FormTextField } from "@/components/ui/FormTextField";
-import { FormSelect } from "@/components/ui/FormSelect";
 import { ColorField } from "@/components/ui/ColorField";
 import { useUiStore } from "@/stores/uiStore";
 import { validationSchema } from "../validations";
@@ -10,11 +15,6 @@ import CategoryIconPicker from "./CategoryIconPicker";
 import { toApiError } from "@/services/api/errors";
 import { useCreateCategory } from "../hooks/useCreateCategory";
 import { useUpdateCategory } from "../hooks/useUpdateCategory";
-
-const TYPE_OPTIONS = [
-  { value: "expense", label: "Gasto" },
-  { value: "income", label: "Ingreso" },
-];
 
 interface FormValues {
   name: string;
@@ -73,35 +73,56 @@ const CategoryForm = ({
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}>
-      {() => (
-        <Form>
-          <DialogContent>
-            <FormTextField
-              name="name"
-              label="Nombre"
-              placeholder="Ej: Supermercado"
-            />
-            <FormSelect name="type" label="Tipo" options={TYPE_OPTIONS} />
-            <ColorField name="color" />
-            <CategoryIconPicker name="icon" label="Icono" />
-          </DialogContent>
-          <DialogActions sx={{ px: 3, pb: 3 }}>
-            <Button
-              onClick={onClose}
-              disabled={isCreating || isUpdating}
-              color="inherit">
-              Cancelar
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              loading={isCreating || isUpdating}
-              loadingPosition="start">
-              Guardar
-            </Button>
-          </DialogActions>
-        </Form>
-      )}
+      {({ values, setFieldValue }) => {
+        return (
+          <Form>
+            <DialogContent>
+              <ToggleButtonGroup
+                exclusive
+                fullWidth
+                value={values.type}
+                onChange={(_, next: TransactionType | null) => {
+                  if (next) {
+                    void setFieldValue("type", next);
+                    void setFieldValue("categoryId", "");
+                  }
+                }}
+                aria-label="Tipo de categoría"
+                sx={{ mb: 2, mt: 1 }}>
+                <ToggleButton value="expense" color="error">
+                  Gasto
+                </ToggleButton>
+                <ToggleButton value="income" color="success">
+                  Ingreso
+                </ToggleButton>
+              </ToggleButtonGroup>
+
+              <FormTextField
+                name="name"
+                label="Nombre"
+                placeholder="Ej: Supermercado"
+              />
+              <ColorField name="color" />
+              <CategoryIconPicker name="icon" label="Icono" />
+            </DialogContent>
+            <DialogActions sx={{ px: 3, pb: 3 }}>
+              <Button
+                onClick={onClose}
+                disabled={isCreating || isUpdating}
+                color="inherit">
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                loading={isCreating || isUpdating}
+                loadingPosition="start">
+                Guardar
+              </Button>
+            </DialogActions>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };

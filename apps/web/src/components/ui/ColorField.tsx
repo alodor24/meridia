@@ -42,7 +42,7 @@ export const ColorField = ({
                 bgcolor: color,
                 cursor: "pointer",
                 border: 2,
-                borderColor: selected ? "primary.main" : "transparent",
+                borderColor: selected ? "text.primary" : "transparent",
                 p: 0,
                 "&:hover": { transform: "scale(1.1)" },
                 "&:focus-visible": {
