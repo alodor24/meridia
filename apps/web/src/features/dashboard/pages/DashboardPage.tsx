@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import {
   AccountBalanceWallet as AccountBalanceWalletIcon,
   TrendingDown as TrendDownIcon,
   TrendingUp as TrendUpIcon,
+  AccountBalance as AccountBalanceIcon,
 } from "@mui/icons-material";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatCard } from "@/features/dashboard/components/StatCard";
@@ -81,6 +82,12 @@ const DashboardPage = () => {
             value={formatCurrency(data.totalBalance, currency)}
             icon={<AccountBalanceWalletIcon />}
             color={data.totalBalance >= 0 ? "success" : "error"}
+            subtitle={
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                <AccountBalanceIcon sx={{ fontSize: 14 }} />
+                {"Saldo acumulado de todas las cuentas"}
+              </Box>
+            }
             amountVisibility={isVisible}
             toggleAmountVisibility={toggleVisibility}
           />

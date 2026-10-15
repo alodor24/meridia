@@ -18,7 +18,7 @@ import CurrencyDisplay from "./CurrencyDisplay";
 export interface StatCardProps {
   title: string;
   value: string;
-  subtitle?: string;
+  subtitle?: string | ReactNode;
   icon?: ReactNode;
   color?: "primary" | "success" | "error" | "warning" | "info";
   main?: boolean;
@@ -98,7 +98,7 @@ export const StatCard = ({
                 alignItems: "center",
                 justifyContent: "center",
                 color: main ? "#cfd8dc" : colorMap[color],
-                bgcolor: main ? "rgba(5,6,7,.1)" : "background.default",
+                bgcolor: main ? "#050607" : "background.default",
                 width: 34,
                 height: 34,
                 borderRadius: 1,
