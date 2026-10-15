@@ -138,7 +138,7 @@ const TransactionForm = ({
                 label="Cuenta"
                 options={accounts.map((a) => ({
                   value: a.id,
-                  label: `${a.name} (${getCurrencySymbol(a.currency)})`,
+                  label: a.name,
                 }))}
               />
 
