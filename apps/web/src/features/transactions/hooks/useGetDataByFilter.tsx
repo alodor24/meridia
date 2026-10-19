@@ -33,15 +33,18 @@ const EMPTY_ACCOUNTS: Account[] = [];
 const EMPTY_CATEGORIES: Category[] = [];
 
 const useGetDataByFilter = () => {
-  const [filters, setFilters] = useState<Filters>(emptyFilters);
+  const [filters, setFiltersState] = useState<Filters>(emptyFilters);
   const [editing, setEditing] = useState<Transaction | null>(null);
   const [deleting, setDeleting] = useState<Transaction | null>(null);
+  const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(PAGE_SIZE);
+
   const {
     data: accountsData,
     isLoading: isAccountsLoading,
     error: accountsError,
   } = useListAccounts();
+
   const {
     data: categoriesData,
     isLoading: isCategoriesLoading,
@@ -58,6 +61,8 @@ const useGetDataByFilter = () => {
     type: filters.type || undefined,
   };
 
+  const offset = page * limit;
+
   const {
     data: transactionsData,
     isLoading: isTransactionsLoading,
@@ -66,10 +71,12 @@ const useGetDataByFilter = () => {
   } = useListTransactions({
     ...activeFilters,
     limit,
+    offset,
   });
 
-  const accounts: Account[] = accountsData ?? EMPTY_ACCOUNTS;
-  const categories: Category[] = categoriesData ?? EMPTY_CATEGORIES;
+  const accounts = accountsData ?? EMPTY_ACCOUNTS;
+  const categories = categoriesData ?? EMPTY_CATEGORIES;
+
   const data = transactionsData;
   const items = data?.items ?? [];
   const total = data?.total ?? 0;
@@ -81,8 +88,19 @@ const useGetDataByFilter = () => {
 
   const hasFilters = Object.values(filters).some((value) => value !== "");
 
+  const setFilters: React.Dispatch<React.SetStateAction<Filters>> = (value) => {
+    setFiltersState(value);
+    setPage(0);
+  };
+
+  const handleLimitChange = (newLimit: number) => {
+    setLimit(newLimit);
+    setPage(0);
+  };
+
   const resetFilters = () => {
-    setFilters(emptyFilters);
+    setFiltersState(emptyFilters);
+    setPage(0);
     setLimit(PAGE_SIZE);
   };
 
@@ -109,7 +127,10 @@ const useGetDataByFilter = () => {
     total,
     items,
     accountsByCurrency,
-    setLimit,
+    page,
+    setPage,
+    limit,
+    handleLimitChange,
   };
 };
 

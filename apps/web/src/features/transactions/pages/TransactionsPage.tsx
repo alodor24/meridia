@@ -19,24 +19,27 @@ const TransactionsPage = () => {
   const { mutateAsync: deleteTransaction, isPending: isDeleting } =
     useDeleteTransaction();
   const {
+    data,
+    accounts,
+    categories,
+    editing,
+    setEditing,
     deleting,
     setDeleting,
-    refetch,
-    setEditing,
     loading,
-    data,
     error,
-    items,
-    editing,
-    categories,
-    accounts,
-    accountsByCurrency,
-    total,
+    refetch,
     filters,
     setFilters,
-    hasFilters,
     resetFilters,
-    setLimit,
+    hasFilters,
+    total,
+    items,
+    accountsByCurrency,
+    page,
+    setPage,
+    limit,
+    handleLimitChange,
   } = useGetDataByFilter();
 
   const actionOptions = {
@@ -53,6 +56,11 @@ const TransactionsPage = () => {
 
     try {
       await deleteTransaction(deleting.id);
+
+      if (items.length === 1 && page > 0) {
+        setPage(page - 1);
+      }
+
       showSnackbar("Movimiento eliminado");
       setDeleting(null);
     } catch (error) {
@@ -94,7 +102,10 @@ const TransactionsPage = () => {
           items={items}
           accountsByCurrency={accountsByCurrency}
           total={total}
-          setLimit={setLimit}
+          page={page}
+          limit={limit}
+          setPage={setPage}
+          setLimit={handleLimitChange}
         />
       )}
 

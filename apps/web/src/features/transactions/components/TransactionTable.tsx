@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardContent,
   Chip,
@@ -10,6 +9,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  TablePagination,
   TableRow,
   Typography,
 } from "@mui/material";
@@ -18,8 +18,8 @@ import { SHADOW } from "@/theme/globalStyles";
 import { formatCurrency, formatDate } from "@/utils/format";
 import ActionTable, { ActionProps } from "@/components/ui/ActionTable";
 import { AccountId, Transaction } from "@meridia/shared";
-import { PAGE_SIZE } from "@/conts";
 import getCategoryIcon from "@/utils/getCategoryIcon";
+import { ROWS_PER_PAGE_OPTIONS } from "@/conts";
 
 interface TransactionTableProps {
   actions: {
@@ -29,7 +29,10 @@ interface TransactionTableProps {
   items: Transaction[];
   accountsByCurrency: Map<AccountId, string>;
   total: number;
-  setLimit: React.Dispatch<React.SetStateAction<number>>;
+  page: number;
+  limit: number;
+  setPage: (page: number) => void;
+  setLimit: (limit: number) => void;
 }
 
 const TransactionTable = ({
@@ -37,6 +40,9 @@ const TransactionTable = ({
   items,
   accountsByCurrency,
   total,
+  page,
+  limit,
+  setPage,
   setLimit,
 }: TransactionTableProps) => {
   const optionButtons: ActionProps<Transaction>[] = [
@@ -56,7 +62,7 @@ const TransactionTable = ({
 
   return (
     <Card sx={{ boxShadow: SHADOW }}>
-      <CardContent>
+      <CardContent sx={{ "&.MuiCardContent-root:last-child": { pb: 1.5 } }}>
         <Box sx={{ overflowX: "auto", maxHeight: 450 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -125,19 +131,24 @@ const TransactionTable = ({
             </TableBody>
           </Table>
         </Box>
-        {items.length < total && (
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-            <Button onClick={() => setLimit((l) => l + PAGE_SIZE)}>
-              Cargar más
-            </Button>
-          </Box>
-        )}
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: "block", textAlign: "right", mt: 1 }}>
-          {items.length} de {total} movimientos
-        </Typography>
+
+        <Box sx={{ mt: 2 }}>
+          <TablePagination
+            component="div"
+            count={total}
+            page={page}
+            rowsPerPage={limit}
+            rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+            onPageChange={(_, newPage) => setPage(newPage)}
+            onRowsPerPageChange={(event) => {
+              setLimit(Number(event.target.value));
+            }}
+            labelRowsPerPage="Filas por página:"
+            labelDisplayedRows={({ from, to, count }) =>
+              `${from} - ${to} de ${count !== -1 ? count : `más de ${to}`}`
+            }
+          />
+        </Box>
       </CardContent>
     </Card>
   );
