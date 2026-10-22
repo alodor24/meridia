@@ -10,7 +10,6 @@ export const useUpdateProfile = () => {
 
     onSuccess: (updatedUser) => {
       queryClient.setQueryData(authKeys.me(), updatedUser);
-      queryClient.getQueryData(authKeys.me());
     },
   });
 };

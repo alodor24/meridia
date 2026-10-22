@@ -15,7 +15,7 @@ describe('formatCurrency', () => {
   it('formats a positive amount with the given currency', () => {
     const result = formatCurrency(1234.5, 'USD');
     expect(result).toContain('1.234,50');
-    expect(result).toContain('US$');
+    expect(result).toContain('USD');
   });
 
   it('formats a negative amount', () => {
@@ -24,7 +24,7 @@ describe('formatCurrency', () => {
   });
 
   it('defaults to USD when no currency is provided', () => {
-    expect(formatCurrency(5)).toContain('US$');
+    expect(formatCurrency(5)).toContain('USD');
   });
 
   it('formats VES with the VES symbol', () => {

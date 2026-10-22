@@ -55,7 +55,7 @@ export const me = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const updateProfile = asyncHandler(async (req: Request, res: Response) => {
-  const user = await authService.updateProfile(req.user!.id, req.body.name);
+  const user = await authService.updateProfile(req.user!.id, req.body);
   sendSuccess(res, { user });
 });
 

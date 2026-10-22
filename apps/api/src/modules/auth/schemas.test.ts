@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { registerSchema } from './auth.schemas';
+import { registerSchema, updateProfileSchema } from './auth.schemas';
 import { createAccountSchema, updateAccountSchema } from '../accounts/accounts.schemas';
 import {
   createTransactionSchema,
@@ -48,6 +48,58 @@ describe('registerSchema', () => {
       currency: 'ARS',
     });
     expect(result.success).toBe(false);
+  });
+});
+
+describe('updateProfileSchema', () => {
+  const publicId = 'meridia/avatars/7f9c2b1a/avatar-1';
+  const avatar = `https://res.cloudinary.com/demo/image/upload/v123/${publicId}.webp`;
+
+  it('acepta nombre, avatar o ambos', () => {
+    expect(updateProfileSchema.safeParse({ name: 'Ana' }).success).toBe(true);
+    expect(
+      updateProfileSchema.safeParse({ avatar, avatarPublicId: publicId })
+        .success,
+    ).toBe(true);
+    expect(
+      updateProfileSchema.safeParse({
+        name: 'Ana',
+        avatar,
+        avatarPublicId: publicId,
+      }).success,
+    ).toBe(true);
+  });
+
+  it('rechaza un body vacío', () => {
+    expect(updateProfileSchema.safeParse({}).success).toBe(false);
+  });
+
+  it('rechaza un avatar sin public_id', () => {
+    expect(updateProfileSchema.safeParse({ avatar }).success).toBe(false);
+  });
+
+  it('rechaza un public_id que no coincide con la URL', () => {
+    expect(
+      updateProfileSchema.safeParse({
+        avatar,
+        avatarPublicId: 'meridia/avatars/7f9c2b1a/avatar-2',
+      }).success,
+    ).toBe(false);
+  });
+
+  it('rechaza URLs que no sean de Cloudinary', () => {
+    expect(
+      updateProfileSchema.safeParse({
+        avatar: 'https://example.com/avatar.webp',
+        avatarPublicId: publicId,
+      }).success,
+    ).toBe(false);
+    expect(
+      updateProfileSchema.safeParse({
+        avatar: `http://res.cloudinary.com/demo/image/upload/v123/${publicId}.webp`,
+        avatarPublicId: publicId,
+      }).success,
+    ).toBe(false);
   });
 });
 

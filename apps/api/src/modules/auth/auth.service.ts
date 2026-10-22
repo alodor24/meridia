@@ -3,13 +3,14 @@ import jwt from 'jsonwebtoken';
 import { env } from '../../config/env';
 import { pool, withTransaction } from '../../database/pool';
 import type { Db } from '../../database/types';
-import { AuthenticationError, ConflictError, NotFoundError } from '../../shared/errors';
+import { AuthenticationError, ConflictError, NotFoundError, ValidationError } from '../../shared/errors';
 import { expiresInToMs } from '../../shared/utils/time';
 import { generateRefreshToken, hashRefreshToken } from '../../shared/utils/tokens';
 import * as authRepository from './auth.repository';
 import * as usersRepository from '../users/users.repository';
+import { deleteCloudinaryAsset } from '../users/cloudinary';
 import type { TokenPair } from './auth.types';
-import type { LoginInput, RegisterInput } from './auth.schemas';
+import type { LoginInput, RegisterInput, UpdateProfileInput } from './auth.schemas';
 import type { UserId } from '@meridia/shared';
 
 const BCRYPT_ROUNDS = 10;
@@ -131,8 +132,37 @@ export const getMe = async (userId: UserId) => {
   return usersRepository.mapUserRow(user);
 };
 
-export const updateProfile = async (userId: UserId, name: string) => {
-  const user = await usersRepository.updateName(pool, userId, name.trim());
+export const updateProfile = async (
+  userId: UserId,
+  input: UpdateProfileInput,
+) => {
+  if (
+    input.avatarPublicId &&
+    !input.avatarPublicId.startsWith(`meridia/avatars/${userId}/`)
+  ) {
+    throw new ValidationError(
+      'El public_id del avatar no pertenece al usuario',
+    );
+  }
+
+  const previous = await usersRepository.findById(pool, userId);
+  if (!previous) throw new NotFoundError('Usuario no encontrado');
+
+  const user = await usersRepository.updateProfile(pool, userId, {
+    ...(input.name !== undefined ? { name: input.name.trim() } : {}),
+    ...(input.avatar !== undefined ? { avatar: input.avatar } : {}),
+    ...(input.avatarPublicId !== undefined
+      ? { avatarPublicId: input.avatarPublicId }
+      : {}),
+  });
   if (!user) throw new NotFoundError('Usuario no encontrado');
+
+  if (
+    previous.avatar_public_id &&
+    previous.avatar_public_id !== user.avatar_public_id
+  ) {
+    await deleteCloudinaryAsset(previous.avatar_public_id);
+  }
+
   return usersRepository.mapUserRow(user);
 };

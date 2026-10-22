@@ -52,11 +52,13 @@ export const findValidRefreshToken = async (
     name: string;
     country: string;
     currency: string;
+    avatar: string | null;
+    avatar_public_id: string | null;
     user_created_at: Date;
     user_updated_at: Date;
   }>(
     `SELECT rt.id AS refresh_token_id, rt.user_id, rt.token_hash, rt.expires_at, rt.revoked_at, rt.created_at,
-            u.id, u.email, u.password_hash, u.name, u.country, u.currency,
+            u.id, u.email, u.password_hash, u.name, u.country, u.currency, u.avatar, u.avatar_public_id,
             u.created_at AS user_created_at, u.updated_at AS user_updated_at
      FROM refresh_tokens rt
      JOIN users u ON u.id = rt.user_id
@@ -83,6 +85,8 @@ export const findValidRefreshToken = async (
       name: row.name,
       country: row.country,
       currency: row.currency,
+      avatar: row.avatar,
+      avatar_public_id: row.avatar_public_id,
       created_at: row.user_created_at,
       updated_at: row.user_updated_at,
     },

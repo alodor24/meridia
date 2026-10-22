@@ -19,7 +19,7 @@ const FormProfile = ({ user }: FormProfileProps) => {
 
   const handleSubmit = async (values: { name: string }) => {
     try {
-      await updateProfile.mutateAsync(values.name);
+      await updateProfile.mutateAsync({ name: values.name });
       showSnackbar("Perfil actualizado");
     } catch (error) {
       showSnackbar(toApiError(error).message, "error");
@@ -28,7 +28,7 @@ const FormProfile = ({ user }: FormProfileProps) => {
 
   return (
     <Card sx={{ boxShadow: SHADOW }}>
-      <CardContent>
+      <CardContent sx={{ p: 4 }}>
         <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
           Actualizar nombre
         </Typography>

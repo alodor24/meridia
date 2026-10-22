@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default tseslint.config(
-  { ignores: ['dist/**', 'coverage/**', 'node_modules/**'] },
+  { ignores: ['dist/**', 'coverage/**', 'node_modules/**', 'vitest.config.ts'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

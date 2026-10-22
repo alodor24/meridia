@@ -1,6 +1,7 @@
-import { Stack } from "@mui/material";
+import { Grid } from "@mui/material";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import AvatarUploader from "../components/AvatarUploader";
 import CardProfile from "../components/CardProfile";
 import FormProfile from "../components/FormProfile";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
@@ -13,12 +14,21 @@ const ProfilePage = () => {
 
   return (
     <>
-      <PageHeader title="Perfil" subtitle="Tu información personal." />
+      <PageHeader title="Perfil" subtitle="Gestiona tu información personal." />
 
-      <Stack spacing={3} sx={{ maxWidth: 600 }}>
-        <CardProfile user={user} />
-        <FormProfile user={user} />
-      </Stack>
+      <Grid container spacing={2}>
+        <Grid size={12}>
+          <CardProfile user={user} />
+        </Grid>
+
+        <Grid size={{ md: 6 }}>
+          <FormProfile user={user} />
+        </Grid>
+
+        <Grid size={{ md: 6 }}>
+          <AvatarUploader user={user} />
+        </Grid>
+      </Grid>
     </>
   );
 };

@@ -1,19 +1,15 @@
-import {
-  AppBar,
-  Avatar,
-  Box,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import {
-  Logout as LogoutIcon,
-  Menu as MenuIcon,
-  Person as PersonIcon,
-} from "@mui/icons-material";
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
+import PersonIcon from "@mui/icons-material/Person";
 import { NAVBAR_DARK, NAVBAR_LIGHT, SHADOW } from "@/theme/globalStyles";
 import { Link } from "@tanstack/react-router";
 import { PATHS } from "@/conts";
@@ -95,6 +91,8 @@ const NavbarApp = () => {
           sx={{ ml: 1 }}
           data-testid="profile-menu">
           <Avatar
+            src={user?.avatar ?? undefined}
+            alt={user ? `Avatar de ${user.name}` : "Avatar"}
             sx={{
               width: 32,
               height: 32,

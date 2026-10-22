@@ -8,11 +8,13 @@ import {
   Card,
   CardContent,
   Divider,
-  List,
-  ListItem,
-  ListItemText,
   Typography,
 } from "@mui/material";
+import {
+  LocationPin as LocationPinIcon,
+  AccountBalanceWallet as AccountBalanceWalletIcon,
+  CalendarMonth as CalendarMonthIcon,
+} from "@mui/icons-material";
 import ReactCountryFlag from "react-country-flag";
 
 interface CardProfileProps {
@@ -22,66 +24,123 @@ interface CardProfileProps {
 const CardProfile = ({ user }: CardProfileProps) => {
   return (
     <Card sx={{ boxShadow: SHADOW }}>
-      <CardContent>
+      <CardContent sx={{ p: 4 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
           <Avatar
+            src={user.avatar ?? undefined}
+            alt={`Avatar de ${user.name}`}
             sx={{
-              width: 56,
-              height: 56,
+              width: { xs: 48, md: 90 },
+              height: { xs: 48, md: 90 },
               bgcolor: "primary.main",
-              fontSize: 24,
+              fontSize: { xs: 18, md: 34 },
               color: "primary.contrastText",
             }}>
             {user.name.charAt(0).toUpperCase()}
           </Avatar>
           <Box>
-            <Typography variant="h6">{user.name}</Typography>
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: 600, fontSize: { xs: 20, md: 26 }, mb: 0.7 }}>
+              {user.name}
+            </Typography>
             <Typography variant="body2" color="text.secondary">
               {user.email}
             </Typography>
           </Box>
         </Box>
+
         <Divider />
-        <List dense>
-          <ListItem>
-            <ListItemText
-              primary="País"
-              secondary={
-                <>
-                  <ReactCountryFlag
-                    countryCode={user.country}
-                    svg
-                    style={{
-                      width: "1.7em",
-                      height: "1.7em",
-                      marginRight: "0.5em",
-                    }}
-                    title={user.country}
-                  />
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ position: "relative", top: "2px" }}>
-                    {getCountryName(user.country)}
-                  </Typography>
-                </>
-              }
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary="Moneda"
-              secondary={getCurrencySymbol(user.currency)}
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary="Miembro desde"
-              secondary={formatDate(user.createdAt)}
-            />
-          </ListItem>
-        </List>
+
+        <Box
+          sx={{
+            mt: 4,
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { md: "center" },
+            gap: { xs: 1, md: 9 },
+          }}>
+          <Box>
+            <Typography
+              sx={{
+                fontWeight: 600,
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                mb: 0.5,
+              }}>
+              <LocationPinIcon fontSize="small" />
+              País
+            </Typography>
+
+            <Box>
+              <Typography
+                component="span"
+                variant="body2"
+                color="text.secondary"
+                sx={{ fontWeight: 300, ml: 3.5 }}>
+                {getCountryName(user.country)}
+              </Typography>
+              <ReactCountryFlag
+                countryCode={user.country}
+                svg
+                style={{
+                  width: "26px",
+                  height: "26px",
+                  marginLeft: "0.5em",
+                  borderRadius: "100%",
+                }}
+                title={user.country}
+              />
+            </Box>
+          </Box>
+
+          <Divider orientation="vertical" variant="middle" flexItem />
+
+          <Box>
+            <Typography
+              sx={{
+                fontWeight: 600,
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                mb: 0.5,
+              }}>
+              <AccountBalanceWalletIcon fontSize="small" />
+              Moneda
+            </Typography>
+            <Typography
+              component="span"
+              variant="body2"
+              color="text.secondary"
+              sx={{ fontWeight: 300, ml: 3.5 }}>
+              {getCurrencySymbol(user.currency)}
+            </Typography>
+          </Box>
+
+          <Divider orientation="vertical" variant="middle" flexItem />
+
+          <Box>
+            <Typography
+              sx={{
+                fontWeight: 600,
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                mb: 0.5,
+              }}>
+              <CalendarMonthIcon fontSize="small" />
+              Miembro desde
+            </Typography>
+            <Typography
+              component="span"
+              variant="body2"
+              color="text.secondary"
+              sx={{ fontWeight: 300, ml: 3.5 }}>
+              {formatDate(user.createdAt)}
+            </Typography>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
   );

@@ -7,7 +7,18 @@ import { tokenManager } from "./tokenManager";
 import { toApiError } from "./errors";
 import { AUTH_PATHS, ENDPOINT_ROUTES } from "@/conts";
 
-export const API_BASE_URL = import.meta.env.VITE_API_URL ?? "";
+const rawApiBaseUrl = import.meta.env.VITE_API_URL ?? "";
+
+const isValidApiBaseUrl = (value: string): boolean =>
+  value === "" || /^https?:\/\//i.test(value);
+
+if (!isValidApiBaseUrl(rawApiBaseUrl)) {
+  throw new Error(
+    "VITE_API_URL inválida. Debe estar vacía o comenzar con http:// o https://.",
+  );
+}
+
+export const API_BASE_URL = rawApiBaseUrl;
 
 const client = axios.create({
   baseURL: API_BASE_URL,

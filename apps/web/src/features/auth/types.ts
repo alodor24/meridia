@@ -17,3 +17,9 @@ export interface RegisterPayload {
   country: string;
   currency: string;
 }
+
+export interface UpdateProfilePayload {
+  name?: string;
+  avatar?: string;
+  avatarPublicId?: string;
+}

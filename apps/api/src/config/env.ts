@@ -19,6 +19,9 @@ const envSchema = z.object({
   COOKIE_SAME_SITE: z.enum(['lax', 'strict', 'none']).default('lax'),
   COOKIE_NAME: z.string().default('meridia_refresh'),
   COOKIE_DOMAIN: z.string().default('.localhost'),
+  CLOUDINARY_CLOUD_NAME: z.string().trim().optional(),
+  CLOUDINARY_API_KEY: z.string().trim().optional(),
+  CLOUDINARY_API_SECRET: z.string().trim().optional(),
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(900_000),
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(20),
 });

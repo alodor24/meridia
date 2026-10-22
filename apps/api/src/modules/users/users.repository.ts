@@ -8,6 +8,8 @@ export interface UserRow {
   name: string;
   country: string;
   currency: string;
+  avatar: string | null;
+  avatar_public_id: string | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -18,6 +20,8 @@ export const mapUserRow = (row: UserRow): User => ({
   name: row.name,
   country: row.country,
   currency: row.currency,
+  avatar: row.avatar,
+  avatarPublicId: row.avatar_public_id,
   createdAt: row.created_at.toISOString(),
   updatedAt: row.updated_at.toISOString(),
 });
@@ -59,10 +63,31 @@ export const create = async (
   return result.rows[0]!;
 };
 
-export const updateName = async (db: Db, id: UserId, name: string): Promise<UserRow | undefined> => {
+export interface UpdateProfileInput {
+  name?: string;
+  avatar?: string;
+  avatarPublicId?: string;
+}
+
+export const updateProfile = async (
+  db: Db,
+  id: UserId,
+  input: UpdateProfileInput,
+): Promise<UserRow | undefined> => {
   const result = await db.query<UserRow>(
-    'UPDATE users SET name = $1 WHERE id = $2 RETURNING *',
-    [name, id],
+    `UPDATE users
+     SET name = COALESCE($1, name),
+         avatar = CASE WHEN $2::boolean THEN $3::text ELSE avatar END,
+         avatar_public_id = CASE WHEN $2::boolean THEN $4::text ELSE avatar_public_id END
+     WHERE id = $5
+     RETURNING *`,
+    [
+      input.name ?? null,
+      input.avatar !== undefined,
+      input.avatar ?? null,
+      input.avatarPublicId ?? null,
+      id,
+    ],
   );
   return result.rows[0];
 };

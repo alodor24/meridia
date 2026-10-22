@@ -11,6 +11,8 @@ export interface User {
   name: string;
   country: string;
   currency: string;
+  avatar: string | null;
+  avatarPublicId: string | null;
   createdAt: string;
   updatedAt: string;
 }
