@@ -1,10 +1,13 @@
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
-import { Avatar, Box, Chip, Grid, Link, Typography } from "@mui/material";
-import {
-  Person as PersonIcon,
-  Code as CodeIcon,
-  OpenInNew as OpenInNewIcon,
-} from "@mui/icons-material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
+import PersonIcon from "@mui/icons-material/Person";
+import CodeIcon from "@mui/icons-material/Code";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { PageHeader } from "@/components/ui/PageHeader";
 import AboutCard from "../components/AboutCard";
 import LogoApp from "@/components/ui/LogoApp";

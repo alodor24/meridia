@@ -6,13 +6,13 @@ import {
   isSameMonth,
 } from "date-fns";
 import { es } from "date-fns/locale";
-import {
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-  CalendarMonth as CalendarMonthIcon,
-  Refresh as RefreshIcon,
-} from "@mui/icons-material";
-import { IconButton, Stack, Typography } from "@mui/material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { monthRangeFor } from "../utils/monthRange";
 import { SHADOW } from "@/theme/globalStyles";
 import { DashboardRange } from "../types";

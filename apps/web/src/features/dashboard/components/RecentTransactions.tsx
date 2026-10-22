@@ -1,5 +1,8 @@
 import type { Transaction } from "@meridia/shared";
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 import { PATHS } from "@/conts";
 import RowTransaction from "./Transaction";
 import { SHADOW } from "@/theme/globalStyles";

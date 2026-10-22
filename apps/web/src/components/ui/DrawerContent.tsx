@@ -1,17 +1,13 @@
-import {
-  Box,
-  Divider,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-} from "@mui/material";
-import {
-  DarkMode as DarkModeIcon,
-  LightMode as LightModeIcon,
-  Info as InfoIcon,
-} from "@mui/icons-material";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Toolbar from "@mui/material/Toolbar";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import InfoIcon from "@mui/icons-material/Info";
 import { NAV_ITEMS, PATHS } from "@/conts";
 import { useUiStore } from "@/stores/uiStore";
 import { Link, useLocation } from "@tanstack/react-router";

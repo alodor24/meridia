@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import TextField from "@mui/material/TextField";
 import type { TextFieldProps } from "@mui/material/TextField";
 import { useField } from "formik";
 

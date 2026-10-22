@@ -1,4 +1,5 @@
-import { Dialog, DialogTitle } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
 import type { Category, TransactionType } from "@meridia/shared";
 import CategoryForm from "./CategoryForm";
 import { useUpdateCategory } from "../hooks/useUpdateCategory";

@@ -1,4 +1,7 @@
-import { Box, Drawer, Snackbar, Alert } from "@mui/material";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useUiStore } from "@/stores/uiStore";

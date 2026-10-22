@@ -1,4 +1,7 @@
-import { Category, Dashboard, Receipt, Wallet } from "@mui/icons-material";
+import Category from "@mui/icons-material/Category";
+import Dashboard from "@mui/icons-material/Dashboard";
+import Receipt from "@mui/icons-material/Receipt";
+import Wallet from "@mui/icons-material/Wallet";
 import { TooltipItem } from "chart.js";
 
 export const PATHS = {

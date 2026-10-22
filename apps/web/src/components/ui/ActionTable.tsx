@@ -1,4 +1,5 @@
-import { IconButton, TableCell } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import TableCell from "@mui/material/TableCell";
 import CustomTooltip from "@/components/ui/CustomTooltip";
 
 export interface ActionProps<T> {

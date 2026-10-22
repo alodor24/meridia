@@ -1,25 +1,21 @@
-import {
-  Box,
-  Chip,
-  LinearProgress,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import {
-  AccountBalance as AccountIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  AccountBalanceWallet as AccountBalanceWalletIcon,
-  CreditCard as CreditCardIcon,
-  Savings as SavingsIcon,
-  Money as MoneyIcon,
-  Timeline as TimelineIcon,
-} from "@mui/icons-material";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import LinearProgress from "@mui/material/LinearProgress";
+import Stack from "@mui/material/Stack";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import AccountIcon from "@mui/icons-material/AccountBalance";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import SavingsIcon from "@mui/icons-material/Savings";
+import MoneyIcon from "@mui/icons-material/Money";
+import TimelineIcon from "@mui/icons-material/Timeline";
 import { formatCurrency, getCurrencySymbol } from "@/utils/format";
 import { ACCOUNT_TYPE_LABELS } from "@/utils/labels";
 import { Account } from "@meridia/shared";

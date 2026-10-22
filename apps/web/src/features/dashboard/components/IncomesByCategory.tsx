@@ -1,15 +1,13 @@
 import { EmptyState } from "@/components/ui/States";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { DONOUT_OPTIONS } from "@/conts";
-import {
-  Box,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 import { Doughnut } from "react-chartjs-2";
 
 interface IncomesByCategoryItem {

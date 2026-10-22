@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { Box, Grid } from "@mui/material";
-import {
-  AccountBalanceWallet as AccountBalanceWalletIcon,
-  TrendingDown as TrendDownIcon,
-  TrendingUp as TrendUpIcon,
-  AccountBalance as AccountBalanceIcon,
-} from "@mui/icons-material";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import TrendDownIcon from "@mui/icons-material/TrendingDown";
+import TrendUpIcon from "@mui/icons-material/TrendingUp";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatCard } from "@/features/dashboard/components/StatCard";
 import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";

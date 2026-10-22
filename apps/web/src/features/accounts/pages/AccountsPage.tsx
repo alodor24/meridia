@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Box, Card, CardContent } from "@mui/material";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import type { Account } from "@meridia/shared";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";

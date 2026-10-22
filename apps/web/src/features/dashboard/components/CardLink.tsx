@@ -1,6 +1,7 @@
-import { Box, Link as MuiLink } from "@mui/material";
+import Box from "@mui/material/Box";
+import MuiLink from "@mui/material/Link";
 import { Link } from "@tanstack/react-router";
-import { ChevronRight as ChevronRightIcon } from "@mui/icons-material";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 interface CardLinkProps {
   label: string;

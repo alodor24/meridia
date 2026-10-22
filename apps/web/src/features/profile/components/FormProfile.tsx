@@ -1,4 +1,7 @@
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 import { Form, Formik } from "formik";
 import { profileValidationSchema } from "../validations";
 import { FormTextField } from "@/components/ui/FormTextField";

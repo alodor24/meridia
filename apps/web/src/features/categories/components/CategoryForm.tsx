@@ -1,10 +1,8 @@
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Formik, Form } from "formik";
 import type { Category, TransactionType } from "@meridia/shared";
 import { FormTextField } from "@/components/ui/FormTextField";

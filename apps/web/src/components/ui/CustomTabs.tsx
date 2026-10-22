@@ -1,5 +1,6 @@
 import { Children, SyntheticEvent, useState } from "react";
-import { Tab, Tabs } from "@mui/material";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import getTabProps from "@/utils/getTabProps";
 import CustomTabPanel from "./CustomTabPanel";
 

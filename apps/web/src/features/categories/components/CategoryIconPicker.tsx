@@ -1,4 +1,7 @@
-import { Box, FormHelperText, IconButton, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import FormHelperText from "@mui/material/FormHelperText";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { useField } from "formik";
 import categoryIcons from "@/utils/categoryIcons";
 

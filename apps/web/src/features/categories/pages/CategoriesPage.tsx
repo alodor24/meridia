@@ -1,5 +1,5 @@
 import { SetStateAction, useState } from "react";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import type { Category, TransactionType } from "@meridia/shared";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -9,11 +9,9 @@ import { useUiStore } from "@/stores/uiStore";
 import { CategoryFormDialog } from "../components/CategoryFormDialog";
 import CategoryTable from "../components/CategoryTable";
 import CategoryCard from "../components/CategoryCard";
-import {
-  Category as CategoryIcon,
-  TrendingDown as TrendDownIcon,
-  TrendingUp as TrendUpIcon,
-} from "@mui/icons-material";
+import CategoryIcon from "@mui/icons-material/Category";
+import TrendDownIcon from "@mui/icons-material/TrendingDown";
+import TrendUpIcon from "@mui/icons-material/TrendingUp";
 import { useListCategories } from "../hooks/useListCategories";
 import { useDeleteCategory } from "../hooks/useDeleteCategory";
 import { toApiError } from "@/services/api/errors";

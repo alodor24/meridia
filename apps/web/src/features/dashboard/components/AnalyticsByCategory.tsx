@@ -1,6 +1,8 @@
 import CustomTabs from "@/components/ui/CustomTabs";
 import { SHADOW } from "@/theme/globalStyles";
-import { Card, CardContent, Divider } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Divider from "@mui/material/Divider";
 import { ExpensesByCategory } from "./ExpensesByCategory";
 import IncomesByCategory from "./IncomesByCategory";
 import { DashboardSummary } from "@meridia/shared";

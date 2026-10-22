@@ -1,14 +1,13 @@
 import type { ReactNode } from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  Container,
-  Link as MuiLink,
-  Typography,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Container from "@mui/material/Container";
+import MuiLink from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "@tanstack/react-router";
-import { Alert, Snackbar } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import { useUiStore } from "@/stores/uiStore";
 import { PATHS } from "@/conts";
 import LogoApp from "@/components/ui/LogoApp";

@@ -2,19 +2,15 @@ import { SHADOW } from "@/theme/globalStyles";
 import { formatDate, getCurrencySymbol } from "@/utils/format";
 import { getCountryName } from "@/utils/labels";
 import { User } from "@meridia/shared";
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Divider,
-  Typography,
-} from "@mui/material";
-import {
-  LocationPin as LocationPinIcon,
-  AccountBalanceWallet as AccountBalanceWalletIcon,
-  CalendarMonth as CalendarMonthIcon,
-} from "@mui/icons-material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import LocationPinIcon from "@mui/icons-material/LocationPin";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ReactCountryFlag from "react-country-flag";
 
 interface CardProfileProps {

@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import type { PaletteMode } from "@mui/material";
+import type { PaletteMode } from "@mui/material/styles";
 
 const fontFamily = "'Mulish', sans-serif";
 

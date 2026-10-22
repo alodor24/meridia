@@ -1,12 +1,14 @@
 import { ReactNode } from "react";
-import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
-import {
-  North as NorthIcon,
-  South as SouthIcon,
-  SyncAlt as SyncAltIcon,
-  VisibilityOff as VisibilityOffIcon,
-  Visibility as VisibilityIcon,
-} from "@mui/icons-material";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import NorthIcon from "@mui/icons-material/North";
+import SouthIcon from "@mui/icons-material/South";
+import SyncAltIcon from "@mui/icons-material/SyncAlt";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { SHADOW } from "@/theme/globalStyles";
 import {
   PercentageChange,

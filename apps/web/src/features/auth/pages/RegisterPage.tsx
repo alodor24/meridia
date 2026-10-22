@@ -1,4 +1,6 @@
-import { Link as MuiLink, Stack, Typography } from "@mui/material";
+import MuiLink from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { AuthLayout } from "@/features/auth/components/AuthLayout";
 import { PATHS } from "@/conts";

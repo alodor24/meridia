@@ -1,13 +1,11 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  List,
-  ListItem,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import { HorizontalRule as HorizontalRuleIcon } from "@mui/icons-material";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
+import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import { useMemo, useRef } from "react";
 import {
   Chart as ChartJS,

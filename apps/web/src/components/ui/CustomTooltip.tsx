@@ -1,4 +1,7 @@
-import { styled, Tooltip, tooltipClasses, TooltipProps } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
+import { tooltipClasses } from "@mui/material/Tooltip";
+import type { TooltipProps } from "@mui/material/Tooltip";
 
 interface CustomTooltipProps extends TooltipProps {
   children: React.ReactElement;
