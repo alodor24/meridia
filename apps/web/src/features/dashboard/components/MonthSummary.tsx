@@ -7,20 +7,28 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { SHADOW } from "@/theme/globalStyles";
+import { HorizontalRule as HorizontalRuleIcon } from "@mui/icons-material";
+import { useMemo, useRef } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  LineController,
   PointElement,
   LineElement,
   Title,
   Tooltip,
   Legend,
+  Filler,
+  type Chart,
+  type ChartData,
+  type ChartOptions,
+  type ScriptableContext,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+
+import { SHADOW } from "@/theme/globalStyles";
 import { LINE_OPTIONS } from "@/conts";
-import { HorizontalRule as HorizontalRuleIcon } from "@mui/icons-material";
 import { EmptyState } from "@/components/ui/States";
 
 ChartJS.register(
@@ -28,9 +36,11 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
+  LineController,
   Title,
   Tooltip,
   Legend,
+  Filler,
 );
 
 interface MonthSummaryItem {
@@ -47,19 +57,28 @@ interface MonthSummaryProps {
 }
 
 const legends = [
-  {
-    title: "Ingresos",
-    color: "success" as const,
-  },
-  {
-    title: "Gastos",
-    color: "error" as const,
-  },
-  {
-    title: "Balance",
-    color: "primary" as const,
-  },
-];
+  { title: "Ingresos", color: "success" },
+  { title: "Gastos", color: "error" },
+  { title: "Balance", color: "primary" },
+] as const;
+
+const createGradient = (context: ScriptableContext<"line">, color: string) => {
+  const { ctx, chartArea } = context.chart;
+
+  if (!chartArea) return color;
+
+  const gradient = ctx.createLinearGradient(
+    0,
+    chartArea.top,
+    0,
+    chartArea.bottom,
+  );
+
+  gradient.addColorStop(0, `${color}80`);
+  gradient.addColorStop(1, `${color}00`);
+
+  return gradient;
+};
 
 const MonthSummary = ({
   items = [],
@@ -67,54 +86,57 @@ const MonthSummary = ({
   isEmptyData,
 }: MonthSummaryProps) => {
   const theme = useTheme();
+  const chartRef = useRef<Chart<"line"> | null>(null);
 
-  const chartData = {
-    labels: items.map((item) => item.day),
-    datasets: [
-      {
-        label: `Ingresos ${currency}`,
-        data: items.map((item) => item.income),
-        borderColor: theme.palette.success.main,
-        backgroundColor: theme.palette.success.main,
-        pointBackgroundColor: theme.palette.background.paper,
-        pointBorderColor: theme.palette.success.main,
-        pointBorderWidth: 2,
-        pointRadius: 3,
-        pointHoverRadius: 5,
-        borderWidth: 2,
-        tension: 0.35,
-        fill: false,
-      },
-      {
-        label: `Gastos ${currency}`,
-        data: items.map((item) => item.expenses),
-        borderColor: theme.palette.error.main,
-        backgroundColor: theme.palette.error.main,
-        pointBackgroundColor: theme.palette.background.paper,
-        pointBorderColor: theme.palette.error.main,
-        pointBorderWidth: 2,
-        pointRadius: 3,
-        pointHoverRadius: 5,
-        borderWidth: 2,
-        tension: 0.35,
-        fill: false,
-      },
-      {
-        label: `Balance ${currency}`,
-        data: items.map((item) => item.balance),
-        borderColor: theme.palette.primary.main,
-        backgroundColor: theme.palette.primary.main,
-        pointBackgroundColor: theme.palette.background.paper,
-        pointBorderColor: theme.palette.primary.main,
-        pointBorderWidth: 2,
-        pointRadius: 3,
-        pointHoverRadius: 5,
-        borderWidth: 2,
-        tension: 0.35,
-        fill: false,
-      },
-    ],
-  };
+  const chartData = useMemo<ChartData<"line">>(() => {
+    const colors = {
+      income: theme.palette.success.main,
+      expenses: theme.palette.error.main,
+      balance: theme.palette.primary.main,
+    };
+
+    const createDataset = (
+      label: string,
+      data: number[],
+      color: string,
+      fill = true,
+    ) => ({
+      label: `${label} ${currency}`,
+      data,
+      borderColor: color,
+      backgroundColor: (context: ScriptableContext<"line">) =>
+        createGradient(context, color),
+      pointBackgroundColor: theme.palette.background.paper,
+      pointBorderColor: color,
+      pointBorderWidth: 2,
+      pointRadius: 3,
+      pointHoverRadius: 5,
+      borderWidth: 2,
+      tension: 0.35,
+      fill,
+    });
+
+    return {
+      labels: items.map((item) => item.day),
+      datasets: [
+        createDataset(
+          "Ingresos",
+          items.map((item) => item.income),
+          colors.income,
+        ),
+        createDataset(
+          "Gastos",
+          items.map((item) => item.expenses),
+          colors.expenses,
+        ),
+        createDataset(
+          "Balance",
+          items.map((item) => item.balance),
+          colors.balance,
+        ),
+      ],
+    };
+  }, [items, currency, theme]);
 
   return (
     <Card sx={{ height: "100%", boxShadow: SHADOW }}>
@@ -134,8 +156,8 @@ const MonthSummary = ({
                   pr: 2,
                 }}>
                 <List sx={{ p: 0, display: "flex", gap: 2 }}>
-                  {legends.map((legend, index) => (
-                    <ListItem key={index} disablePadding>
+                  {legends.map((legend) => (
+                    <ListItem key={legend.title} disablePadding>
                       <HorizontalRuleIcon
                         fontSize="small"
                         color={legend.color}
@@ -146,7 +168,11 @@ const MonthSummary = ({
                 </List>
               </Box>
 
-              <Line data={chartData} options={LINE_OPTIONS} />
+              <Line
+                ref={chartRef}
+                data={chartData}
+                options={LINE_OPTIONS as ChartOptions<"line">}
+              />
             </>
           ) : (
             <EmptyState message="No hay datos para mostrar." />
