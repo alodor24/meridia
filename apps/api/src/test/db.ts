@@ -2,6 +2,7 @@ import { pool } from "../database/pool";
 
 const TABLES = [
   "refresh_tokens",
+  "account_transfers",
   "transactions",
   "categories",
   "accounts",

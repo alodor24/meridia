@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import CustomButtom from "./CustomButtom";
 
@@ -7,6 +8,7 @@ export interface PageHeaderProps {
   subtitle?: string;
   actionLabel?: string;
   onAction?: () => void;
+  secondaryAction?: React.ReactNode;
 }
 
 export const PageHeader = ({
@@ -14,6 +16,7 @@ export const PageHeader = ({
   subtitle,
   actionLabel,
   onAction,
+  secondaryAction,
 }: PageHeaderProps) => {
   return (
     <Box
@@ -35,8 +38,16 @@ export const PageHeader = ({
           </Typography>
         )}
       </Box>
-      {actionLabel && onAction && (
-        <CustomButtom onAction={onAction}>{actionLabel}</CustomButtom>
+      {(secondaryAction || (actionLabel && onAction)) && (
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ alignItems: "center", flexWrap: "wrap" }}>
+          {secondaryAction}
+          {actionLabel && onAction && (
+            <CustomButtom onAction={onAction}>{actionLabel}</CustomButtom>
+          )}
+        </Stack>
       )}
     </Box>
   );

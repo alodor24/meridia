@@ -1,7 +1,6 @@
 import { useState } from "react";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import type { Account } from "@meridia/shared";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -10,7 +9,8 @@ import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useUiStore } from "@/stores/uiStore";
 import { AccountFormDialog } from "../components/AccountFormDialog";
 import AccountTable from "../components/AccountTable";
-import { SHADOW } from "@/theme/globalStyles";
+import { TransferDialog } from "../components/TransferDialog";
+import { TransferHistory } from "../components/TransferHistory";
 import useGetUserCurrency from "@/hooks/useGetUserCurrency";
 import { useListAccounts } from "../hooks/useListAccounts";
 import { useDeleteAccount } from "../hooks/useDeleteAccount";
@@ -25,6 +25,7 @@ const AccountsPage = () => {
   const showSnackbar = useUiStore((s) => s.showSnackbar);
 
   const [formOpen, setFormOpen] = useState(false);
+  const [transferOpen, setTransferOpen] = useState(false);
   const [editing, setEditing] = useState<Account | null>(null);
   const [deletingAccount, setDeletingAccount] = useState<Account | null>(null);
 
@@ -55,6 +56,16 @@ const AccountsPage = () => {
       <PageHeader
         title="Cuentas"
         subtitle="Administra el saldo disponible de tus cuentas."
+        secondaryAction={
+          <Button
+            color="secondary"
+            variant="outlined"
+            startIcon={<SwapHorizIcon />}
+            onClick={() => setTransferOpen(true)}
+            sx={{ textTransform: "capitalize" }}>
+            Transferir Saldo
+          </Button>
+        }
         actionLabel="Nueva cuenta"
         onAction={() => {
           setEditing(null);
@@ -70,13 +81,10 @@ const AccountsPage = () => {
       )}
 
       {data && data.length > 0 && (
-        <Card sx={{ boxShadow: SHADOW }}>
-          <CardContent>
-            <Box sx={{ overflowX: "auto", maxHeight: 450 }}>
-              <AccountTable data={data || []} actions={actionOptions} />
-            </Box>
-          </CardContent>
-        </Card>
+        <>
+          <AccountTable data={data} actions={actionOptions} />
+          <TransferHistory />
+        </>
       )}
 
       <AccountFormDialog
@@ -90,12 +98,22 @@ const AccountsPage = () => {
         }}
       />
 
+      <TransferDialog
+        open={transferOpen}
+        accounts={data ?? []}
+        onClose={() => setTransferOpen(false)}
+        onSaved={() => {
+          setTransferOpen(false);
+          refetch();
+        }}
+      />
+
       <ConfirmDialog
         open={Boolean(deletingAccount)}
         title="Eliminar cuenta"
         description={
           deletingAccount
-            ? `¿Eliminar la cuenta "${deletingAccount.name}"? Solo se puede eliminar si no tiene movimientos.`
+            ? `¿Eliminar la cuenta "${deletingAccount.name}"? Solo se puede eliminar si no tiene movimientos ni transferencias.`
             : undefined
         }
         confirmLabel="Eliminar"

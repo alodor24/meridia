@@ -4,6 +4,7 @@ export type UserId = string & { readonly __brand: 'UserId' };
 export type AccountId = string & { readonly __brand: 'AccountId' };
 export type CategoryId = string & { readonly __brand: 'CategoryId' };
 export type TransactionId = string & { readonly __brand: 'TransactionId' };
+export type TransferId = string & { readonly __brand: 'TransferId' };
 
 export interface User {
   id: UserId;
@@ -54,6 +55,19 @@ export interface Transaction {
   categoryIcon?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface AccountTransfer {
+  id: TransferId;
+  userId: UserId;
+  fromAccountId: AccountId;
+  toAccountId: AccountId;
+  fromAccountName: string;
+  toAccountName: string;
+  currency: string;
+  amount: number;
+  note: string | null;
+  createdAt: string;
 }
 
 export interface DashboardSummary {

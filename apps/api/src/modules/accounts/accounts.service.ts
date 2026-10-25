@@ -34,11 +34,14 @@ export const deleteAccount = async (userId: UserId, id: AccountId): Promise<void
   const row = await accountsRepository.findById(pool, userId, id);
   if (!row) throw new NotFoundError('Cuenta no encontrada');
 
-  const transactionCount = await accountsRepository.countTransactions(pool, id);
-  if (transactionCount > 0) {
+  const [transactionCount, transferCount] = await Promise.all([
+    accountsRepository.countTransactions(pool, id),
+    accountsRepository.countTransfers(pool, id),
+  ]);
+  if (transactionCount > 0 || transferCount > 0) {
     throw new ConflictError(
-      'La cuenta tiene movimientos asociados. Eliminalos primero.',
-      'ACCOUNT_HAS_TRANSACTIONS',
+      'La cuenta tiene movimientos o transferencias asociadas. Elimínalos primero.',
+      'ACCOUNT_HAS_REFERENCES',
     );
   }
 

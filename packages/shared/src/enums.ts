@@ -4,6 +4,8 @@ export type AccountType = (typeof ACCOUNT_TYPES)[number];
 export const TRANSACTION_TYPES = ['income', 'expense'] as const;
 export type TransactionType = (typeof TRANSACTION_TYPES)[number];
 
+export const TRANSFERABLE_ACCOUNT_TYPES = ['cash', 'bank', 'wallet'] as const;
+
 export const ACCOUNT_TYPE_LABELS: Record<AccountType, string> = {
   cash: 'Efectivo',
   bank: 'Banco',

@@ -11,6 +11,7 @@ import { authRouter } from './modules/auth/auth.routes';
 import { categoriesRouter } from './modules/categories/categories.routes';
 import { dashboardRouter } from './modules/dashboard/dashboard.routes';
 import { transactionsRouter } from './modules/transactions/transactions.routes';
+import { transfersRouter } from './modules/transfers/transfers.routes';
 import { httpLogger } from './shared/logger';
 
 export const createApp = () => {
@@ -45,6 +46,7 @@ export const createApp = () => {
   app.use('/api/accounts', accountsRouter);
   app.use('/api/categories', categoriesRouter);
   app.use('/api/transactions', transactionsRouter);
+  app.use('/api/transfers', transfersRouter);
   app.use('/api/dashboard', dashboardRouter);
 
   app.use(notFoundHandler);

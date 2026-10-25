@@ -1,7 +1,11 @@
-import type { Account, Paginated } from "@meridia/shared";
+import type { Account, AccountTransfer, Paginated } from "@meridia/shared";
 import { http } from "@/services/api/client";
 import { ENDPOINT_ROUTES } from "@/conts";
-import { CreateAccountPayload } from "../types";
+import type {
+  CreateAccountPayload,
+  CreateTransferPayload,
+  TransferFilters,
+} from "../types";
 
 export const accountApi = {
   listAccounts: async () => {
@@ -27,4 +31,22 @@ export const accountApi = {
 
   deleteAccount: (id: string) =>
     http.delete<null>(`${ENDPOINT_ROUTES.ACCOUNTS}/${id}`),
+};
+
+export const transferApi = {
+  listTransfers: (filters: TransferFilters) =>
+    http.get<Paginated<AccountTransfer>>(ENDPOINT_ROUTES.TRANSFERS, {
+      params: filters,
+    }),
+
+  createTransfer: async (payload: CreateTransferPayload) => {
+    const result = await http.post<{ transfer: AccountTransfer }>(
+      ENDPOINT_ROUTES.TRANSFERS,
+      payload,
+    );
+    return result.transfer;
+  },
+
+  deleteTransfer: (id: string) =>
+    http.delete<null>(`${ENDPOINT_ROUTES.TRANSFERS}/${id}`),
 };
