@@ -1,10 +1,9 @@
+import CategoryBreakdownChart from "@/components/charts/CategoryBreakdownChart";
 import CustomTabs from "@/components/ui/CustomTabs";
 import { SHADOW } from "@/theme/globalStyles";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
-import { ExpensesByCategory } from "./ExpensesByCategory";
-import IncomesByCategory from "./IncomesByCategory";
 import { DashboardSummary } from "@meridia/shared";
 import { PATHS } from "@/conts";
 import CardLink from "./CardLink";
@@ -25,13 +24,15 @@ const AnalyticsByCategory = ({ data }: AnalyticsByCategoryProps) => {
     <Card sx={{ height: "100%", boxShadow: SHADOW }}>
       <CardContent>
         <CustomTabs labels={labels}>
-          <ExpensesByCategory
+          <CategoryBreakdownChart
             items={data.expensesByCategory}
             currency={currency}
+            emptyMessage="Sin gastos en el mes."
           />
-          <IncomesByCategory
+          <CategoryBreakdownChart
             items={data.incomesByCategory}
             currency={currency}
+            emptyMessage="Sin ingresos en el mes."
           />
         </CustomTabs>
 

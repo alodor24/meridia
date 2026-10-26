@@ -96,6 +96,42 @@ export interface DashboardSummary {
   }>;
 }
 
+export interface CategoryTotal {
+  categoryId: CategoryId;
+  name: string;
+  color: string;
+  total: number;
+}
+
+export interface AnalyticsMonthlyTotal {
+  month: number;
+  income: number;
+  expenses: number;
+  balance: number;
+}
+
+export interface AnalyticsQuarterlyTotal {
+  quarter: number;
+  income: number;
+  expenses: number;
+  balance: number;
+}
+
+export interface AnalyticsSummary {
+  year: number;
+  totalIncome: number;
+  totalExpenses: number;
+  balance: number;
+  monthly: AnalyticsMonthlyTotal[];
+  quarterly: AnalyticsQuarterlyTotal[];
+  expensesByCategory: CategoryTotal[];
+  incomesByCategory: CategoryTotal[];
+  availableYears: {
+    min: number;
+    max: number;
+  };
+}
+
 export interface Paginated<T> {
   items: T[];
   total: number;

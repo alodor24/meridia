@@ -1,3 +1,4 @@
+import BarChart from "@mui/icons-material/BarChart";
 import Category from "@mui/icons-material/Category";
 import Dashboard from "@mui/icons-material/Dashboard";
 import Receipt from "@mui/icons-material/Receipt";
@@ -32,6 +33,7 @@ export const ENDPOINT_ROUTES = {
   LOGOUT: "/api/auth/logout",
   ME: "/api/auth/me",
   DASHBOARD: "/api/dashboard",
+  ANALYTICS: "/api/analytics",
   ACCOUNTS: "/api/accounts",
   TRANSACTIONS: "/api/transactions",
   TRANSFERS: "/api/transfers",
@@ -46,6 +48,7 @@ export const NAV_LINKS = [
 
 export const NAV_ITEMS = [
   { label: "Dashboard", to: PATHS.DASHBOARD, icon: Dashboard },
+  { label: "Analítica", to: PATHS.ANALYTICS, icon: BarChart },
   { label: "Cuentas", to: PATHS.ACCOUNTS, icon: Wallet },
   { label: "Movimientos", to: PATHS.TRANSACTIONS, icon: Receipt },
   { label: "Categorías", to: PATHS.CATEGORIES, icon: Category },

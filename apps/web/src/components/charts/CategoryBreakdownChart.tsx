@@ -1,6 +1,3 @@
-import { EmptyState } from "@/components/ui/States";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { DONOUT_OPTIONS } from "@/conts";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
@@ -8,26 +5,25 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
+import type { CategoryTotal } from "@meridia/shared";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-
-interface IncomesByCategoryItem {
-  categoryId: string;
-  name: string;
-  color: string;
-  total: number;
-}
-
-interface IncomesByCategoryProps {
-  items: IncomesByCategoryItem[];
-  currency: string;
-}
+import { EmptyState } from "@/components/ui/States";
+import { DONOUT_OPTIONS } from "@/conts";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const IncomesByCategory = ({
+interface CategoryBreakdownChartProps {
+  items: CategoryTotal[];
+  currency: string;
+  emptyMessage: string;
+}
+
+const CategoryBreakdownChart = ({
   items = [],
   currency,
-}: IncomesByCategoryProps) => {
+  emptyMessage,
+}: CategoryBreakdownChartProps) => {
   const theme = useTheme();
   const total = items.reduce((sum, item) => sum + item.total, 0);
 
@@ -48,12 +44,7 @@ const IncomesByCategory = ({
   return (
     <Box sx={{ mt: 2, height: 374, bgcolor: "background.paper" }}>
       {items.length > 0 ? (
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            height: "100%",
-          }}>
+        <Grid container spacing={2} sx={{ height: "100%" }}>
           <Grid size={7}>
             <Doughnut data={chartData} options={DONOUT_OPTIONS} />
           </Grid>
@@ -65,8 +56,8 @@ const IncomesByCategory = ({
                 justifyContent: "center",
                 height: "100%",
               }}>
-              {items.map((item, index) => (
-                <ListItem key={index} sx={{ p: 0 }}>
+              {items.map((item) => (
+                <ListItem key={item.categoryId} sx={{ p: 0 }}>
                   <ListItemText
                     primary={
                       <Box
@@ -75,7 +66,7 @@ const IncomesByCategory = ({
                           sx={{
                             height: 12,
                             width: 12,
-                            bgcolor: `${item.color}`,
+                            bgcolor: item.color,
                             borderRadius: 5,
                           }}
                         />
@@ -93,10 +84,10 @@ const IncomesByCategory = ({
           </Grid>
         </Grid>
       ) : (
-        <EmptyState message="Sin ingresos en el mes." />
+        <EmptyState message={emptyMessage} />
       )}
     </Box>
   );
 };
 
-export default IncomesByCategory;
+export default CategoryBreakdownChart;

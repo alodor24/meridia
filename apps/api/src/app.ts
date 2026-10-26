@@ -7,6 +7,7 @@ import { checkDatabaseConnection } from './database/pool';
 import { csrfProtection } from './middlewares/csrf';
 import { errorHandler, notFoundHandler } from './middlewares/errorHandler';
 import { accountsRouter } from './modules/accounts/accounts.routes';
+import { analyticsRouter } from './modules/analytics/analytics.routes';
 import { authRouter } from './modules/auth/auth.routes';
 import { categoriesRouter } from './modules/categories/categories.routes';
 import { dashboardRouter } from './modules/dashboard/dashboard.routes';
@@ -48,6 +49,7 @@ export const createApp = () => {
   app.use('/api/transactions', transactionsRouter);
   app.use('/api/transfers', transfersRouter);
   app.use('/api/dashboard', dashboardRouter);
+  app.use('/api/analytics', analyticsRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
