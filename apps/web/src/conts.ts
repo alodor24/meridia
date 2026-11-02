@@ -1,7 +1,10 @@
+import Assessment from "@mui/icons-material/Assessment";
 import BarChart from "@mui/icons-material/BarChart";
+import CalendarMonth from "@mui/icons-material/CalendarMonth";
 import Category from "@mui/icons-material/Category";
 import Dashboard from "@mui/icons-material/Dashboard";
 import Receipt from "@mui/icons-material/Receipt";
+import Savings from "@mui/icons-material/Savings";
 import Wallet from "@mui/icons-material/Wallet";
 import { TooltipItem } from "chart.js";
 
@@ -9,14 +12,20 @@ export const PATHS = {
   HOME: "/",
   LOGIN: "/login",
   REGISTER: "/register",
+  VERIFY_EMAIL: "/verify-email",
+  FORGOT_PASSWORD: "/forgot-password",
+  RESET_PASSWORD: "/reset-password",
   DASHBOARD: "/app/dashboard",
+  GOALS: "/app/goals",
   ACCOUNTS: "/app/accounts",
   TRANSACTIONS: "/app/transactions",
+  CALENDAR: "/app/calendar",
   CATEGORIES: "/app/categories",
   PROFILE: "/app/profile",
   ABOUT: "/app/about",
   ANALYTICS: "/app/analytics",
   REPORTS: "/app/reports",
+  FEEDBACK: "/app/feedback",
 };
 
 export const AUTH_PATHS = [
@@ -24,19 +33,32 @@ export const AUTH_PATHS = [
   "/api/auth/register",
   "/api/auth/refresh",
   "/api/auth/logout",
+  "/api/auth/verify-email",
+  "/api/auth/resend-verification",
+  "/api/auth/forgot-password",
+  "/api/auth/reset-password",
 ];
 
 export const ENDPOINT_ROUTES = {
   LOGIN: "/api/auth/login",
   REGISTER: "/api/auth/register",
+  VERIFY_EMAIL: "/api/auth/verify-email",
+  RESEND_VERIFICATION: "/api/auth/resend-verification",
+  FORGOT_PASSWORD: "/api/auth/forgot-password",
+  RESET_PASSWORD: "/api/auth/reset-password",
   REFRESH: "/api/auth/refresh",
   LOGOUT: "/api/auth/logout",
   ME: "/api/auth/me",
   DASHBOARD: "/api/dashboard",
   ANALYTICS: "/api/analytics",
+  REPORTS: "/api/reports/transactions",
+  FEEDBACK: "/api/feedback",
   ACCOUNTS: "/api/accounts",
   TRANSACTIONS: "/api/transactions",
+  REMINDERS: "/api/reminders",
   TRANSFERS: "/api/transfers",
+  GOALS: "/api/goals",
+  NOTIFICATIONS: "/api/notifications",
   CATEGORIES: "/api/categories",
 };
 
@@ -48,10 +70,13 @@ export const NAV_LINKS = [
 
 export const NAV_ITEMS = [
   { label: "Dashboard", to: PATHS.DASHBOARD, icon: Dashboard },
-  { label: "Analítica", to: PATHS.ANALYTICS, icon: BarChart },
   { label: "Cuentas", to: PATHS.ACCOUNTS, icon: Wallet },
   { label: "Movimientos", to: PATHS.TRANSACTIONS, icon: Receipt },
   { label: "Categorías", to: PATHS.CATEGORIES, icon: Category },
+  { label: "Analítica", to: PATHS.ANALYTICS, icon: BarChart },
+  { label: "Calendario", to: PATHS.CALENDAR, icon: CalendarMonth },
+  { label: "Metas", to: PATHS.GOALS, icon: Savings },
+  { label: "Reportes", to: PATHS.REPORTS, icon: Assessment },
 ];
 
 export const PRESET_COLORS = [
