@@ -7,8 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import InfoIcon from "@mui/icons-material/Info";
-import { NAV_ITEMS, PATHS } from "@/conts";
+import { NAV_ITEMS } from "@/conts";
 import { useUiStore } from "@/stores/uiStore";
 import { Link, useLocation } from "@tanstack/react-router";
 
@@ -55,16 +54,6 @@ const DrawerContent = () => {
           <ListItemText
             primary={themeMode === "light" ? "Modo oscuro" : "Modo claro"}
           />
-        </ListItemButton>
-
-        <ListItemButton
-          component={Link}
-          to={PATHS.ABOUT}
-          selected={pathname.startsWith(PATHS.ABOUT)}>
-          <ListItemIcon>
-            <InfoIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Acerca de" />
         </ListItemButton>
       </List>
     </Box>
