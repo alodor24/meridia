@@ -4,7 +4,7 @@ import type { PaletteMode } from "@mui/material/styles";
 const fontFamily = "'Mulish', sans-serif";
 
 const createAppTheme = (themeMode: PaletteMode) => {
-    return createTheme({
+  return createTheme({
     palette: {
       mode: themeMode,
       primary: {
@@ -28,7 +28,7 @@ const createAppTheme = (themeMode: PaletteMode) => {
         main: "#4caf50",
       },
       background: {
-        default: themeMode === "light" ? "#eceff1" : "#050607",
+        default: themeMode === "light" ? "#eef6fc" : "#050607",
         paper: themeMode === "light" ? "#fff" : "#0e131a",
       },
       text: {
@@ -75,7 +75,7 @@ const createAppTheme = (themeMode: PaletteMode) => {
           root: ({ theme }) => ({
             borderRadius: theme.shape.borderRadius,
             ".MuiListItemText-root": {
-              "span": {
+              span: {
                 fontSize: "0.9rem",
               },
             },
