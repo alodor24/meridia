@@ -3,6 +3,9 @@ import BarChart from "@mui/icons-material/BarChart";
 import CalendarMonth from "@mui/icons-material/CalendarMonth";
 import Category from "@mui/icons-material/Category";
 import Dashboard from "@mui/icons-material/Dashboard";
+import FeedbackOutlined from "@mui/icons-material/FeedbackOutlined";
+import Info from "@mui/icons-material/Info";
+import Person from "@mui/icons-material/Person";
 import Receipt from "@mui/icons-material/Receipt";
 import Savings from "@mui/icons-material/Savings";
 import Wallet from "@mui/icons-material/Wallet";
@@ -77,6 +80,12 @@ export const NAV_ITEMS = [
   { label: "Calendario", to: PATHS.CALENDAR, icon: CalendarMonth },
   { label: "Metas", to: PATHS.GOALS, icon: Savings },
   { label: "Reportes", to: PATHS.REPORTS, icon: Assessment },
+];
+
+export const USER_MENU_ITEMS = [
+  { label: "Mi perfil", to: PATHS.PROFILE, icon: Person },
+  { label: "Sugerencias", to: PATHS.FEEDBACK, icon: FeedbackOutlined },
+  { label: "Acerca de", to: PATHS.ABOUT, icon: Info },
 ];
 
 export const PRESET_COLORS = [
