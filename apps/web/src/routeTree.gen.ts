@@ -12,14 +12,20 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
+import { Route as publicForgotPasswordRouteImport } from './routes/(public)/forgot-password'
 import { Route as publicLoginRouteImport } from './routes/(public)/login'
 import { Route as publicRegisterRouteImport } from './routes/(public)/register'
+import { Route as publicResetPasswordRouteImport } from './routes/(public)/reset-password'
+import { Route as publicVerifyEmailRouteImport } from './routes/(public)/verify-email'
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as AppAboutRouteImport } from './routes/app/about'
 import { Route as AppAccountsRouteImport } from './routes/app/accounts'
 import { Route as AppAnalyticsRouteImport } from './routes/app/analytics'
+import { Route as AppCalendarRouteImport } from './routes/app/calendar'
 import { Route as AppCategoriesRouteImport } from './routes/app/categories'
 import { Route as AppDashboardRouteImport } from './routes/app/dashboard'
+import { Route as AppFeedbackRouteImport } from './routes/app/feedback'
+import { Route as AppGoalsRouteImport } from './routes/app/goals'
 import { Route as AppProfileRouteImport } from './routes/app/profile'
 import { Route as AppReportsRouteImport } from './routes/app/reports'
 import { Route as AppTransactionsRouteImport } from './routes/app/transactions'
@@ -38,6 +44,11 @@ const publicIndexRoute = publicIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicRouteRoute,
 } as any)
+const publicForgotPasswordRoute = publicForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => publicRouteRoute,
+} as any)
 const publicLoginRoute = publicLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -46,6 +57,16 @@ const publicLoginRoute = publicLoginRouteImport.update({
 const publicRegisterRoute = publicRegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const publicResetPasswordRoute = publicResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const publicVerifyEmailRoute = publicVerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
   getParentRoute: () => publicRouteRoute,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -68,6 +89,11 @@ const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppCalendarRoute = AppCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppCategoriesRoute = AppCategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
@@ -76,6 +102,16 @@ const AppCategoriesRoute = AppCategoriesRouteImport.update({
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppFeedbackRoute = AppFeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppGoalsRoute = AppGoalsRouteImport.update({
+  id: '/goals',
+  path: '/goals',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppProfileRoute = AppProfileRouteImport.update({
@@ -96,13 +132,19 @@ const AppTransactionsRoute = AppTransactionsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/app': typeof AppRouteRouteWithChildren
+  '/forgot-password': typeof publicForgotPasswordRoute
   '/login': typeof publicLoginRoute
   '/register': typeof publicRegisterRoute
+  '/reset-password': typeof publicResetPasswordRoute
+  '/verify-email': typeof publicVerifyEmailRoute
   '/app/about': typeof AppAboutRoute
   '/app/accounts': typeof AppAccountsRoute
   '/app/analytics': typeof AppAnalyticsRoute
+  '/app/calendar': typeof AppCalendarRoute
   '/app/categories': typeof AppCategoriesRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/feedback': typeof AppFeedbackRoute
+  '/app/goals': typeof AppGoalsRoute
   '/app/profile': typeof AppProfileRoute
   '/app/reports': typeof AppReportsRoute
   '/app/transactions': typeof AppTransactionsRoute
@@ -110,13 +152,19 @@ export interface FileRoutesByFullPath {
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
+  '/forgot-password': typeof publicForgotPasswordRoute
   '/login': typeof publicLoginRoute
   '/register': typeof publicRegisterRoute
+  '/reset-password': typeof publicResetPasswordRoute
+  '/verify-email': typeof publicVerifyEmailRoute
   '/app/about': typeof AppAboutRoute
   '/app/accounts': typeof AppAccountsRoute
   '/app/analytics': typeof AppAnalyticsRoute
+  '/app/calendar': typeof AppCalendarRoute
   '/app/categories': typeof AppCategoriesRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/feedback': typeof AppFeedbackRoute
+  '/app/goals': typeof AppGoalsRoute
   '/app/profile': typeof AppProfileRoute
   '/app/reports': typeof AppReportsRoute
   '/app/transactions': typeof AppTransactionsRoute
@@ -127,13 +175,19 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(public)': typeof publicRouteRouteWithChildren
   '/app': typeof AppRouteRouteWithChildren
+  '/(public)/forgot-password': typeof publicForgotPasswordRoute
   '/(public)/login': typeof publicLoginRoute
   '/(public)/register': typeof publicRegisterRoute
+  '/(public)/reset-password': typeof publicResetPasswordRoute
+  '/(public)/verify-email': typeof publicVerifyEmailRoute
   '/app/about': typeof AppAboutRoute
   '/app/accounts': typeof AppAccountsRoute
   '/app/analytics': typeof AppAnalyticsRoute
+  '/app/calendar': typeof AppCalendarRoute
   '/app/categories': typeof AppCategoriesRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/feedback': typeof AppFeedbackRoute
+  '/app/goals': typeof AppGoalsRoute
   '/app/profile': typeof AppProfileRoute
   '/app/reports': typeof AppReportsRoute
   '/app/transactions': typeof AppTransactionsRoute
@@ -144,13 +198,19 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/app'
+    | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
+    | '/verify-email'
     | '/app/about'
     | '/app/accounts'
     | '/app/analytics'
+    | '/app/calendar'
     | '/app/categories'
     | '/app/dashboard'
+    | '/app/feedback'
+    | '/app/goals'
     | '/app/profile'
     | '/app/reports'
     | '/app/transactions'
@@ -158,13 +218,19 @@ export interface FileRouteTypes {
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
+    | '/verify-email'
     | '/app/about'
     | '/app/accounts'
     | '/app/analytics'
+    | '/app/calendar'
     | '/app/categories'
     | '/app/dashboard'
+    | '/app/feedback'
+    | '/app/goals'
     | '/app/profile'
     | '/app/reports'
     | '/app/transactions'
@@ -174,13 +240,19 @@ export interface FileRouteTypes {
     | '__root__'
     | '/(public)'
     | '/app'
+    | '/(public)/forgot-password'
     | '/(public)/login'
     | '/(public)/register'
+    | '/(public)/reset-password'
+    | '/(public)/verify-email'
     | '/app/about'
     | '/app/accounts'
     | '/app/analytics'
+    | '/app/calendar'
     | '/app/categories'
     | '/app/dashboard'
+    | '/app/feedback'
+    | '/app/goals'
     | '/app/profile'
     | '/app/reports'
     | '/app/transactions'
@@ -216,6 +288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicIndexRouteImport
       parentRoute: typeof publicRouteRoute
     }
+    '/(public)/forgot-password': {
+      id: '/(public)/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof publicForgotPasswordRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
     '/(public)/login': {
       id: '/(public)/login'
       path: '/login'
@@ -228,6 +307,20 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof publicRegisterRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/reset-password': {
+      id: '/(public)/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof publicResetPasswordRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/verify-email': {
+      id: '/(public)/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof publicVerifyEmailRouteImport
       parentRoute: typeof publicRouteRoute
     }
     '/app/': {
@@ -258,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyticsRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/app/calendar': {
+      id: '/app/calendar'
+      path: '/calendar'
+      fullPath: '/app/calendar'
+      preLoaderRoute: typeof AppCalendarRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/app/categories': {
       id: '/app/categories'
       path: '/categories'
@@ -270,6 +370,20 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/app/dashboard'
       preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/feedback': {
+      id: '/app/feedback'
+      path: '/feedback'
+      fullPath: '/app/feedback'
+      preLoaderRoute: typeof AppFeedbackRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/goals': {
+      id: '/app/goals'
+      path: '/goals'
+      fullPath: '/app/goals'
+      preLoaderRoute: typeof AppGoalsRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/app/profile': {
@@ -297,14 +411,20 @@ declare module '@tanstack/react-router' {
 }
 
 interface publicRouteRouteChildren {
+  publicForgotPasswordRoute: typeof publicForgotPasswordRoute
   publicLoginRoute: typeof publicLoginRoute
   publicRegisterRoute: typeof publicRegisterRoute
+  publicResetPasswordRoute: typeof publicResetPasswordRoute
+  publicVerifyEmailRoute: typeof publicVerifyEmailRoute
   publicIndexRoute: typeof publicIndexRoute
 }
 
 const publicRouteRouteChildren: publicRouteRouteChildren = {
+  publicForgotPasswordRoute: publicForgotPasswordRoute,
   publicLoginRoute: publicLoginRoute,
   publicRegisterRoute: publicRegisterRoute,
+  publicResetPasswordRoute: publicResetPasswordRoute,
+  publicVerifyEmailRoute: publicVerifyEmailRoute,
   publicIndexRoute: publicIndexRoute,
 }
 
@@ -316,8 +436,11 @@ interface AppRouteRouteChildren {
   AppAboutRoute: typeof AppAboutRoute
   AppAccountsRoute: typeof AppAccountsRoute
   AppAnalyticsRoute: typeof AppAnalyticsRoute
+  AppCalendarRoute: typeof AppCalendarRoute
   AppCategoriesRoute: typeof AppCategoriesRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppFeedbackRoute: typeof AppFeedbackRoute
+  AppGoalsRoute: typeof AppGoalsRoute
   AppProfileRoute: typeof AppProfileRoute
   AppReportsRoute: typeof AppReportsRoute
   AppTransactionsRoute: typeof AppTransactionsRoute
@@ -328,8 +451,11 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppAboutRoute: AppAboutRoute,
   AppAccountsRoute: AppAccountsRoute,
   AppAnalyticsRoute: AppAnalyticsRoute,
+  AppCalendarRoute: AppCalendarRoute,
   AppCategoriesRoute: AppCategoriesRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppFeedbackRoute: AppFeedbackRoute,
+  AppGoalsRoute: AppGoalsRoute,
   AppProfileRoute: AppProfileRoute,
   AppReportsRoute: AppReportsRoute,
   AppTransactionsRoute: AppTransactionsRoute,
