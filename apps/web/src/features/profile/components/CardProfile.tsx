@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { SHADOW } from "@/theme/globalStyles";
 import { formatDate, getCurrencySymbol } from "@/utils/format";
 import { getCountryName } from "@/utils/labels";
@@ -18,6 +19,40 @@ interface CardProfileProps {
 }
 
 const CardProfile = ({ user }: CardProfileProps) => {
+  const USER_INFO = useMemo(
+    () => [
+      {
+        label: "País",
+        value: getCountryName(user.country),
+        icon: LocationPinIcon,
+        extra: (
+          <ReactCountryFlag
+            countryCode={user.country}
+            svg
+            style={{
+              width: "26px",
+              height: "26px",
+              marginLeft: "0.5em",
+              borderRadius: "100%",
+            }}
+            title={user.country}
+          />
+        ),
+      },
+      {
+        label: "Moneda",
+        value: getCurrencySymbol(user.currency),
+        icon: AccountBalanceWalletIcon,
+      },
+      {
+        label: "Miembro desde",
+        value: formatDate(user.createdAt),
+        icon: CalendarMonthIcon,
+      },
+    ],
+    [user],
+  );
+
   return (
     <Card sx={{ boxShadow: SHADOW }}>
       <CardContent sx={{ p: 4 }}>
@@ -37,7 +72,16 @@ const CardProfile = ({ user }: CardProfileProps) => {
           <Box>
             <Typography
               variant="h5"
-              sx={{ fontWeight: 600, fontSize: { xs: 20, md: 26 }, mb: 0.7 }}>
+              sx={{
+                fontWeight: 600,
+                fontSize: { xs: 20, md: 26 },
+                mb: 0.7,
+                background: (theme) => theme.palette.primary.main,
+                backgroundImage: (theme) =>
+                  `linear-gradient(to right, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 80%)`,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}>
               {user.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
@@ -56,86 +100,42 @@ const CardProfile = ({ user }: CardProfileProps) => {
             alignItems: { md: "center" },
             gap: { xs: 1, md: 9 },
           }}>
-          <Box>
-            <Typography
-              sx={{
-                fontWeight: 600,
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                mb: 0.5,
-              }}>
-              <LocationPinIcon fontSize="small" />
-              País
-            </Typography>
+          {USER_INFO.map((item, index) => {
+            const Icon = item.icon;
 
-            <Box>
-              <Typography
-                component="span"
-                variant="body2"
-                color="text.secondary"
-                sx={{ fontWeight: 300, ml: 3.5 }}>
-                {getCountryName(user.country)}
-              </Typography>
-              <ReactCountryFlag
-                countryCode={user.country}
-                svg
-                style={{
-                  width: "26px",
-                  height: "26px",
-                  marginLeft: "0.5em",
-                  borderRadius: "100%",
-                }}
-                title={user.country}
-              />
-            </Box>
-          </Box>
+            return (
+              <>
+                <Box key={index}>
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      mb: 0.5,
+                    }}>
+                    <Icon fontSize="small" />
+                    {item.label}
+                  </Typography>
 
-          <Divider orientation="vertical" variant="middle" flexItem />
+                  <Box>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontWeight: 300, ml: 3.5 }}>
+                      {item.value}
+                    </Typography>
+                    {item.extra}
+                  </Box>
+                </Box>
 
-          <Box>
-            <Typography
-              sx={{
-                fontWeight: 600,
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                mb: 0.5,
-              }}>
-              <AccountBalanceWalletIcon fontSize="small" />
-              Moneda
-            </Typography>
-            <Typography
-              component="span"
-              variant="body2"
-              color="text.secondary"
-              sx={{ fontWeight: 300, ml: 3.5 }}>
-              {getCurrencySymbol(user.currency)}
-            </Typography>
-          </Box>
-
-          <Divider orientation="vertical" variant="middle" flexItem />
-
-          <Box>
-            <Typography
-              sx={{
-                fontWeight: 600,
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                mb: 0.5,
-              }}>
-              <CalendarMonthIcon fontSize="small" />
-              Miembro desde
-            </Typography>
-            <Typography
-              component="span"
-              variant="body2"
-              color="text.secondary"
-              sx={{ fontWeight: 300, ml: 3.5 }}>
-              {formatDate(user.createdAt)}
-            </Typography>
-          </Box>
+                {index < USER_INFO.length - 1 && (
+                  <Divider orientation="vertical" variant="middle" flexItem />
+                )}
+              </>
+            );
+          })}
         </Box>
       </CardContent>
     </Card>
