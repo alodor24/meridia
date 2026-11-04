@@ -7,10 +7,15 @@ import CustomTabPanel from "./CustomTabPanel";
 interface CustomTabsProps {
   children: React.ReactNode;
   labels: string[];
+  initialValue?: number;
 }
 
-const CustomTabs = ({ children, labels }: CustomTabsProps) => {
-  const [value, setValue] = useState(0);
+const CustomTabs = ({
+  children,
+  labels,
+  initialValue = 0,
+}: CustomTabsProps) => {
+  const [value, setValue] = useState(initialValue);
 
   const handleChange = (_event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
