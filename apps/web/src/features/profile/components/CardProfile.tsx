@@ -13,6 +13,7 @@ import LocationPinIcon from "@mui/icons-material/LocationPin";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ReactCountryFlag from "react-country-flag";
+import Stack from "@mui/material/Stack";
 
 interface CardProfileProps {
   user: User;
@@ -106,28 +107,27 @@ const CardProfile = ({ user }: CardProfileProps) => {
             return (
               <>
                 <Box key={index}>
-                  <Typography
-                    sx={{
-                      fontWeight: 600,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                      mb: 0.5,
-                    }}>
-                    <Icon fontSize="small" />
-                    {item.label}
-                  </Typography>
-
-                  <Box>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ fontWeight: 300, ml: 3.5 }}>
-                      {item.value}
-                    </Typography>
-                    {item.extra}
-                  </Box>
+                  <Stack
+                    direction="row"
+                    spacing={1.5}
+                    sx={{ alignItems: "flex-start" }}>
+                    <Avatar
+                      sx={{
+                        width: 36,
+                        height: 36,
+                        bgcolor: "background.default",
+                      }}>
+                      <Icon color="primary" fontSize="small" />
+                    </Avatar>
+                    <Box>
+                      <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                        {item.label}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {item.value} {item.extra}
+                      </Typography>
+                    </Box>
+                  </Stack>
                 </Box>
 
                 {index < USER_INFO.length - 1 && (
