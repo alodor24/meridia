@@ -12,6 +12,7 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 import { User } from "@meridia/shared";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
+import { SHADOW } from "@/theme/globalStyles";
 
 interface UserMenuProps {
   user?: User;
@@ -55,7 +56,14 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
       <Menu
         anchorEl={profileMenuAnchor}
         open={Boolean(profileMenuAnchor)}
-        onClose={() => setProfileMenuAnchor(null)}>
+        onClose={() => setProfileMenuAnchor(null)}
+        slotProps={{
+          paper: {
+            sx: {
+              boxShadow: SHADOW,
+            },
+          },
+        }}>
         <Box sx={{ px: 2, py: 1 }}>
           {USER_MENU_ITEMS.map((item, index) => {
             const Icon = item.icon;
