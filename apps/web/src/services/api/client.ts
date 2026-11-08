@@ -80,6 +80,22 @@ tokenManager.setOnRefreshNeeded(async () => {
   }
 });
 
+const parseBlobErrorPayload = async (error: AxiosError): Promise<void> => {
+  const response = error.response;
+  if (!response || typeof Blob === "undefined") return;
+
+  const data: unknown = response.data;
+  if (!(data instanceof Blob)) return;
+
+  try {
+    const text = await data.text();
+    if (!text) return;
+    response.data = JSON.parse(text) as unknown;
+  } catch {
+    return;
+  }
+};
+
 client.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
@@ -109,6 +125,7 @@ client.interceptors.response.use(
       }
     }
 
+    await parseBlobErrorPayload(error);
     return Promise.reject(toApiError(error));
   },
 );
@@ -129,6 +146,13 @@ export const http = {
     unwrap<T>(client.patch<{ data: T }>(url, body, config)),
   delete: <T>(url: string, config?: AxiosRequestConfig) =>
     unwrap<T>(client.delete<{ data: T }>(url, config)),
+  getBlob: async (url: string, config?: AxiosRequestConfig): Promise<Blob> => {
+    const response = await client.get<Blob>(url, {
+      ...config,
+      responseType: "blob",
+    });
+    return response.data;
+  },
 };
 
 export const isAxiosError = (error: unknown): boolean =>
