@@ -99,7 +99,7 @@ const FeedbackPage = () => {
         <Grid size={{ xs: 12, md: 5 }}>
           <Stack spacing={2}>
             <Card sx={{ boxShadow: SHADOW }}>
-              <CardContent sx={{ p: 3 }}>
+              <CardContent sx={{ p: 4 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
                   Tu mensaje viaja con contexto
                 </Typography>
@@ -140,7 +140,7 @@ const FeedbackPage = () => {
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{ mt: 2 }}>
+                  sx={{ mt: 2, mb: 1 }}>
                   Son incluídos estos datos en el mensaje para brindarte una
                   mejor experiencia y poder contactarte si es necesario. Tu
                   información no será compartida con terceros.
@@ -149,12 +149,12 @@ const FeedbackPage = () => {
             </Card>
 
             <Card sx={{ boxShadow: SHADOW }}>
-              <CardContent sx={{ p: 3 }}>
+              <CardContent sx={{ p: 4 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
                   Puedes enviar
                 </Typography>
 
-                <Stack spacing={2} sx={{ mt: 2 }}>
+                <Stack spacing={2} sx={{ mt: 2, mb: 1, mr: 1 }}>
                   {OPTIONS_MESSAGE.map(({ icon: Icon, title, description }) => (
                     <Stack
                       key={title}
