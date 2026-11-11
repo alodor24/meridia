@@ -7,47 +7,14 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import ChatBubbleOutlinedIcon from "@mui/icons-material/ChatBubbleOutlined";
-import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PersonIcon from "@mui/icons-material/Person";
-import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
-import SecurityIcon from "@mui/icons-material/Security";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { SHADOW } from "@/theme/globalStyles";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import FeedbackForm from "../components/FeedbackForm";
-
-const OPTIONS_MESSAGE = [
-  {
-    icon: LightbulbOutlinedIcon,
-    title: "Una idea",
-    description: "Una función nueva o una mejora para las que ya usas.",
-  },
-  {
-    icon: ChatBubbleOutlinedIcon,
-    title: "Un comentario",
-    description: "Cómo fue tu experiencia o qué te resultó difícil.",
-  },
-  {
-    icon: RocketLaunchOutlinedIcon,
-    title: "Un caso de uso",
-    description:
-      "Una necesidad concreta que Meridia podría ayudarte a resolver.",
-  },
-  {
-    icon: SecurityIcon,
-    title: "Un problema de seguridad",
-    description:
-      "Reporta cualquier vulnerabilidad o problema de seguridad que encuentres.",
-  },
-  {
-    icon: ThumbUpAltIcon,
-    title: "Un Testimonio",
-    description: "Comparte tu experiencia de como Meridia te ha ayudado.",
-  },
-];
+import { OPTIONS_MESSAGE } from "../consts";
 
 const FeedbackPage = () => {
   useDocumentTitle("Sugerencias");
@@ -64,7 +31,7 @@ const FeedbackPage = () => {
       <Grid container spacing={3} sx={{ alignItems: "flex-start" }}>
         <Grid size={{ xs: 12, md: 7 }}>
           <Card sx={{ boxShadow: SHADOW }}>
-            <CardContent sx={{ p: { xs: 2.5, sm: 3.5 } }}>
+            <CardContent sx={{ p: 3 }}>
               <Stack
                 direction="row"
                 spacing={2}
@@ -99,7 +66,7 @@ const FeedbackPage = () => {
         <Grid size={{ xs: 12, md: 5 }}>
           <Stack spacing={2}>
             <Card sx={{ boxShadow: SHADOW }}>
-              <CardContent sx={{ p: 4 }}>
+              <CardContent sx={{ p: 3 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
                   Tu mensaje viaja con contexto
                 </Typography>
@@ -140,7 +107,7 @@ const FeedbackPage = () => {
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{ mt: 2, mb: 1 }}>
+                  sx={{ mt: 2 }}>
                   Son incluídos estos datos en el mensaje para brindarte una
                   mejor experiencia y poder contactarte si es necesario. Tu
                   información no será compartida con terceros.
@@ -149,12 +116,12 @@ const FeedbackPage = () => {
             </Card>
 
             <Card sx={{ boxShadow: SHADOW }}>
-              <CardContent sx={{ p: 4 }}>
+              <CardContent sx={{ p: 3 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
                   Puedes enviar
                 </Typography>
 
-                <Stack spacing={2} sx={{ mt: 2, mb: 1, mr: 1 }}>
+                <Stack spacing={2} sx={{ mt: 2, mr: 1 }}>
                   {OPTIONS_MESSAGE.map(({ icon: Icon, title, description }) => (
                     <Stack
                       key={title}
