@@ -1,7 +1,11 @@
 import type { Express } from "express";
 import request from "supertest";
+import {
+  getLastPasswordResetEmail,
+  getLastVerificationEmail,
+} from "../shared/email/mailer";
 
-export const VALID_PASSWORD = "Password123!";
+export const VALID_PASSWORD = "Meridia2026!Segura";
 
 export interface RegisterOverrides {
   name?: string;
@@ -30,6 +34,42 @@ export const register = async (
 ): Promise<request.Response> =>
   request(app).post("/api/auth/register").send(registerPayload(overrides));
 
+export const getVerificationToken = (email: string): string => {
+  const sent = getLastVerificationEmail(email);
+  if (!sent) {
+    throw new Error(`No se envió email de verificación a ${email}`);
+  }
+
+  const token = new URL(sent.url).searchParams.get("token");
+  if (!token) {
+    throw new Error(`El email de verificación para ${email} no tiene token`);
+  }
+
+  return token;
+};
+
+export const getPasswordResetToken = (email: string): string => {
+  const sent = getLastPasswordResetEmail(email);
+  if (!sent) {
+    throw new Error(`No se envió email de restablecimiento a ${email}`);
+  }
+
+  const token = new URL(sent.url).searchParams.get("token");
+  if (!token) {
+    throw new Error(`El email de restablecimiento para ${email} no tiene token`);
+  }
+
+  return token;
+};
+
+export const verifyEmail = async (
+  app: Express,
+  email: string,
+): Promise<request.Response> => {
+  const token = getVerificationToken(email);
+  return request(app).post("/api/auth/verify-email").send({ token });
+};
+
 export const registerAndLogin = async (
   app: Express,
   overrides: RegisterOverrides = {},
@@ -44,6 +84,13 @@ export const registerAndLogin = async (
     .send(payload);
   if (registerResponse.status !== 201) {
     throw new Error(`register falló: ${JSON.stringify(registerResponse.body)}`);
+  }
+
+  const verificationResponse = await verifyEmail(app, payload.email as string);
+  if (verificationResponse.status !== 200) {
+    throw new Error(
+      `verificación falló: ${JSON.stringify(verificationResponse.body)}`,
+    );
   }
 
   const agent = request.agent(app);
