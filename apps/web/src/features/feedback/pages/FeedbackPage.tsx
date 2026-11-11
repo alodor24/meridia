@@ -28,7 +28,7 @@ const FeedbackPage = () => {
         subtitle="Ayúdame a brindarte una mejor experiencia."
       />
 
-      <Grid container spacing={3} sx={{ alignItems: "flex-start" }}>
+      <Grid container spacing={2} sx={{ alignItems: "flex-start" }}>
         <Grid size={{ xs: 12, md: 7 }}>
           <Card sx={{ boxShadow: SHADOW }}>
             <CardContent sx={{ p: 3 }}>
