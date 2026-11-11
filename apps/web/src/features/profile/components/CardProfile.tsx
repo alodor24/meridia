@@ -56,7 +56,7 @@ const CardProfile = ({ user }: CardProfileProps) => {
 
   return (
     <Card sx={{ boxShadow: SHADOW }}>
-      <CardContent sx={{ p: 4 }}>
+      <CardContent sx={{ p: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
           <Avatar
             src={user.avatar ?? undefined}

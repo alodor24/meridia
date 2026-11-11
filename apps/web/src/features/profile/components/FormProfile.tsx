@@ -31,7 +31,7 @@ const FormProfile = ({ user }: FormProfileProps) => {
 
   return (
     <Card sx={{ boxShadow: SHADOW }}>
-      <CardContent sx={{ p: 4 }}>
+      <CardContent sx={{ p: 3 }}>
         <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
           Actualizar nombre
         </Typography>

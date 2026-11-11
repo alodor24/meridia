@@ -42,6 +42,7 @@ const user: User = {
   currency: "ARS",
   avatar: null,
   avatarPublicId: null,
+  emailVerified: true,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
