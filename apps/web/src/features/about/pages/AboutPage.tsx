@@ -44,12 +44,14 @@ const AboutPage = () => {
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid size={{ xs: 12 }}>
           <AboutCard>
-            <LogoApp width={220} />
+            <Box sx={{ mt: -1, ml: -1 }}>
+              <LogoApp width={220} />
+            </Box>
             <Typography
               component="h3"
               variant="h5"
               sx={{
-                px: 2,
+                px: 1,
                 fontWeight: 700,
                 background: (theme) => theme.palette.primary.main,
                 backgroundImage: (theme) =>
@@ -59,7 +61,7 @@ const AboutPage = () => {
               }}>
               Tus finanzas, bajo control.
             </Typography>
-            <Typography sx={{ mt: 2, px: 2, width: { md: "65%", lg: "40%" } }}>
+            <Typography sx={{ mt: 2, px: 1, width: { md: "65%", lg: "40%" } }}>
               Meridia es una aplicación diseñada para ayudarte a gestionar de
               forma sencilla, segura y eficiente, tus finanzas personales.
             </Typography>
@@ -67,14 +69,14 @@ const AboutPage = () => {
               label={`Versión ${VERSION_APP}`}
               variant="outlined"
               color="primary"
-              sx={{ mt: 2, ml: 2, fontWeight: 700 }}
+              sx={{ mt: 2, ml: 1, fontWeight: 700 }}
             />
           </AboutCard>
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
           <AboutCard>
-            <Box sx={{ p: 2 }}>
+            <Box sx={{ p: 1 }}>
               <Box sx={{ mb: 4, display: "flex", gap: 3 }}>
                 <Avatar
                   sx={{
@@ -126,7 +128,7 @@ const AboutPage = () => {
 
         <Grid size={{ xs: 12, md: 6 }}>
           <AboutCard>
-            <Box sx={{ p: 2 }}>
+            <Box sx={{ p: 1 }}>
               <Box
                 sx={{ mb: 2, display: "flex", alignItems: "center", gap: 3 }}>
                 <Avatar
