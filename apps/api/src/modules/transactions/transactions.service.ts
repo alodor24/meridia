@@ -1,7 +1,8 @@
-import { pool } from '../../database/pool';
+import { pool, withTransaction } from '../../database/pool';
 import { NotFoundError, ValidationError } from '../../shared/errors';
 import * as accountsRepository from '../accounts/accounts.repository';
 import * as categoriesRepository from '../categories/categories.repository';
+import { syncGoalReservations } from '../goals/goals.reservations';
 import * as transactionsRepository from './transactions.repository';
 import type {
   CreateTransactionInput,
@@ -27,11 +28,6 @@ export const getTransaction = async (userId: UserId, id: TransactionId) => {
   return transactionsRepository.mapTransactionRow(row);
 };
 
-const assertAccountOwned = async (userId: UserId, accountId: AccountId): Promise<void> => {
-  const account = await accountsRepository.findById(pool, userId, accountId);
-  if (!account) throw new NotFoundError('Cuenta no encontrada');
-};
-
 const assertCategoryMatchesType = async (
   userId: UserId,
   categoryId: CategoryId,
@@ -50,14 +46,26 @@ const assertCategoryMatchesType = async (
 export const createTransaction = async (userId: UserId, input: CreateTransactionInput) => {
   const accountId = input.accountId as AccountId;
   const categoryId = input.categoryId as CategoryId;
-  await assertAccountOwned(userId, accountId);
   await assertCategoryMatchesType(userId, categoryId, input.type);
 
-  const row = await transactionsRepository.create(pool, userId, {
-    ...input,
-    accountId,
-    categoryId,
+  const row = await withTransaction(async (client) => {
+    const account = await accountsRepository.lockById(
+      client,
+      userId,
+      accountId,
+    );
+    if (!account) throw new NotFoundError('Cuenta no encontrada');
+
+    const created = await transactionsRepository.create(client, userId, {
+      ...input,
+      accountId,
+      categoryId,
+    });
+
+    await syncGoalReservations(client, userId, accountId);
+    return created;
   });
+
   return transactionsRepository.mapTransactionRow(row);
 };
 
@@ -67,22 +75,55 @@ export const updateTransaction = async (userId: UserId, id: TransactionId, input
 
   const nextType = input.type ?? existing.type;
   const nextCategoryId = (input.categoryId as CategoryId | undefined) ?? existing.category_id as CategoryId;
+  const previousAccountId = existing.account_id as AccountId;
+  const nextAccountId =
+    (input.accountId as AccountId | undefined) ?? previousAccountId;
 
-  if (input.accountId) {
-    await assertAccountOwned(userId, input.accountId as AccountId);
-  }
   await assertCategoryMatchesType(userId, nextCategoryId, nextType);
 
-  const row = await transactionsRepository.update(pool, userId, id, {
-    ...input,
-    accountId: input.accountId as AccountId | undefined,
-    categoryId: input.categoryId as CategoryId | undefined,
+  const row = await withTransaction(async (client) => {
+    const lockedIds = await accountsRepository.lockByIds(
+      client,
+      userId,
+      previousAccountId,
+      nextAccountId,
+    );
+    const expectedAccounts = previousAccountId === nextAccountId ? 1 : 2;
+    if (lockedIds.length !== expectedAccounts) {
+      throw new NotFoundError('Cuenta no encontrada');
+    }
+
+    const updated = await transactionsRepository.update(client, userId, id, {
+      ...input,
+      accountId: input.accountId as AccountId | undefined,
+      categoryId: input.categoryId as CategoryId | undefined,
+    });
+    if (!updated) throw new NotFoundError('Movimiento no encontrado');
+
+    await syncGoalReservations(client, userId, previousAccountId);
+    if (nextAccountId !== previousAccountId) {
+      await syncGoalReservations(client, userId, nextAccountId);
+    }
+
+    return updated;
   });
-  if (!row) throw new NotFoundError('Movimiento no encontrado');
+
   return transactionsRepository.mapTransactionRow(row);
 };
 
 export const deleteTransaction = async (userId: UserId, id: TransactionId): Promise<void> => {
-  const removed = await transactionsRepository.remove(pool, userId, id);
-  if (!removed) throw new NotFoundError('Movimiento no encontrado');
+  const existing = await transactionsRepository.findById(pool, userId, id);
+  if (!existing) throw new NotFoundError('Movimiento no encontrado');
+
+  const accountId = existing.account_id as AccountId;
+
+  await withTransaction(async (client) => {
+    const account = await accountsRepository.lockById(client, userId, accountId);
+    if (!account) throw new NotFoundError('Cuenta no encontrada');
+
+    const removed = await transactionsRepository.remove(client, userId, id);
+    if (!removed) throw new NotFoundError('Movimiento no encontrado');
+
+    await syncGoalReservations(client, userId, accountId);
+  });
 };
