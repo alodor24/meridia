@@ -10,6 +10,7 @@ export interface UserRow {
   currency: string;
   avatar: string | null;
   avatar_public_id: string | null;
+  email_verified_at: Date | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -22,6 +23,7 @@ export const mapUserRow = (row: UserRow): User => ({
   currency: row.currency,
   avatar: row.avatar,
   avatarPublicId: row.avatar_public_id,
+  emailVerified: row.email_verified_at !== null,
   createdAt: row.created_at.toISOString(),
   updatedAt: row.updated_at.toISOString(),
 });
@@ -61,6 +63,35 @@ export const create = async (
     [input.name, input.email, input.passwordHash, input.country, input.currency],
   );
   return result.rows[0]!;
+};
+
+export const markEmailVerified = async (
+  db: Db,
+  id: UserId,
+): Promise<UserRow | undefined> => {
+  const result = await db.query<UserRow>(
+    `UPDATE users
+     SET email_verified_at = COALESCE(email_verified_at, now())
+     WHERE id = $1
+     RETURNING *`,
+    [id],
+  );
+  return result.rows[0];
+};
+
+export const updatePasswordHash = async (
+  db: Db,
+  id: UserId,
+  passwordHash: string,
+): Promise<UserRow | undefined> => {
+  const result = await db.query<UserRow>(
+    `UPDATE users
+     SET password_hash = $1
+     WHERE id = $2
+     RETURNING *`,
+    [passwordHash, id],
+  );
+  return result.rows[0];
 };
 
 export interface UpdateProfileInput {
