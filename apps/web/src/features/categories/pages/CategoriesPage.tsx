@@ -101,7 +101,7 @@ const CategoriesPage = () => {
             </Grid>
           </Grid>
 
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 6 }}>
               <CategoryTable
                 categories={expense}
