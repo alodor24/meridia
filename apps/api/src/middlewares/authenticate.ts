@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env';
 import { pool } from '../database/pool';
-import { AuthenticationError } from '../shared/errors';
+import { AuthenticationError, EmailNotVerifiedError } from '../shared/errors';
 import * as usersRepository from '../modules/users/users.repository';
 import type { UserId } from '@meridia/shared';
 
@@ -35,6 +35,11 @@ export const authenticate = async (
   const userRow = await usersRepository.findById(pool, payload.sub);
   if (!userRow) {
     next(new AuthenticationError());
+    return;
+  }
+
+  if (!userRow.email_verified_at) {
+    next(new EmailNotVerifiedError());
     return;
   }
 
