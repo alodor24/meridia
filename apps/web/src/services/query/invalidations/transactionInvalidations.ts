@@ -4,6 +4,7 @@ import { dashboardKeys } from "@/features/dashboard/dashboardKeys";
 import { goalKeys } from "@/features/goals/goalKeys";
 import { notificationKeys } from "@/features/notifications/notificationKeys";
 import { transactionKeys } from "@/features/transactions/transactionKeys";
+import { analyticsKeys } from "@/features/analytics/analyticsKeys";
 
 export const invalidateTransactionQueries = (queryClient: QueryClient) => {
   return Promise.all([
@@ -25,6 +26,10 @@ export const invalidateTransactionQueries = (queryClient: QueryClient) => {
 
     queryClient.invalidateQueries({
       queryKey: notificationKeys.all,
+    }),
+
+    queryClient.invalidateQueries({
+      queryKey: analyticsKeys.all,
     }),
   ]);
 };
