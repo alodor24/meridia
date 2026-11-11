@@ -11,6 +11,11 @@ import { analyticsRouter } from './modules/analytics/analytics.routes';
 import { authRouter } from './modules/auth/auth.routes';
 import { categoriesRouter } from './modules/categories/categories.routes';
 import { dashboardRouter } from './modules/dashboard/dashboard.routes';
+import { feedbackRouter } from './modules/feedback/feedback.routes';
+import { goalsRouter } from './modules/goals/goals.routes';
+import { notificationsRouter } from './modules/notifications/notifications.routes';
+import { remindersRouter } from './modules/reminders/reminders.routes';
+import { reportsRouter } from './modules/reports/reports.routes';
 import { transactionsRouter } from './modules/transactions/transactions.routes';
 import { transfersRouter } from './modules/transfers/transfers.routes';
 import { httpLogger } from './shared/logger';
@@ -47,9 +52,14 @@ export const createApp = () => {
   app.use('/api/accounts', accountsRouter);
   app.use('/api/categories', categoriesRouter);
   app.use('/api/transactions', transactionsRouter);
+  app.use('/api/reminders', remindersRouter);
   app.use('/api/transfers', transfersRouter);
+  app.use('/api/goals', goalsRouter);
+  app.use('/api/notifications', notificationsRouter);
   app.use('/api/dashboard', dashboardRouter);
   app.use('/api/analytics', analyticsRouter);
+  app.use('/api/feedback', feedbackRouter);
+  app.use('/api/reports', reportsRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
