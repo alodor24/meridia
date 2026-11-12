@@ -1,6 +1,6 @@
 import type { DashboardSummary } from "@meridia/shared";
 import { http } from "@/services/api/client";
-import { ENDPOINT_ROUTES } from "@/conts";
+import { ENDPOINT_ROUTES } from "@/consts";
 import { DashboardRange } from "../types";
 
 export const dashboardApi = {

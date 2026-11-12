@@ -1,11 +1,3 @@
-import {
-  format,
-  subMonths,
-  addMonths,
-  startOfMonth,
-  isSameMonth,
-} from "date-fns";
-import { es } from "date-fns/locale";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -13,11 +5,10 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { monthRangeFor } from "../utils/monthRange";
 import { SHADOW } from "@/theme/globalStyles";
 import { DashboardRange } from "../types";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import CustomTooltip from "@/components/ui/CustomTooltip";
+import useMonthSwitcher from "../hooks/useMonthSwitcher";
 
 interface MonthSwitcherProps {
   anchor: Date;
@@ -25,28 +16,14 @@ interface MonthSwitcherProps {
 }
 
 export const MonthSwitcher = ({ anchor, onChange }: MonthSwitcherProps) => {
-  const { data: user } = useCurrentUser();
-
-  if (!user) return null;
-
-  const currentDate = new Date();
-  const registrationDate = new Date(user.createdAt);
-  const label = format(anchor, "LLLL yyyy", { locale: es });
-  const isCurrentMonth = isSameMonth(anchor, currentDate);
-
-  const isPreviousDisabled =
-    startOfMonth(anchor) <= startOfMonth(registrationDate);
-
-  const isNextDisabled = startOfMonth(anchor) >= startOfMonth(currentDate);
-
-  const shift = (delta: number) => {
-    const next = delta < 0 ? subMonths(anchor, 1) : addMonths(anchor, 1);
-    onChange(monthRangeFor(next));
-  };
-
-  const goToCurrentMonth = () => {
-    onChange(monthRangeFor(currentDate));
-  };
+  const {
+    shift,
+    isPreviousDisabled,
+    isNextDisabled,
+    isCurrentMonth,
+    label,
+    goToCurrentMonth,
+  } = useMonthSwitcher({ anchor, onChange });
 
   return (
     <Stack
