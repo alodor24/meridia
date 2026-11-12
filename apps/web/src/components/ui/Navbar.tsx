@@ -16,7 +16,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useUiStore } from "@/stores/uiStore";
 import CustomTooltip from "./CustomTooltip";
-import { NAV_LINKS, PATHS } from "@/conts";
+import { NAV_LINKS, PATHS } from "@/consts";
 import { NAVBAR_DARK, NAVBAR_LIGHT, SHADOW } from "@/theme/globalStyles";
 import LogoApp from "./LogoApp";
 

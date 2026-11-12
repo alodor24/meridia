@@ -9,7 +9,7 @@ import type { CategoryTotal } from "@meridia/shared";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { EmptyState } from "@/components/ui/States";
-import { DONOUT_OPTIONS } from "@/conts";
+import { DONOUT_OPTIONS } from "@/consts";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

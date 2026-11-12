@@ -1,4 +1,4 @@
-import { ENDPOINT_ROUTES } from "@/conts";
+import { ENDPOINT_ROUTES } from "@/consts";
 import { http } from "@/services/api/client";
 import type { Feedback } from "@meridia/shared";
 import type { FeedbackFormValues } from "../types";

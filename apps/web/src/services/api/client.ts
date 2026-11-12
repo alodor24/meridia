@@ -5,7 +5,7 @@ import axios, {
 } from "axios";
 import { tokenManager } from "./tokenManager";
 import { toApiError } from "./errors";
-import { AUTH_PATHS, ENDPOINT_ROUTES } from "@/conts";
+import { AUTH_PATHS, ENDPOINT_ROUTES } from "@/consts";
 
 const rawApiBaseUrl = import.meta.env.VITE_API_URL ?? "";
 

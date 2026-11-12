@@ -1,5 +1,5 @@
 import PrivateLayout from "@/components/layout/PrivateLayout";
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import { getCurrentUserQueryOptions } from "@/features/auth/hooks/useCurrentUser";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import queryClient from "@/services/query/queryClient";

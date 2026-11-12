@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useNotifications } from "./useNotifications";
 import { useReminderNotifications } from "@/features/calendar/hooks/useReminderNotifications";
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import { pluralize } from "../utils/helper";
 import { NOTIFICATION_LIST_LIMIT } from "@/features/calendar/types";
 

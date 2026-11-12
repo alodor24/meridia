@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Skeleton from "@mui/material/Skeleton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "@tanstack/react-router";
-import { USER_MENU_ITEMS } from "@/conts";
+import { USER_MENU_ITEMS } from "@/consts";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { User } from "@meridia/shared";
 import Divider from "@mui/material/Divider";

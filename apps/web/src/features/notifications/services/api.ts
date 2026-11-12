@@ -1,10 +1,7 @@
 import type { AppNotification } from "@meridia/shared";
-import { ENDPOINT_ROUTES } from "@/conts";
+import { ENDPOINT_ROUTES } from "@/consts";
 import { http } from "@/services/api/client";
-import type {
-  NotificationFilters,
-  NotificationListResponse,
-} from "../types";
+import type { NotificationFilters, NotificationListResponse } from "../types";
 
 export const notificationApi = {
   listNotifications: (filters: NotificationFilters = {}) =>
@@ -23,7 +20,5 @@ export const notificationApi = {
   },
 
   markAllRead: () =>
-    http.post<{ marked: number }>(
-      `${ENDPOINT_ROUTES.NOTIFICATIONS}/read-all`,
-    ),
+    http.post<{ marked: number }>(`${ENDPOINT_ROUTES.NOTIFICATIONS}/read-all`),
 };

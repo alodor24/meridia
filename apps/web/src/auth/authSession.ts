@@ -1,6 +1,6 @@
 import queryClient from "@/services/query/queryClient";
 import { router } from "@/app/router/router";
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import { tokenManager } from "@/services/api/tokenManager";
 import {
   isHandlingUnauthorized,

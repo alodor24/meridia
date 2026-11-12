@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import FormHelperText from "@mui/material/FormHelperText";
 import Typography from "@mui/material/Typography";
-import { PRESET_COLORS } from "@/conts";
+import { PRESET_COLORS } from "@/consts";
 import { useField } from "formik";
 import CustomTooltip from "./CustomTooltip";
 

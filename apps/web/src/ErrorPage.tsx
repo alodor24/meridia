@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { Link } from "@tanstack/react-router";
-import { PATHS } from "./conts";
+import { PATHS } from "./consts";
 import ErrorImage from "@/assets/images/errorImage.webp";
 
 const ErrorPage = () => {
@@ -29,13 +29,26 @@ const ErrorPage = () => {
             gap: 1,
           }}>
           <img src={ErrorImage} width={300} alt="Error" />
-          <Typography component="h1" variant="h3" align="center" sx={{ fontWeight: 700 }} color="primary">
+          <Typography
+            component="h1"
+            variant="h3"
+            align="center"
+            sx={{ fontWeight: 700 }}
+            color="primary">
             Oops! Página no encontrada
           </Typography>
-          <Typography variant="body1" color="text.secondary" align="center" sx={{ mb: 3 }}>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            align="center"
+            sx={{ mb: 3 }}>
             La página que estás buscando no existe o ha sido movida.
           </Typography>
-          <Button component={Link} to={PATHS.HOME} variant="outlined" color="secondary">
+          <Button
+            component={Link}
+            to={PATHS.HOME}
+            variant="outlined"
+            color="secondary">
             Volver a la página principal
           </Button>
         </Box>

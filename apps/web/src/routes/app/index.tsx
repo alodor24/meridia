@@ -1,4 +1,4 @@
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/app/")({
