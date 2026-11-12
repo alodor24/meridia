@@ -13,6 +13,9 @@ import { validationSchema } from "../validations";
 import { useCreateAccount } from "../hooks/useCreateAccount";
 import { useUpdateAccount } from "../hooks/useUpdateAccount";
 import { toApiError } from "@/services/api/errors";
+import Stack from "@mui/material/Stack";
+import WalletIcon from "@mui/icons-material/Wallet";
+import Avatar from "@mui/material/Avatar";
 
 interface FormValues {
   name: string;
@@ -70,7 +73,19 @@ export const AccountFormDialog = ({
       onClose={isCreating || isUpdating ? undefined : onClose}
       maxWidth="xs"
       fullWidth>
-      <DialogTitle>{account ? "Editar cuenta" : "Nueva cuenta"}</DialogTitle>
+      <Stack direction="row" sx={{ alignItems: "center", px: 3, pt: 2 }}>
+        <Avatar
+          sx={{
+            width: 48,
+            height: 48,
+            bgcolor: "secondary.main",
+            color: "primary.contrastText",
+          }}>
+          <WalletIcon />
+        </Avatar>
+        <DialogTitle>{account ? "Editar cuenta" : "Nueva cuenta"}</DialogTitle>
+      </Stack>
+
       <Formik
         key={account?.id ?? "new"}
         initialValues={initialValues}

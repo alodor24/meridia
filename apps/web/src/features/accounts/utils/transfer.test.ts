@@ -37,17 +37,17 @@ const destination = createAccount({
 });
 
 describe("isTransferableAccount", () => {
-  it("acepta efectivo, banco y billetera", () => {
+  it("acepta efectivo, banco, billetera y ahorro", () => {
     expect(isTransferableAccount(createAccount({ type: "cash" }))).toBe(true);
     expect(isTransferableAccount(createAccount({ type: "bank" }))).toBe(true);
     expect(isTransferableAccount(createAccount({ type: "wallet" }))).toBe(true);
+    expect(isTransferableAccount(createAccount({ type: "savings" }))).toBe(
+      true,
+    );
   });
 
   it("rechaza cuentas no transferibles", () => {
     expect(isTransferableAccount(createAccount({ type: "credit_card" }))).toBe(
-      false,
-    );
-    expect(isTransferableAccount(createAccount({ type: "savings" }))).toBe(
       false,
     );
     expect(isTransferableAccount(createAccount({ type: "investment" }))).toBe(

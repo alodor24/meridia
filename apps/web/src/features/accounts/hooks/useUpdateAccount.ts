@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { goalKeys } from "@/features/goals/goalKeys";
 import { accountApi } from "../services/api";
 import { accountKeys } from "../accountKeys";
 import { UpdateAccountPayload } from "../types";
@@ -18,6 +19,10 @@ export const useUpdateAccount = () => {
 
       queryClient.invalidateQueries({
         queryKey: accountKeys.lists(),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: goalKeys.all,
       });
     },
   });

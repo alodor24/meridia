@@ -3,6 +3,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import type { Account } from "@meridia/shared";
 import { useTransferForm } from "../hooks/useTransferForm";
 import { TransferForm } from "./TransferForm";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 
 export interface TransferDialogProps {
   open: boolean;
@@ -26,7 +29,19 @@ export const TransferDialog = ({
       onClose={isPending ? undefined : onClose}
       maxWidth="xs"
       fullWidth>
-      <DialogTitle>Transferir saldo</DialogTitle>
+      <Stack direction="row" sx={{ alignItems: "center", px: 3, pt: 2 }}>
+        <Avatar
+          sx={{
+            width: 48,
+            height: 48,
+            bgcolor: "secondary.main",
+            color: "primary.contrastText",
+          }}>
+          <SwapHorizIcon />
+        </Avatar>
+        <DialogTitle>Transferir saldo</DialogTitle>
+      </Stack>
+
       <TransferForm
         key={open ? "open" : "closed"}
         accounts={accounts}

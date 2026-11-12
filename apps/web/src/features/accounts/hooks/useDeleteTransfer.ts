@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { invalidateGoalQueries } from "@/services/query/invalidations";
 import { accountKeys } from "../accountKeys";
 import { transferApi } from "../services/api";
 import { transferKeys } from "../transferKeys";
@@ -17,6 +18,8 @@ export const useDeleteTransfer = () => {
       queryClient.invalidateQueries({
         queryKey: accountKeys.all,
       });
+
+      void invalidateGoalQueries(queryClient);
     },
   });
 };
