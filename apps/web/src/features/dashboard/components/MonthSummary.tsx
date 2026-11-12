@@ -24,7 +24,6 @@ import {
   type ScriptableContext,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-
 import { SHADOW } from "@/theme/globalStyles";
 import { LINE_OPTIONS } from "@/consts";
 import { EmptyState } from "@/components/ui/States";
