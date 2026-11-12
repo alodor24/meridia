@@ -26,7 +26,7 @@ import {
 import { Line } from "react-chartjs-2";
 
 import { SHADOW } from "@/theme/globalStyles";
-import { LINE_OPTIONS } from "@/conts";
+import { LINE_OPTIONS } from "@/consts";
 import { EmptyState } from "@/components/ui/States";
 
 ChartJS.register(
@@ -138,12 +138,18 @@ const MonthSummary = ({
 
   return (
     <Card sx={{ height: "100%", boxShadow: SHADOW }}>
-      <CardContent>
+      <CardContent sx={{ p: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           Resumen mensual
         </Typography>
 
-        <Box sx={{ height: 300, bgcolor: "background.paper", pb: 4 }}>
+        <Box
+          sx={{
+            height: 300,
+            bgcolor: "background.paper",
+            display: "flex",
+            flexDirection: "column",
+          }}>
           {!isEmptyData ? (
             <>
               <Box
@@ -152,6 +158,7 @@ const MonthSummary = ({
                   justifyContent: "flex-end",
                   pt: 1,
                   pr: 2,
+                  flexShrink: 0,
                 }}>
                 <List sx={{ p: 0, display: "flex", gap: 2 }}>
                   {legends.map((legend) => (
@@ -166,11 +173,13 @@ const MonthSummary = ({
                 </List>
               </Box>
 
-              <Line
-                ref={chartRef}
-                data={chartData}
-                options={LINE_OPTIONS as ChartOptions<"line">}
-              />
+              <Box sx={{ position: "relative", flex: 1, minWidth: 0 }}>
+                <Line
+                  ref={chartRef}
+                  data={chartData}
+                  options={LINE_OPTIONS as ChartOptions<"line">}
+                />
+              </Box>
             </>
           ) : (
             <EmptyState message="No hay datos para mostrar." />

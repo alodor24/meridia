@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import RowTransaction from "./Transaction";
 import { SHADOW } from "@/theme/globalStyles";
 import { EmptyState } from "@/components/ui/States";
@@ -21,8 +21,8 @@ export const RecentTransactions = ({
 }: RecentTransactionsProps) => {
   return (
     <Card sx={{ height: "100%", boxShadow: SHADOW }}>
-      <CardContent>
-        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+      <CardContent sx={{ p: 3 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
           Últimos movimientos
         </Typography>
 

@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
 import { DashboardSummary } from "@meridia/shared";
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import CardLink from "./CardLink";
 import useGetUserCurrency from "@/hooks/useGetUserCurrency";
 
@@ -22,7 +22,7 @@ const AnalyticsByCategory = ({ data }: AnalyticsByCategoryProps) => {
 
   return (
     <Card sx={{ height: "100%", boxShadow: SHADOW }}>
-      <CardContent>
+      <CardContent sx={{ p: 3 }}>
         <CustomTabs labels={labels}>
           <CategoryBreakdownChart
             items={data.expensesByCategory}
