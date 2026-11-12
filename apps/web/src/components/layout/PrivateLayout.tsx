@@ -5,7 +5,7 @@ import Alert from "@mui/material/Alert";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useUiStore } from "@/stores/uiStore";
-import { DRAWER_WIDTH } from "@/theme/globalStyles";
+import { DRAWER_COLLAPSED_WIDTH, DRAWER_WIDTH } from "@/theme/globalStyles";
 import DrawerContent from "../ui/DrawerContent";
 import NavbarApp from "../ui/NavbarApp";
 
@@ -18,9 +18,13 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const drawerOpen = useUiStore((s) => s.drawerOpen);
+  const drawerCollapsed = useUiStore((s) => s.drawerCollapsed);
   const setDrawerOpen = useUiStore((s) => s.setDrawerOpen);
   const snackbar = useUiStore((s) => s.snackbar);
   const hideSnackbar = useUiStore((s) => s.hideSnackbar);
+
+  const collapsed = isDesktop && drawerCollapsed;
+  const drawerWidth = collapsed ? DRAWER_COLLAPSED_WIDTH : DRAWER_WIDTH;
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
@@ -31,12 +35,19 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
           variant="permanent"
           open
           sx={{
-            width: DRAWER_WIDTH,
+            width: drawerWidth,
             flexShrink: 0,
+            transition: theme.transitions.create("width", {
+              duration: theme.transitions.duration.standard,
+            }),
             "& .MuiDrawer-paper": {
-              width: DRAWER_WIDTH,
+              width: drawerWidth,
               boxSizing: "border-box",
-              px: 2,
+              px: collapsed ? 1.5 : 2,
+              overflowX: "hidden",
+              transition: theme.transitions.create(["width", "padding"], {
+                duration: theme.transitions.duration.standard,
+              }),
             },
           }}>
           <DrawerContent />
@@ -60,7 +71,12 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
         component="main"
         id="main-content"
         tabIndex={-1}
-        sx={{ flexGrow: 1, p: { xs: 2, md: 3 }, pt: { xs: 10, md: 12 } }}>
+        sx={{
+          flexGrow: 1,
+          minWidth: 0,
+          p: { xs: 2, md: 3 },
+          pt: { xs: 10, md: 12 },
+        }}>
         {children}
       </Box>
 
