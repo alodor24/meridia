@@ -11,7 +11,7 @@ import { format as dateFnsFormat, parseISO } from "date-fns";
 import { FormTextField } from "@/components/ui/FormTextField";
 import { FormSelect } from "@/components/ui/FormSelect";
 import { useUiStore } from "@/stores/uiStore";
-import { getCurrencySymbol, today } from "@/utils/format";
+import { formatCurrency, getCurrencySymbol, today } from "@/utils/format";
 import { buildValidationSchema } from "../validations";
 import {
   Account,
@@ -136,7 +136,7 @@ const TransactionForm = ({
                 label="Cuenta"
                 options={accounts.map((a) => ({
                   value: a.id,
-                  label: a.name,
+                  label: `${a.name} · ${formatCurrency(a.balance, a.currency)}`,
                 }))}
               />
 

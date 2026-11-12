@@ -4,7 +4,7 @@ import type {
   TransactionFilters,
 } from "@meridia/shared";
 import { http } from "@/services/api/client";
-import { ENDPOINT_ROUTES } from "@/conts";
+import { ENDPOINT_ROUTES } from "@/consts";
 import { CreateTransactionPayload } from "../types";
 
 const cleanParams = (filters: TransactionFilters): Record<string, unknown> => {

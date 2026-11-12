@@ -4,6 +4,9 @@ import type { Account, Category, Transaction } from "@meridia/shared";
 import TransactionForm from "./TransactionForm";
 import { useCreateTransaction } from "../hooks/useCreateTransaction";
 import { useUpdateTransaction } from "../hooks/useUpdateTransaction";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 
 export interface TransactionFormDialogProps {
   open: boolean;
@@ -31,9 +34,21 @@ export const TransactionFormDialog = ({
       onClose={isCreating || isUpdating ? undefined : onClose}
       maxWidth="xs"
       fullWidth>
-      <DialogTitle>
-        {transaction ? "Editar movimiento" : "Nuevo movimiento"}
-      </DialogTitle>
+      <Stack direction="row" sx={{ alignItems: "center", px: 3, pt: 2 }}>
+        <Avatar
+          sx={{
+            width: 48,
+            height: 48,
+            bgcolor: "secondary.main",
+            color: "primary.contrastText",
+          }}>
+          <ReceiptIcon />
+        </Avatar>
+        <DialogTitle>
+          {transaction ? "Editar movimiento" : "Nuevo movimiento"}
+        </DialogTitle>
+      </Stack>
+
       <TransactionForm
         transaction={transaction}
         accounts={accounts}

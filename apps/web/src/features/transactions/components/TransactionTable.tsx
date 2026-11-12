@@ -18,7 +18,7 @@ import { formatCurrency, formatDate } from "@/utils/format";
 import ActionTable, { ActionProps } from "@/components/ui/ActionTable";
 import { AccountId, Transaction } from "@meridia/shared";
 import getCategoryIcon from "@/utils/getCategoryIcon";
-import { ROWS_PER_PAGE_OPTIONS } from "@/conts";
+import { ROWS_PER_PAGE_OPTIONS } from "@/consts";
 
 interface TransactionTableProps {
   actions: {

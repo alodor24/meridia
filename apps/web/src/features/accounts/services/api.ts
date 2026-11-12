@@ -1,6 +1,6 @@
 import type { Account, AccountTransfer, Paginated } from "@meridia/shared";
 import { http } from "@/services/api/client";
-import { ENDPOINT_ROUTES } from "@/conts";
+import { ENDPOINT_ROUTES } from "@/consts";
 import type {
   CreateAccountPayload,
   CreateTransferPayload,

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { PAGE_SIZE } from "@/conts";
+import { PAGE_SIZE } from "@/consts";
 import type {
   Account,
   AccountId,
