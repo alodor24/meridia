@@ -4,6 +4,9 @@ import type { Category, TransactionType } from "@meridia/shared";
 import CategoryForm from "./CategoryForm";
 import { useUpdateCategory } from "../hooks/useUpdateCategory";
 import { useCreateCategory } from "../hooks/useCreateCategory";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import CategoryIcon from "@mui/icons-material/Category";
 
 export interface CategoryFormDialogProps {
   open: boolean;
@@ -29,9 +32,21 @@ export const CategoryFormDialog = ({
       onClose={isCreating || isUpdating ? undefined : onClose}
       maxWidth="xs"
       fullWidth>
-      <DialogTitle>
-        {category ? "Editar categoría" : "Nueva categoría"}
-      </DialogTitle>
+      <Stack direction="row" sx={{ alignItems: "center", px: 3, pt: 2 }}>
+        <Avatar
+          sx={{
+            width: 48,
+            height: 48,
+            bgcolor: "secondary.main",
+            color: "primary.contrastText",
+          }}>
+          <CategoryIcon />
+        </Avatar>
+        <DialogTitle>
+          {category ? "Editar categoría" : "Nueva categoría"}
+        </DialogTitle>
+      </Stack>
+
       <CategoryForm
         category={category}
         defaultType={defaultType}

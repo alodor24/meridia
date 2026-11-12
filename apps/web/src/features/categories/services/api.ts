@@ -1,6 +1,6 @@
 import type { Category, Paginated, TransactionType } from "@meridia/shared";
 import { http } from "@/services/api/client";
-import { ENDPOINT_ROUTES } from "@/conts";
+import { ENDPOINT_ROUTES } from "@/consts";
 import { CreateCategoryPayload } from "../types";
 
 export const categoryApi = {

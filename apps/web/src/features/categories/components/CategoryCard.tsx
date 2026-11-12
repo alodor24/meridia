@@ -14,7 +14,7 @@ interface CategoryCardProps {
 const CategoryCard = ({ icon, total, subtitle, color }: CategoryCardProps) => {
   return (
     <Card sx={{ boxShadow: SHADOW }}>
-      <CardContent>
+      <CardContent sx={{ p: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Box
             sx={{

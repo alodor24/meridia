@@ -1,6 +1,6 @@
-import { SetStateAction, useState } from "react";
+import { SetStateAction } from "react";
 import Grid from "@mui/material/Grid";
-import type { Category, TransactionType } from "@meridia/shared";
+import type { Category } from "@meridia/shared";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";
@@ -12,25 +12,29 @@ import CategoryCard from "../components/CategoryCard";
 import CategoryIcon from "@mui/icons-material/Category";
 import TrendDownIcon from "@mui/icons-material/TrendingDown";
 import TrendUpIcon from "@mui/icons-material/TrendingUp";
-import { useListCategories } from "../hooks/useListCategories";
 import { useDeleteCategory } from "../hooks/useDeleteCategory";
 import { toApiError } from "@/services/api/errors";
+import useCategories from "../hooks/useCategories";
 
 const CategoriesPage = () => {
   useDocumentTitle("Categorías");
   const showSnackbar = useUiStore((s) => s.showSnackbar);
-  const { data, isLoading, error, refetch } = useListCategories();
   const { mutateAsync: deleteCategory, isPending } = useDeleteCategory();
-
-  const [formOpen, setFormOpen] = useState(false);
-  const [editing, setEditing] = useState<Category | null>(null);
-  const [defaultType] = useState<TransactionType>("expense");
-  const [deletingCategory, setDeletingCategory] = useState<Category | null>(
-    null,
-  );
-
-  const income = data?.filter((c) => c.type === "income") ?? [];
-  const expense = data?.filter((c) => c.type === "expense") ?? [];
+  const {
+    data,
+    isLoading,
+    error,
+    refetch,
+    formOpen,
+    setFormOpen,
+    editing,
+    setEditing,
+    defaultType,
+    deletingCategory,
+    setDeletingCategory,
+    income,
+    expense,
+  } = useCategories();
 
   const actionOptions = {
     onClickEditar: (category: SetStateAction<Category | null>) => {
@@ -57,7 +61,7 @@ const CategoriesPage = () => {
     <>
       <PageHeader
         title="Categorías"
-        subtitle="Organiza tus movimientos por categorías de ingresos y gastos."
+        subtitle="Organiza tus movimientos por categorías de gastos e ingresos."
         actionLabel="Nueva categoría"
         onAction={() => {
           setEditing(null);
