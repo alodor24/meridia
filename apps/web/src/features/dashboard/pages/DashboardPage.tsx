@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -9,56 +8,38 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { StatCard } from "@/components/ui/StatCard";
 import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
-import { formatCurrency, formatMonth, getPreviousMonth } from "@/utils/format";
-import { calculatePctChange } from "@/utils/calculatePctChange";
-import { subMonths } from "date-fns";
+import { formatCurrency } from "@/utils/format";
 import { RecentTransactions } from "../components/RecentTransactions";
 import { MonthSwitcher } from "../components/MonthSwitcher";
-import { monthRangeFor } from "../utils/monthRange";
 import AnalyticsByCategory from "../components/AnalyticsByCategory";
 import useAmountVisibility from "@/hooks/useAmountVisibility";
 import MonthSummary from "../components/MonthSummary";
 import useGetUserCurrency from "@/hooks/useGetUserCurrency";
-import { useDashboardSummary } from "../hooks/useDashboardSummary";
+import useDashboard from "../hooks/useDashboard";
 
 const DashboardPage = () => {
   useDocumentTitle("Dashboard");
   const { currency } = useGetUserCurrency();
-  const [anchor, setAnchor] = useState(new Date());
-  const [range, setRange] = useState(monthRangeFor(new Date()));
   const { isVisible, toggleVisibility } = useAmountVisibility();
-
-  const month = formatMonth(anchor);
-  const prevRange = monthRangeFor(subMonths(anchor, 1));
-
-  const { data, isLoading, error, refetch } = useDashboardSummary(range);
-  const { data: prevData } = useDashboardSummary(prevRange);
+  const {
+    anchor,
+    setAnchor,
+    setRange,
+    month,
+    isEmptyData,
+    incomeComparison,
+    expensesComparison,
+    periodBalanceComparison,
+    data,
+    isLoading,
+    error,
+    refetch,
+    monthStatCard,
+  } = useDashboard();
 
   if (isLoading) return <LoadingState />;
   if (error) return <ErrorState message={error.message} onRetry={refetch} />;
   if (!data) return <EmptyState message="No hay datos para mostrar." />;
-
-  const monthStatCard = ` vs. ${getPreviousMonth(month)}`;
-  const isEmptyData =
-    data.income === 0 && data.expenses === 0 && data.periodBalance === 0;
-
-  const incomeComparison = calculatePctChange(
-    data.income,
-    prevData?.income ?? 0,
-    "income",
-  );
-
-  const expensesComparison = calculatePctChange(
-    data.expenses,
-    prevData?.expenses ?? 0,
-    "expense",
-  );
-
-  const periodBalanceComparison = calculatePctChange(
-    data.periodBalance,
-    prevData?.periodBalance ?? 0,
-    "balance",
-  );
 
   return (
     <>
