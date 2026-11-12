@@ -15,7 +15,7 @@ import type { AccountTransfer } from "@meridia/shared";
 import ActionTable, { ActionProps } from "@/components/ui/ActionTable";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/States";
-import { PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "@/conts";
+import { PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "@/consts";
 import { toApiError } from "@/services/api/errors";
 import { useUiStore } from "@/stores/uiStore";
 import { SHADOW } from "@/theme/globalStyles";
@@ -77,7 +77,7 @@ export const TransferHistory = () => {
             Transferencias internas
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Movimientos entre tus cuentas que no afectan ingresos ni gastos.
+            Movimientos entre tus cuentas que no afectan tu balance.
           </Typography>
 
           {isLoading && !data && (

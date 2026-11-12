@@ -1,8 +1,6 @@
 import Alert from "@mui/material/Alert";
-import Typography from "@mui/material/Typography";
 import type { Account } from "@meridia/shared";
 import { FormSelect } from "@/components/ui/FormSelect";
-import { formatCurrency } from "@/utils/format";
 import type { TransferAccountOption } from "../types";
 
 interface TransferAccountFieldsProps {
@@ -34,13 +32,6 @@ export const TransferAccountFields = ({
         options={sourceOptions}
         disabled={sourceOptions.length === 0}
       />
-
-      {sourceAccount && (
-        <Typography variant="caption" color="text.secondary">
-          Saldo disponible:{" "}
-          {formatCurrency(sourceAccount.balance, sourceAccount.currency)}
-        </Typography>
-      )}
 
       {hasSource && !hasDestination && (
         <Alert severity="info" sx={{ mt: 1 }}>

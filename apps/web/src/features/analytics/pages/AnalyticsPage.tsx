@@ -31,7 +31,7 @@ const AnalyticsPage = () => {
     <>
       <PageHeader
         title="Analítica"
-        subtitle={`Ingresos, gastos y categorías de ${year}`}
+        subtitle="Consulta y analiza la evolución de tus finanzas."
         secondaryAction={
           <YearSwitcher
             year={year}
@@ -43,9 +43,7 @@ const AnalyticsPage = () => {
       />
 
       {isFetching && data && <LinearProgress sx={{ mb: 2 }} />}
-
       {isLoading && !data && <LoadingState />}
-
       {error && !data && (
         <ErrorState message={error.message} onRetry={refetch} />
       )}

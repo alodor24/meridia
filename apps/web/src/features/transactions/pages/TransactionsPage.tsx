@@ -72,7 +72,7 @@ const TransactionsPage = () => {
     <>
       <PageHeader
         title="Movimientos"
-        subtitle="Registra y consulta todos tus ingresos y gastos."
+        subtitle="Registra y consulta todas tus operaciones."
         actionLabel="Nuevo movimiento"
         onAction={() => {
           setEditing(null);

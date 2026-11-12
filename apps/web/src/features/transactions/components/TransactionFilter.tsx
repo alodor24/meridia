@@ -31,7 +31,7 @@ const TransactionFilter = ({
 }: TransactionFilterProps) => {
   return (
     <Card sx={{ mb: 2, boxShadow: SHADOW }}>
-      <CardContent>
+      <CardContent sx={{ pt: 3 }}>
         <Stack
           direction={{ xs: "column", md: "row" }}
           spacing={1.5}
