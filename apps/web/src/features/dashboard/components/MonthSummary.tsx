@@ -20,13 +20,12 @@ import {
   Filler,
   type Chart,
   type ChartData,
-  type ChartOptions,
   type ScriptableContext,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { SHADOW } from "@/theme/globalStyles";
-import { LINE_OPTIONS } from "@/consts";
 import { EmptyState } from "@/components/ui/States";
+import { buildMonthSummaryChartOptions } from "../utils/monthSummaryChartOptions";
 
 ChartJS.register(
   CategoryScale,
@@ -135,6 +134,11 @@ const MonthSummary = ({
     };
   }, [items, currency, theme]);
 
+  const chartOptions = useMemo(
+    () => buildMonthSummaryChartOptions(currency),
+    [currency],
+  );
+
   return (
     <Card sx={{ height: "100%", boxShadow: SHADOW }}>
       <CardContent sx={{ p: 3 }}>
@@ -144,7 +148,8 @@ const MonthSummary = ({
 
         <Box
           sx={{
-            height: 300,
+            pb: 1,
+            height: 320,
             bgcolor: "background.paper",
             display: "flex",
             flexDirection: "column",
@@ -155,7 +160,7 @@ const MonthSummary = ({
                 sx={{
                   display: "flex",
                   justifyContent: "flex-end",
-                  pt: 1,
+                  pt: 2,
                   pr: 2,
                   flexShrink: 0,
                 }}>
@@ -172,12 +177,13 @@ const MonthSummary = ({
                 </List>
               </Box>
 
-              <Box sx={{ position: "relative", flex: 1, minWidth: 0 }}>
-                <Line
-                  ref={chartRef}
-                  data={chartData}
-                  options={LINE_OPTIONS as ChartOptions<"line">}
-                />
+              <Box
+                sx={{
+                  position: "relative",
+                  flex: 1,
+                  minWidth: 0,
+                }}>
+                <Line ref={chartRef} data={chartData} options={chartOptions} />
               </Box>
             </>
           ) : (
