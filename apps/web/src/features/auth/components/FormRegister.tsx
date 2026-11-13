@@ -15,10 +15,11 @@ import {
 import { useUiStore } from "@/stores/uiStore";
 import { toApiError } from "@/services/api/errors";
 import { getCurrencySymbol } from "@/utils/format";
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import { ReactCountryFlag } from "react-country-flag";
 import useShowPassword from "../hooks/useShowPassword";
 import { useRegister } from "../hooks/useRegister";
+import PasswordStrengthMeter from "./PasswordStrengthMeter";
 
 const FormRegister = () => {
   const registerUser = useRegister();
@@ -66,7 +67,10 @@ const FormRegister = () => {
         country: values.country,
         currency: country?.currency ?? "USD",
       });
-      await navigate({ to: PATHS.DASHBOARD });
+      await navigate({
+        to: PATHS.VERIFY_EMAIL,
+        search: { email: values.email.trim().toLowerCase() },
+      });
     } catch (error) {
       showSnackbar(toApiError(error).message, "error");
     }
@@ -77,7 +81,7 @@ const FormRegister = () => {
       initialValues={initialValues}
       validationSchema={registerValidationSchema}
       onSubmit={handleSubmit}>
-      {() => (
+      {(formik) => (
         <Form>
           <FormTextField name="name" label="Nombre" autoComplete="name" />
           <FormTextField
@@ -104,6 +108,7 @@ const FormRegister = () => {
               },
             }}
           />
+          <PasswordStrengthMeter password={formik.values.password} />
           <FormTextField
             name="confirmPassword"
             label="Confirmar contraseña"

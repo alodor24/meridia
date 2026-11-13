@@ -3,10 +3,13 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { AuthLayout } from "@/features/auth/components/AuthLayout";
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import FormRegister from "../components/FormRegister";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 const RegisterPage = () => {
+  useDocumentTitle("Registro");
+
   return (
     <AuthLayout
       title="Crear cuenta"

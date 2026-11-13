@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import { tokenManager } from "@/services/api/tokenManager";
 import { authApi } from "../services/api";
 

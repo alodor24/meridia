@@ -5,6 +5,44 @@ export interface AuthResponse {
   accessToken: string;
 }
 
+export interface RegisterResponse {
+  user: User;
+  message: string;
+}
+
+export interface VerifyEmailPayload {
+  token: string;
+}
+
+export interface VerifyEmailResponse {
+  verified: boolean;
+}
+
+export interface ResendVerificationPayload {
+  email: string;
+}
+
+export interface ResendVerificationResponse {
+  message: string;
+}
+
+export interface ForgotPasswordPayload {
+  email: string;
+}
+
+export interface ForgotPasswordResponse {
+  message: string;
+}
+
+export interface ResetPasswordPayload {
+  token: string;
+  password: string;
+}
+
+export interface ResetPasswordResponse {
+  reset: boolean;
+}
+
 export interface LoginPayload {
   email: string;
   password: string;

@@ -9,7 +9,7 @@ import { Link as RouterLink } from "@tanstack/react-router";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import { useUiStore } from "@/stores/uiStore";
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import LogoApp from "@/components/ui/LogoApp";
 import { SHADOW } from "@/theme/globalStyles";
 

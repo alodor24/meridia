@@ -12,7 +12,7 @@ import {
 } from "@/features/auth/validations";
 import { useUiStore } from "@/stores/uiStore";
 import { toApiError } from "@/services/api/errors";
-import { PATHS } from "@/conts";
+import { PATHS } from "@/consts";
 import useShowPassword from "../hooks/useShowPassword";
 import { useLogin } from "../hooks/useLogin";
 
@@ -32,7 +32,17 @@ const FormLogin = () => {
       });
       await navigate({ to: PATHS.DASHBOARD });
     } catch (error) {
-      showSnackbar(toApiError(error).message, "error");
+      const apiError = toApiError(error);
+
+      if (apiError.code === "EMAIL_NOT_VERIFIED") {
+        await navigate({
+          to: PATHS.VERIFY_EMAIL,
+          search: { email: values.email.trim().toLowerCase() },
+        });
+        return;
+      }
+
+      showSnackbar(apiError.message, "error");
     }
   };
 

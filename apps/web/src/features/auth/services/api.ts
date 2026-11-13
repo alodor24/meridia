@@ -1,11 +1,20 @@
 import type { User } from "@meridia/shared";
 import { http } from "@/services/api/client";
-import { ENDPOINT_ROUTES } from "@/conts";
+import { ENDPOINT_ROUTES } from "@/consts";
 import {
   AuthResponse,
+  ForgotPasswordPayload,
+  ForgotPasswordResponse,
   LoginPayload,
   RegisterPayload,
+  RegisterResponse,
+  ResendVerificationPayload,
+  ResendVerificationResponse,
+  ResetPasswordPayload,
+  ResetPasswordResponse,
   UpdateProfilePayload,
+  VerifyEmailPayload,
+  VerifyEmailResponse,
 } from "../types";
 
 export const authApi = {
@@ -13,7 +22,22 @@ export const authApi = {
     http.post<AuthResponse>(ENDPOINT_ROUTES.LOGIN, payload),
 
   register: (payload: RegisterPayload) =>
-    http.post<AuthResponse>(ENDPOINT_ROUTES.REGISTER, payload),
+    http.post<RegisterResponse>(ENDPOINT_ROUTES.REGISTER, payload),
+
+  verifyEmail: (payload: VerifyEmailPayload) =>
+    http.post<VerifyEmailResponse>(ENDPOINT_ROUTES.VERIFY_EMAIL, payload),
+
+  resendVerification: (payload: ResendVerificationPayload) =>
+    http.post<ResendVerificationResponse>(
+      ENDPOINT_ROUTES.RESEND_VERIFICATION,
+      payload,
+    ),
+
+  forgotPassword: (payload: ForgotPasswordPayload) =>
+    http.post<ForgotPasswordResponse>(ENDPOINT_ROUTES.FORGOT_PASSWORD, payload),
+
+  resetPassword: (payload: ResetPasswordPayload) =>
+    http.post<ResetPasswordResponse>(ENDPOINT_ROUTES.RESET_PASSWORD, payload),
 
   logout: () => http.post<null>(ENDPOINT_ROUTES.LOGOUT),
 
