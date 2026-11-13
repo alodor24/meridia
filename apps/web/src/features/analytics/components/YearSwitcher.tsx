@@ -1,77 +1,48 @@
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import Stack from "@mui/material/Stack";
-import CustomTooltip from "@/components/ui/CustomTooltip";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { isValid } from "date-fns";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { SHADOW } from "@/theme/globalStyles";
-import { buildYearOptions } from "../utils/yearOptions";
+import { buildYearRange } from "../utils/yearOptions";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
 interface YearSwitcherProps {
   year: number;
-  minYear: number;
-  maxYear: number;
   onChange: (year: number) => void;
 }
 
-const YearSwitcher = ({
-  year,
-  minYear,
-  maxYear,
-  onChange,
-}: YearSwitcherProps) => {
-  const years = buildYearOptions(minYear, maxYear);
+const YearSwitcher = ({ year, onChange }: YearSwitcherProps) => {
+  const { data: user } = useCurrentUser();
+  const { min: minYear, max: maxYear } = buildYearRange(user?.createdAt);
 
   return (
-    <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-      <CustomTooltip title="Año anterior" placement="top">
-        <IconButton
-          aria-label="Año anterior"
-          onClick={() => onChange(year - 1)}
-          disabled={year <= minYear}
-          sx={{
-            bgcolor: "background.paper",
-            boxShadow: SHADOW,
-          }}>
-          <ChevronLeftIcon />
-        </IconButton>
-      </CustomTooltip>
-
-      <Select
-        size="small"
-        value={year}
-        onChange={(event) => onChange(Number(event.target.value))}
-        aria-label="Año"
-        sx={{
-          minWidth: 96,
-          bgcolor: "background.paper",
-          boxShadow: SHADOW,
-          "& .MuiSelect-select": {
-            py: 1,
-            fontWeight: 600,
-          },
-        }}>
-        {years.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </Select>
-
-      <CustomTooltip title="Año siguiente" placement="top">
-        <IconButton
-          aria-label="Año siguiente"
-          onClick={() => onChange(year + 1)}
-          disabled={year >= maxYear}
-          sx={{
-            bgcolor: "background.paper",
-            boxShadow: SHADOW,
-          }}>
-          <ChevronRightIcon />
-        </IconButton>
-      </CustomTooltip>
-    </Stack>
+    <Card sx={{ mb: 2, boxShadow: SHADOW }}>
+      <CardContent sx={{ pt: 3 }}>
+        <DesktopDatePicker
+          label="Año"
+          value={new Date(year, 0, 1)}
+          onChange={(date) => {
+            if (date && isValid(date)) onChange(date.getFullYear());
+          }}
+          views={["year"]}
+          openTo="year"
+          format="yyyy"
+          minDate={new Date(minYear, 0, 1)}
+          maxDate={new Date(maxYear, 11, 31)}
+          slotProps={{
+            textField: {
+              size: "small",
+              slotProps: {
+                htmlInput: { "aria-label": "Año" },
+              },
+              sx: {
+                width: 240,
+              },
+            },
+          }}
+        />
+      </CardContent>
+    </Card>
   );
 };
 

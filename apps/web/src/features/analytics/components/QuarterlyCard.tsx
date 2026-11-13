@@ -6,6 +6,7 @@ import type { AnalyticsQuarterlyTotal } from "@meridia/shared";
 import { EmptyState } from "@/components/ui/States";
 import { SHADOW } from "@/theme/globalStyles";
 import QuarterlyChart from "./QuarterlyChart";
+import LegendsChart from "./LegendsChart";
 
 interface QuarterlyCardProps {
   items: AnalyticsQuarterlyTotal[];
@@ -18,14 +19,25 @@ const QuarterlyCard = ({ items, currency, year }: QuarterlyCardProps) => {
 
   return (
     <Card sx={{ height: "100%", boxShadow: SHADOW }}>
-      <CardContent>
+      <CardContent sx={{ p: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-          Ingresos y gastos por trimestre
+          Comparación trimestral
         </Typography>
 
-        <Box sx={{ height: 340 }}>
+        <Box
+          sx={{
+            mt: 2,
+            px: 1,
+            pt: 2,
+            pb: 7,
+            height: 400,
+            bgcolor: "background.paper",
+          }}>
           {hasData ? (
-            <QuarterlyChart items={items} currency={currency} year={year} />
+            <>
+              <LegendsChart />
+              <QuarterlyChart items={items} currency={currency} year={year} />
+            </>
           ) : (
             <EmptyState message={`Sin movimientos en ${year}.`} />
           )}

@@ -6,6 +6,7 @@ import type { AnalyticsMonthlyTotal } from "@meridia/shared";
 import { EmptyState } from "@/components/ui/States";
 import { SHADOW } from "@/theme/globalStyles";
 import IncomeExpenseMonthlyChart from "./IncomeExpenseMonthlyChart";
+import LegendsChart from "./LegendsChart";
 
 interface IncomeExpenseMonthlyCardProps {
   items: AnalyticsMonthlyTotal[];
@@ -22,14 +23,25 @@ const IncomeExpenseMonthlyCard = ({
 
   return (
     <Card sx={{ height: "100%", boxShadow: SHADOW }}>
-      <CardContent>
+      <CardContent sx={{ p: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-          Ingresos y gastos por mes
+          Evolución anual de ingresos y gastos
         </Typography>
 
-        <Box sx={{ height: 340 }}>
+        <Box
+          sx={{
+            mt: 2,
+            px: 1,
+            pt: 2,
+            pb: 7,
+            height: 350,
+            bgcolor: "background.paper",
+          }}>
           {hasData ? (
-            <IncomeExpenseMonthlyChart items={items} currency={currency} />
+            <>
+              <LegendsChart />
+              <IncomeExpenseMonthlyChart items={items} currency={currency} />
+            </>
           ) : (
             <EmptyState message={`Sin movimientos en ${year}.`} />
           )}

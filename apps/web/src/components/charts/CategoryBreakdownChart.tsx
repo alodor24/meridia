@@ -42,7 +42,7 @@ const CategoryBreakdownChart = ({
   };
 
   return (
-    <Box sx={{ mt: 2, height: 374, bgcolor: "background.paper" }}>
+    <Box sx={{ mt: 2, height: 384, bgcolor: "background.paper" }}>
       {items.length > 0 ? (
         <Grid container spacing={2} sx={{ height: "100%" }}>
           <Grid size={7}>

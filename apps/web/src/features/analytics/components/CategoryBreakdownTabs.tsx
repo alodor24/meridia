@@ -12,7 +12,7 @@ interface CategoryBreakdownTabsProps {
   year: number;
 }
 
-const labels = ["Gastos por categoría", "Ingresos por categoría"];
+const labels = ["Distribución de Gastos", "Distribución de Ingresos"];
 
 const CategoryBreakdownTabs = ({
   expenses,
@@ -22,7 +22,7 @@ const CategoryBreakdownTabs = ({
 }: CategoryBreakdownTabsProps) => {
   return (
     <Card sx={{ height: "100%", boxShadow: SHADOW }}>
-      <CardContent>
+      <CardContent sx={{ p: 3 }}>
         <CustomTabs labels={labels}>
           <CategoryBreakdownChart
             items={expenses}

@@ -16,12 +16,7 @@ export const buildBarOptions = (
   },
   plugins: {
     legend: {
-      display: true,
-      position: "bottom",
-      labels: {
-        usePointStyle: true,
-        boxWidth: 8,
-      },
+      display: false,
     },
     tooltip: {
       callbacks: {

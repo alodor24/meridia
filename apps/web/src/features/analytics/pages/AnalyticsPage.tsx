@@ -23,7 +23,6 @@ const AnalyticsPage = () => {
   const { data, isLoading, isFetching, error, refetch } =
     useAnalyticsSummary(year);
 
-  const availableYears = data?.availableYears ?? { min: year, max: year };
   const isEmpty =
     data !== undefined && data.totalIncome === 0 && data.totalExpenses === 0;
 
@@ -32,14 +31,7 @@ const AnalyticsPage = () => {
       <PageHeader
         title="Analítica"
         subtitle="Consulta y analiza la evolución de tus finanzas."
-        secondaryAction={
-          <YearSwitcher
-            year={year}
-            minYear={availableYears.min}
-            maxYear={availableYears.max}
-            onChange={setYear}
-          />
-        }
+        secondaryAction={<YearSwitcher year={year} onChange={setYear} />}
       />
 
       {isFetching && data && <LinearProgress sx={{ mb: 2 }} />}

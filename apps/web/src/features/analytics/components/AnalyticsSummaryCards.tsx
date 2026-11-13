@@ -20,7 +20,7 @@ const AnalyticsSummaryCards = ({ data }: AnalyticsSummaryCardsProps) => {
     <Grid container spacing={2} sx={{ mb: 3 }}>
       <Grid size={{ xs: 12, sm: 6, md: 4 }}>
         <StatCard
-          title="Ingresos del año"
+          title="Ingresos totales del año"
           value={formatCurrency(data.totalIncome, currency)}
           icon={<TrendingUpIcon />}
           color="success"
@@ -32,7 +32,7 @@ const AnalyticsSummaryCards = ({ data }: AnalyticsSummaryCardsProps) => {
 
       <Grid size={{ xs: 12, sm: 6, md: 4 }}>
         <StatCard
-          title="Gastos del año"
+          title="Gastos totales del año"
           value={formatCurrency(data.totalExpenses, currency)}
           icon={<TrendingDownIcon />}
           color="error"
@@ -44,7 +44,7 @@ const AnalyticsSummaryCards = ({ data }: AnalyticsSummaryCardsProps) => {
 
       <Grid size={{ xs: 12, sm: 6, md: 4 }}>
         <StatCard
-          title="Balance del año"
+          title="Balance anual"
           value={formatCurrency(data.balance, currency)}
           icon={data.balance >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
           color={data.balance >= 0 ? "success" : "error"}

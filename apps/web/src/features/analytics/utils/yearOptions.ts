@@ -1,11 +1,18 @@
-export const buildYearOptions = (
-  minYear: number,
-  maxYear: number,
-): number[] => {
-  if (minYear > maxYear) return [];
+export interface YearRange {
+  min: number;
+  max: number;
+}
 
-  return Array.from(
-    { length: maxYear - minYear + 1 },
-    (_, index) => maxYear - index,
-  );
+export const buildYearRange = (
+  createdAt?: string,
+  now = new Date(),
+): YearRange => {
+  const max = now.getFullYear();
+  const createdDate = createdAt ? new Date(createdAt) : null;
+  const registrationYear =
+    createdDate && !Number.isNaN(createdDate.getTime())
+      ? createdDate.getFullYear()
+      : max;
+
+  return { min: Math.min(registrationYear, max), max };
 };

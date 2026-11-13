@@ -1,6 +1,6 @@
 import type { AnalyticsSummary } from "@meridia/shared";
 import { http } from "@/services/api/client";
-import { ENDPOINT_ROUTES } from "@/conts";
+import { ENDPOINT_ROUTES } from "@/consts";
 
 export const analyticsApi = {
   getAnalytics: async (year: number) => {
