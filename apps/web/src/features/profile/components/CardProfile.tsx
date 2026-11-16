@@ -47,7 +47,7 @@ const CardProfile = ({ user }: CardProfileProps) => {
       },
       {
         label: "Miembro desde",
-        value: formatDate(user.createdAt),
+        value: formatDate(user.createdAt, "d 'de' MMMM 'de' yyyy"),
         icon: CalendarMonthIcon,
       },
     ],
