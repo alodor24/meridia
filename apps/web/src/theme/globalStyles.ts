@@ -32,6 +32,8 @@ const globalStyles = {
   },
   ".MuiButton-root": {
     borderRadius: "3rem !important",
+    paddingLeft: "1.5rem !important",
+    paddingRight: "1.5rem !important",
   },
 };
 
