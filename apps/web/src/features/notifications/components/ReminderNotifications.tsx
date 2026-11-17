@@ -32,7 +32,7 @@ const ReminderNotifications = ({
           direction="column"
           spacing={1.5}
           sx={{ alignItems: "center", py: 2 }}>
-          <NotificationsNoneIcon fontSize="large" />
+          <NotificationsNoneIcon color="disabled" fontSize="large" />
           <Typography variant="body2" color="text.secondary">
             No hay novedades por ahora
           </Typography>
