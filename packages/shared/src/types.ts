@@ -1,22 +1,20 @@
 import type {
   AccountType,
   FeedbackType,
-  GoalStatus,
   NotificationType,
   ReminderOccurrenceStatus,
   ReminderRecurrenceUnit,
   TransactionType,
-} from './enums';
+} from "./enums";
 
-export type UserId = string & { readonly __brand: 'UserId' };
-export type AccountId = string & { readonly __brand: 'AccountId' };
-export type CategoryId = string & { readonly __brand: 'CategoryId' };
-export type TransactionId = string & { readonly __brand: 'TransactionId' };
-export type TransferId = string & { readonly __brand: 'TransferId' };
-export type FeedbackId = string & { readonly __brand: 'FeedbackId' };
-export type ReminderId = string & { readonly __brand: 'ReminderId' };
-export type GoalId = string & { readonly __brand: 'GoalId' };
-export type NotificationId = string & { readonly __brand: 'NotificationId' };
+export type UserId = string & { readonly __brand: "UserId" };
+export type AccountId = string & { readonly __brand: "AccountId" };
+export type CategoryId = string & { readonly __brand: "CategoryId" };
+export type TransactionId = string & { readonly __brand: "TransactionId" };
+export type TransferId = string & { readonly __brand: "TransferId" };
+export type FeedbackId = string & { readonly __brand: "FeedbackId" };
+export type ReminderId = string & { readonly __brand: "ReminderId" };
+export type NotificationId = string & { readonly __brand: "NotificationId" };
 
 export interface User {
   id: UserId;
@@ -121,29 +119,9 @@ export interface ReminderOccurrence {
   recurrence: ReminderRecurrence | null;
 }
 
-export interface Goal {
-  id: GoalId;
-  userId: UserId;
-  accountId: AccountId;
-  accountName: string;
-  currency: string;
-  name: string;
-  description: string | null;
-  targetAmount: number;
-  currentAmount: number;
-  targetDate: string | null;
-  icon: string | null;
-  color: string;
-  status: GoalStatus;
-  completedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface AppNotification {
   id: NotificationId;
   type: NotificationType;
-  goalId: GoalId | null;
   title: string;
   message: string;
   readAt: string | null;
