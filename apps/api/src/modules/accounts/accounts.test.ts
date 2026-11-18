@@ -58,6 +58,19 @@ describe('PATCH /api/accounts/:id', () => {
     expect(response.body.data.account.currency).toBe('USD');
   });
 
+  it('actualiza el tipo y la moneda de la cuenta', async () => {
+    const { agent } = await registerAndLogin(app);
+    const created = await agent.post('/api/accounts').send({ name: 'A', type: 'bank', currency: 'ARS' });
+    const id = created.body.data.account.id as string;
+
+    const response = await agent
+      .patch(`/api/accounts/${id}`)
+      .send({ type: 'savings', currency: 'USD' });
+    expect(response.status).toBe(200);
+    expect(response.body.data.account.type).toBe('savings');
+    expect(response.body.data.account.currency).toBe('USD');
+  });
+
   it('rechaza actualizar una cuenta de otro usuario', async () => {
     const userA = await registerAndLogin(app);
     const created = await userA.agent.post('/api/accounts').send({ name: 'A', type: 'bank', currency: 'ARS' });
@@ -80,5 +93,27 @@ describe('DELETE /api/accounts/:id', () => {
 
     const list = await agent.get('/api/accounts');
     expect(list.body.data.items).toHaveLength(0);
+  });
+
+  it('bloquea eliminar una cuenta con movimientos', async () => {
+    const { agent } = await registerAndLogin(app);
+    const created = await agent.post('/api/accounts').send({ name: 'A', type: 'bank', currency: 'ARS' });
+    const id = created.body.data.account.id as string;
+
+    const categories = await agent.get('/api/categories');
+    const incomeCategory = categories.body.data.items.find(
+      (category: { type: string }) => category.type === 'income',
+    );
+    await agent.post('/api/transactions').send({
+      accountId: id,
+      categoryId: incomeCategory.id,
+      type: 'income',
+      amount: 100,
+      date: new Date().toISOString().slice(0, 10),
+    });
+
+    const response = await agent.delete(`/api/accounts/${id}`);
+    expect(response.status).toBe(409);
+    expect(response.body.error.code).toBe('ACCOUNT_HAS_REFERENCES');
   });
 });

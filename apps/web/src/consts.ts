@@ -58,7 +58,6 @@ export const ENDPOINT_ROUTES = {
   TRANSACTIONS: "/api/transactions",
   REMINDERS: "/api/reminders",
   TRANSFERS: "/api/transfers",
-  NOTIFICATIONS: "/api/notifications",
   CATEGORIES: "/api/categories",
 };
 

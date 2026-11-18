@@ -1,7 +1,6 @@
 import type {
   AccountType,
   FeedbackType,
-  NotificationType,
   ReminderOccurrenceStatus,
   ReminderRecurrenceUnit,
   TransactionType,
@@ -14,7 +13,6 @@ export type TransactionId = string & { readonly __brand: "TransactionId" };
 export type TransferId = string & { readonly __brand: "TransferId" };
 export type FeedbackId = string & { readonly __brand: "FeedbackId" };
 export type ReminderId = string & { readonly __brand: "ReminderId" };
-export type NotificationId = string & { readonly __brand: "NotificationId" };
 
 export interface User {
   id: UserId;
@@ -117,15 +115,6 @@ export interface ReminderOccurrence {
   status: ReminderOccurrenceStatus;
   paidAt: string | null;
   recurrence: ReminderRecurrence | null;
-}
-
-export interface AppNotification {
-  id: NotificationId;
-  type: NotificationType;
-  title: string;
-  message: string;
-  readAt: string | null;
-  createdAt: string;
 }
 
 export interface DashboardSummary {

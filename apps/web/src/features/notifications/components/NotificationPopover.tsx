@@ -1,11 +1,8 @@
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Popover from "@mui/material/Popover";
-import { NotificationListResponse, ReminderNotificationsData } from "../types";
-import { UseQueryResult } from "@tanstack/react-query";
+import { ReminderNotificationsData } from "../types";
 import { SHADOW } from "@/theme/globalStyles";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import ReminderNotifications from "./ReminderNotifications";
 
 interface NotificationPopoverProps {
@@ -16,8 +13,6 @@ interface NotificationPopoverProps {
   reminderNotifications: ReminderNotificationsData;
   isLoading: boolean;
   onOccurrenceClick: (occurrenceDate: string) => void;
-  notificationsQuery: UseQueryResult<NotificationListResponse, Error>;
-  unreadCount: number;
   openCalendar: () => void;
 }
 
@@ -29,7 +24,6 @@ const NotificationPopover = ({
   reminderNotifications,
   isLoading,
   onOccurrenceClick,
-  notificationsQuery,
   openCalendar,
 }: NotificationPopoverProps) => {
   return (
@@ -56,39 +50,11 @@ const NotificationPopover = ({
           <CircularProgress size={24} />
         </Box>
       ) : (
-        <>
-          {notificationsQuery.isError && (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 2,
-                px: 2,
-                py: 2,
-              }}>
-              <Typography variant="body2" color="error">
-                No se pudieron cargar las notificaciones
-              </Typography>
-              <Button
-                size="small"
-                variant="outlined"
-                color="error"
-                onClick={() => void notificationsQuery.refetch()}>
-                Reintentar
-              </Button>
-            </Box>
-          )}
-
-          {notificationsQuery.isSuccess && (
-            <ReminderNotifications
-              reminderNotifications={reminderNotifications}
-              onOccurrenceClick={onOccurrenceClick}
-              openCalendar={openCalendar}
-            />
-          )}
-        </>
+        <ReminderNotifications
+          reminderNotifications={reminderNotifications}
+          onOccurrenceClick={onOccurrenceClick}
+          openCalendar={openCalendar}
+        />
       )}
     </Popover>
   );

@@ -2,8 +2,6 @@ import { pool } from "../database/pool";
 import { clearSentEmails } from "../shared/email/mailer";
 
 const TABLES = [
-  "notifications",
-  "goals",
   "reminder_occurrences",
   "reminders",
   "feedback",

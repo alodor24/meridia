@@ -17,8 +17,6 @@ export const NotificationsBell = () => {
     total,
     ariaLabel,
     setAnchorEl,
-    notificationsQuery,
-    unreadCount,
     openCalendar,
   } = useNotificationsBell();
 
@@ -49,8 +47,6 @@ export const NotificationsBell = () => {
         reminderNotifications={reminderNotifications}
         isLoading={isLoading}
         onOccurrenceClick={onOccurrenceClick}
-        notificationsQuery={notificationsQuery}
-        unreadCount={unreadCount}
         openCalendar={openCalendar}
       />
     </>

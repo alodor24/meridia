@@ -195,28 +195,6 @@ export const countTransfers = async (
   return Number(result.rows[0]?.count ?? 0);
 };
 
-export const countGoals = async (
-  db: Db,
-  accountId: AccountId,
-): Promise<number> => {
-  const result = await db.query<{ count: string }>(
-    'SELECT COUNT(*)::text AS count FROM goals WHERE account_id = $1',
-    [accountId],
-  );
-  return Number(result.rows[0]?.count ?? 0);
-};
-
-export const countActiveGoals = async (
-  db: Db,
-  accountId: AccountId,
-): Promise<number> => {
-  const result = await db.query<{ count: string }>(
-    "SELECT COUNT(*)::text AS count FROM goals WHERE account_id = $1 AND status = 'active'",
-    [accountId],
-  );
-  return Number(result.rows[0]?.count ?? 0);
-};
-
 export const remove = async (db: Db, userId: UserId, id: AccountId): Promise<boolean> => {
   const result = await db.query(
     'DELETE FROM accounts WHERE id = $1 AND user_id = $2',

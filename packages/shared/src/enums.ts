@@ -18,9 +18,6 @@ export const TRANSFERABLE_ACCOUNT_TYPES = [
   "savings",
 ] as const;
 
-export const NOTIFICATION_TYPES = ["goal_completed"] as const;
-export type NotificationType = (typeof NOTIFICATION_TYPES)[number];
-
 export const FEEDBACK_TYPES = [
   "suggestion",
   "comment",

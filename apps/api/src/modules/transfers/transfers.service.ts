@@ -1,14 +1,13 @@
-import type { AccountId, TransferId, UserId } from '@meridia/shared';
-import { pool, withTransaction } from '../../database/pool';
-import { NotFoundError } from '../../shared/errors';
-import * as accountsRepository from '../accounts/accounts.repository';
-import { syncGoalReservations } from '../goals/goals.reservations';
-import * as transfersRepository from './transfers.repository';
-import { createTransferWithinTransaction } from './transfers.operations';
+import type { AccountId, TransferId, UserId } from "@meridia/shared";
+import { pool, withTransaction } from "../../database/pool";
+import { NotFoundError } from "../../shared/errors";
+import * as accountsRepository from "../accounts/accounts.repository";
+import * as transfersRepository from "./transfers.repository";
+import { createTransferWithinTransaction } from "./transfers.operations";
 import type {
   CreateTransferInput,
   ListTransfersQuery,
-} from './transfers.schemas';
+} from "./transfers.schemas";
 
 export const listTransfers = async (
   userId: UserId,
@@ -29,14 +28,12 @@ export const createTransfer = async (
   userId: UserId,
   input: CreateTransferInput,
 ) => {
-  const fromAccountId = input.fromAccountId as AccountId;
-  const toAccountId = input.toAccountId as AccountId;
-
   const row = await withTransaction(async (client) => {
-    const created = await createTransferWithinTransaction(client, userId, input);
-
-    await syncGoalReservations(client, userId, fromAccountId);
-    await syncGoalReservations(client, userId, toAccountId);
+    const created = await createTransferWithinTransaction(
+      client,
+      userId,
+      input,
+    );
 
     return created;
   });
@@ -50,7 +47,7 @@ export const deleteTransfer = async (
 ): Promise<void> => {
   await withTransaction(async (client) => {
     const transfer = await transfersRepository.findById(client, userId, id);
-    if (!transfer) throw new NotFoundError('Transferencia no encontrada');
+    if (!transfer) throw new NotFoundError("Transferencia no encontrada");
 
     const fromAccountId = transfer.from_account_id as AccountId;
     const toAccountId = transfer.to_account_id as AccountId;
@@ -63,9 +60,6 @@ export const deleteTransfer = async (
     );
 
     const removed = await transfersRepository.remove(client, userId, id);
-    if (!removed) throw new NotFoundError('Transferencia no encontrada');
-
-    await syncGoalReservations(client, userId, fromAccountId);
-    await syncGoalReservations(client, userId, toAccountId);
+    if (!removed) throw new NotFoundError("Transferencia no encontrada");
   });
 };

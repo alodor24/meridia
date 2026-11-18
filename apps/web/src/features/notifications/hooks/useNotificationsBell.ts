@@ -1,25 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { useNotifications } from "./useNotifications";
 import { useReminderNotifications } from "@/features/calendar/hooks/useReminderNotifications";
 import { PATHS } from "@/consts";
 import { pluralize } from "../utils/helper";
-import { NOTIFICATION_LIST_LIMIT } from "@/features/calendar/types";
 
 const useNotificationsBell = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const reminderNotifications = useReminderNotifications();
-  const notificationsQuery = useNotifications({
-    limit: NOTIFICATION_LIST_LIMIT,
-  });
 
   const open = Boolean(anchorEl);
   const closePopover = () => setAnchorEl(null);
 
-  const unreadCount = notificationsQuery.data?.unreadCount ?? 0;
-  const total = unreadCount + reminderNotifications.total;
+  const total = reminderNotifications.total;
 
   const openOccurrence = (date: string) => {
     closePopover();
@@ -49,8 +43,6 @@ const useNotificationsBell = () => {
     ariaLabel,
     openCalendar,
     setAnchorEl,
-    notificationsQuery,
-    unreadCount,
   };
 };
 

@@ -42,7 +42,7 @@ describe("FeedbackForm", () => {
     });
 
     expect(useUiStore.getState().snackbar.message).toBe(
-      "¡Gracias! Recibimos tu mensaje.",
+      "¡Gracias! Tu mensaje ha sido enviado.",
     );
     await waitFor(() => {
       expect(screen.getByLabelText("Asunto")).toHaveValue("");
