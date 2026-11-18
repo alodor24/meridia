@@ -25,6 +25,29 @@ export const createAccount = async (userId: UserId, input: CreateAccountInput) =
 };
 
 export const updateAccount = async (userId: UserId, id: AccountId, input: UpdateAccountInput) => {
+  const existing = await accountsRepository.findById(pool, userId, id);
+  if (!existing) throw new NotFoundError('Cuenta no encontrada');
+
+  if (input.type !== undefined && input.type !== existing.type) {
+    const activeGoals = await accountsRepository.countActiveGoals(pool, id);
+    if (activeGoals > 0) {
+      throw new ConflictError(
+        'La cuenta tiene metas activas. Elimínalas antes de cambiar el tipo de cuenta.',
+        'ACCOUNT_HAS_ACTIVE_GOAL',
+      );
+    }
+  }
+
+  if (input.currency !== undefined && input.currency !== existing.currency) {
+    const goals = await accountsRepository.countGoals(pool, id);
+    if (goals > 0) {
+      throw new ConflictError(
+        'La cuenta tiene metas asociadas. Elimínalas antes de cambiar la moneda.',
+        'ACCOUNT_HAS_GOALS',
+      );
+    }
+  }
+
   const row = await accountsRepository.update(pool, userId, id, input);
   if (!row) throw new NotFoundError('Cuenta no encontrada');
   return accountsRepository.mapAccountRow(row);
@@ -34,10 +57,17 @@ export const deleteAccount = async (userId: UserId, id: AccountId): Promise<void
   const row = await accountsRepository.findById(pool, userId, id);
   if (!row) throw new NotFoundError('Cuenta no encontrada');
 
-  const [transactionCount, transferCount] = await Promise.all([
+  const [transactionCount, transferCount, goalCount] = await Promise.all([
     accountsRepository.countTransactions(pool, id),
     accountsRepository.countTransfers(pool, id),
+    accountsRepository.countGoals(pool, id),
   ]);
+  if (goalCount > 0) {
+    throw new ConflictError(
+      'La cuenta tiene metas asociadas. Elimínalas primero.',
+      'ACCOUNT_HAS_GOALS',
+    );
+  }
   if (transactionCount > 0 || transferCount > 0) {
     throw new ConflictError(
       'La cuenta tiene movimientos o transferencias asociadas. Elimínalos primero.',

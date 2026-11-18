@@ -142,17 +142,31 @@ describe('POST /api/transfers', () => {
     expect(response.body.error.message).toContain('misma moneda');
   });
 
-  it('rechaza cuentas que no son efectivo, banco o billetera', async () => {
+  it('permite transferir a una cuenta de ahorro', async () => {
     const { agent, sourceId, destinationId } = await setupAccounts(app, {
       type: 'savings',
     });
 
     const response = await createTransfer(agent, sourceId, destinationId);
 
-    expect(response.status).toBe(400);
-    expect(response.body.error.message).toContain(
-      'efectivo, banco o billetera',
+    expect(response.status).toBe(201);
+
+    const accounts = await agent.get('/api/accounts');
+    const destination = accounts.body.data.items.find(
+      (account: { id: string }) => account.id === destinationId,
     );
+    expect(destination.balance).toBe(250);
+  });
+
+  it('rechaza cuentas que no son efectivo, banco, billetera o ahorro', async () => {
+    const { agent, sourceId, destinationId } = await setupAccounts(app, {
+      type: 'credit_card',
+    });
+
+    const response = await createTransfer(agent, sourceId, destinationId);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error.message).toContain('ahorro');
   });
 
   it('rechaza saldo insuficiente', async () => {

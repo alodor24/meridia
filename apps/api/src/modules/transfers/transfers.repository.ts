@@ -74,6 +74,22 @@ export const count = async (db: Db, userId: UserId): Promise<number> => {
   return Number(result.rows[0]?.count ?? 0);
 };
 
+export const findById = async (
+  db: Db,
+  userId: UserId,
+  id: TransferId,
+): Promise<TransferRow | undefined> => {
+  const result = await db.query<TransferRow>(
+    `SELECT ${TRANSFER_COLUMNS}
+     FROM account_transfers tr
+     JOIN accounts src ON src.id = tr.from_account_id
+     JOIN accounts dst ON dst.id = tr.to_account_id
+     WHERE tr.id = $1 AND tr.user_id = $2`,
+    [id, userId],
+  );
+  return result.rows[0];
+};
+
 export const create = async (
   db: Db,
   userId: UserId,

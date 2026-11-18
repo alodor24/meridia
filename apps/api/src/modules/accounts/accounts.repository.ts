@@ -24,7 +24,7 @@ export interface UpdateAccountInput {
   currency?: string;
 }
 
-const BALANCE_SELECT = `
+export const BALANCE_EXPRESSION = `
   (
     COALESCE((
       SELECT SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END)::float8
@@ -41,8 +41,10 @@ const BALANCE_SELECT = `
       FROM account_transfers tr
       WHERE tr.from_account_id = a.id
     ), 0)
-  ) AS balance
+  )
 `;
+
+const BALANCE_SELECT = `${BALANCE_EXPRESSION} AS balance`;
 
 export const mapAccountRow = (row: AccountRow): Account => ({
   id: row.id as AccountId,
@@ -93,6 +95,21 @@ export const findByIds = async (
     [userId, firstId, secondId],
   );
   return result.rows;
+};
+
+export const lockById = async (
+  db: Db,
+  userId: UserId,
+  id: AccountId,
+): Promise<AccountRow | undefined> => {
+  const result = await db.query<AccountRow>(
+    `SELECT a.*, ${BALANCE_SELECT}
+     FROM accounts a
+     WHERE a.id = $1 AND a.user_id = $2
+     FOR UPDATE OF a`,
+    [id, userId],
+  );
+  return result.rows[0];
 };
 
 export const lockByIds = async (
@@ -173,6 +190,28 @@ export const countTransfers = async (
     `SELECT COUNT(*)::text AS count
      FROM account_transfers
      WHERE from_account_id = $1 OR to_account_id = $1`,
+    [accountId],
+  );
+  return Number(result.rows[0]?.count ?? 0);
+};
+
+export const countGoals = async (
+  db: Db,
+  accountId: AccountId,
+): Promise<number> => {
+  const result = await db.query<{ count: string }>(
+    'SELECT COUNT(*)::text AS count FROM goals WHERE account_id = $1',
+    [accountId],
+  );
+  return Number(result.rows[0]?.count ?? 0);
+};
+
+export const countActiveGoals = async (
+  db: Db,
+  accountId: AccountId,
+): Promise<number> => {
+  const result = await db.query<{ count: string }>(
+    "SELECT COUNT(*)::text AS count FROM goals WHERE account_id = $1 AND status = 'active'",
     [accountId],
   );
   return Number(result.rows[0]?.count ?? 0);
