@@ -1,7 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { accountKeys } from "@/features/accounts/accountKeys";
 import { dashboardKeys } from "@/features/dashboard/dashboardKeys";
-import { goalKeys } from "@/features/goals/goalKeys";
 import { notificationKeys } from "@/features/notifications/notificationKeys";
 import { transactionKeys } from "@/features/transactions/transactionKeys";
 import { analyticsKeys } from "@/features/analytics/analyticsKeys";
@@ -18,10 +17,6 @@ export const invalidateTransactionQueries = (queryClient: QueryClient) => {
 
     queryClient.invalidateQueries({
       queryKey: dashboardKeys.all,
-    }),
-
-    queryClient.invalidateQueries({
-      queryKey: goalKeys.all,
     }),
 
     queryClient.invalidateQueries({

@@ -25,7 +25,6 @@ import { Route as AppCalendarRouteImport } from './routes/app/calendar'
 import { Route as AppCategoriesRouteImport } from './routes/app/categories'
 import { Route as AppDashboardRouteImport } from './routes/app/dashboard'
 import { Route as AppFeedbackRouteImport } from './routes/app/feedback'
-import { Route as AppGoalsRouteImport } from './routes/app/goals'
 import { Route as AppProfileRouteImport } from './routes/app/profile'
 import { Route as AppReportsRouteImport } from './routes/app/reports'
 import { Route as AppTransactionsRouteImport } from './routes/app/transactions'
@@ -109,11 +108,6 @@ const AppFeedbackRoute = AppFeedbackRouteImport.update({
   path: '/feedback',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AppGoalsRoute = AppGoalsRouteImport.update({
-  id: '/goals',
-  path: '/goals',
-  getParentRoute: () => AppRouteRoute,
-} as any)
 const AppProfileRoute = AppProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -144,7 +138,6 @@ export interface FileRoutesByFullPath {
   '/app/categories': typeof AppCategoriesRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/feedback': typeof AppFeedbackRoute
-  '/app/goals': typeof AppGoalsRoute
   '/app/profile': typeof AppProfileRoute
   '/app/reports': typeof AppReportsRoute
   '/app/transactions': typeof AppTransactionsRoute
@@ -164,7 +157,6 @@ export interface FileRoutesByTo {
   '/app/categories': typeof AppCategoriesRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/feedback': typeof AppFeedbackRoute
-  '/app/goals': typeof AppGoalsRoute
   '/app/profile': typeof AppProfileRoute
   '/app/reports': typeof AppReportsRoute
   '/app/transactions': typeof AppTransactionsRoute
@@ -187,7 +179,6 @@ export interface FileRoutesById {
   '/app/categories': typeof AppCategoriesRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/feedback': typeof AppFeedbackRoute
-  '/app/goals': typeof AppGoalsRoute
   '/app/profile': typeof AppProfileRoute
   '/app/reports': typeof AppReportsRoute
   '/app/transactions': typeof AppTransactionsRoute
@@ -210,7 +201,6 @@ export interface FileRouteTypes {
     | '/app/categories'
     | '/app/dashboard'
     | '/app/feedback'
-    | '/app/goals'
     | '/app/profile'
     | '/app/reports'
     | '/app/transactions'
@@ -230,7 +220,6 @@ export interface FileRouteTypes {
     | '/app/categories'
     | '/app/dashboard'
     | '/app/feedback'
-    | '/app/goals'
     | '/app/profile'
     | '/app/reports'
     | '/app/transactions'
@@ -252,7 +241,6 @@ export interface FileRouteTypes {
     | '/app/categories'
     | '/app/dashboard'
     | '/app/feedback'
-    | '/app/goals'
     | '/app/profile'
     | '/app/reports'
     | '/app/transactions'
@@ -379,13 +367,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFeedbackRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/app/goals': {
-      id: '/app/goals'
-      path: '/goals'
-      fullPath: '/app/goals'
-      preLoaderRoute: typeof AppGoalsRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
     '/app/profile': {
       id: '/app/profile'
       path: '/profile'
@@ -440,7 +421,6 @@ interface AppRouteRouteChildren {
   AppCategoriesRoute: typeof AppCategoriesRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppFeedbackRoute: typeof AppFeedbackRoute
-  AppGoalsRoute: typeof AppGoalsRoute
   AppProfileRoute: typeof AppProfileRoute
   AppReportsRoute: typeof AppReportsRoute
   AppTransactionsRoute: typeof AppTransactionsRoute
@@ -455,7 +435,6 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppCategoriesRoute: AppCategoriesRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppFeedbackRoute: AppFeedbackRoute,
-  AppGoalsRoute: AppGoalsRoute,
   AppProfileRoute: AppProfileRoute,
   AppReportsRoute: AppReportsRoute,
   AppTransactionsRoute: AppTransactionsRoute,
