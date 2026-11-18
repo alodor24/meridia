@@ -99,41 +99,52 @@ const CardProfile = ({ user }: CardProfileProps) => {
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             alignItems: { md: "center" },
-            gap: { xs: 1, md: 9 },
+            gap: { xs: 2, md: 9 },
           }}>
           {USER_INFO.map((item, index) => {
             const Icon = item.icon;
 
             return (
-              <>
-                <Box key={index}>
-                  <Stack
-                    direction="row"
-                    spacing={1.5}
-                    sx={{ alignItems: "flex-start" }}>
-                    <Avatar
-                      sx={{
-                        width: 36,
-                        height: 36,
-                        bgcolor: "background.default",
-                      }}>
-                      <Icon color="primary" fontSize="small" />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                        {item.label}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {item.value} {item.extra}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </Box>
+              <Box
+                key={item.label}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: { xs: 0, md: 9 },
+                }}>
+                <Stack
+                  direction="row"
+                  spacing={1.5}
+                  sx={{ alignItems: "flex-start" }}>
+                  <Avatar
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      bgcolor: "background.default",
+                    }}>
+                    <Icon color="primary" fontSize="small" />
+                  </Avatar>
 
-                {index < USER_INFO.length - 1 && (
-                  <Divider orientation="vertical" variant="middle" flexItem />
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                      {item.label}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {item.value} {item.extra}
+                    </Typography>
+                  </Box>
+                </Stack>
+
+                {index !== USER_INFO.length - 1 && (
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{
+                      display: { xs: "none", md: "block" },
+                    }}
+                  />
                 )}
-              </>
+              </Box>
             );
           })}
         </Box>
