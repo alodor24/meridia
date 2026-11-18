@@ -4,7 +4,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { EventCalendar } from "@mui/x-scheduler/event-calendar";
 import { esES } from "@mui/x-scheduler/locales";
 import { format } from "date-fns";
-import { es } from "date-fns/locale";
 import type { ReminderOccurrence } from "@meridia/shared";
 import type { SchedulerView } from "../types";
 import { SCHEDULER_VIEWS } from "../types";
@@ -13,13 +12,14 @@ import {
   schedulerEventId,
   toSchedulerEvents,
 } from "../utils/schedulerEvents";
+import { esCapitalized } from "@/utils/esCapitalized";
 
 const localeText = {
   ...esES.components.MuiEventCalendar.defaultProps.localeText,
   calendarContentAriaLabel: "Calendario de recordatorios",
 };
 
-export interface ReminderSchedulerProps {
+interface ReminderSchedulerProps {
   occurrences: ReminderOccurrence[];
   view: SchedulerView;
   visibleDate: Date;
@@ -31,7 +31,7 @@ export interface ReminderSchedulerProps {
   onCreateAt: (date: string) => void;
 }
 
-export const ReminderScheduler = ({
+const ReminderScheduler = ({
   occurrences,
   view,
   visibleDate,
@@ -88,7 +88,7 @@ export const ReminderScheduler = ({
         view={view}
         views={[...SCHEDULER_VIEWS]}
         visibleDate={visibleDate}
-        dateLocale={es}
+        dateLocale={esCapitalized}
         localeText={localeText}
         defaultView="month"
         defaultPreferences={{
@@ -132,3 +132,5 @@ export const ReminderScheduler = ({
     </Box>
   );
 };
+
+export default ReminderScheduler;

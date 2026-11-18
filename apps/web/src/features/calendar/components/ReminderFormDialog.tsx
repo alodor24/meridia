@@ -4,6 +4,9 @@ import type { ReminderOccurrence } from "@meridia/shared";
 import { useCreateReminder } from "../hooks/useCreateReminder";
 import { useUpdateReminder } from "../hooks/useUpdateReminder";
 import ReminderForm from "./ReminderForm";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import EventIcon from "@mui/icons-material/Event";
 
 export interface ReminderFormDialogProps {
   open: boolean;
@@ -30,9 +33,21 @@ export const ReminderFormDialog = ({
       onClose={isPending ? undefined : onClose}
       maxWidth="xs"
       fullWidth>
-      <DialogTitle>
-        {occurrence ? "Editar recordatorio" : "Nuevo recordatorio"}
-      </DialogTitle>
+      <Stack direction="row" sx={{ alignItems: "center", px: 3, pt: 2 }}>
+        <Avatar
+          sx={{
+            width: 48,
+            height: 48,
+            bgcolor: "secondary.main",
+            color: "primary.contrastText",
+          }}>
+          <EventIcon />
+        </Avatar>
+        <DialogTitle>
+          {occurrence ? "Editar recordatorio" : "Nuevo recordatorio"}
+        </DialogTitle>
+      </Stack>
+
       <ReminderForm
         occurrence={occurrence}
         defaultDate={defaultDate}

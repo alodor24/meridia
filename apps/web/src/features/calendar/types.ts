@@ -48,3 +48,10 @@ export interface ReminderNotificationSummary {
   todayCount: number;
   upcomingCount: number;
 }
+
+export type DeleteScope = "occurrence" | "series";
+
+export interface DeletingReminder {
+  occurrence: ReminderOccurrence;
+  scope: DeleteScope;
+}

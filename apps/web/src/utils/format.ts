@@ -1,5 +1,12 @@
 import { es } from "date-fns/locale";
-import { format as dateFnsFormat, isValid, parse, parseISO, subMonths } from "date-fns";
+import {
+  format as dateFnsFormat,
+  isValid,
+  parse,
+  parseISO,
+  subMonths,
+} from "date-fns";
+import { esCapitalized } from "./esCapitalized";
 
 export const getCurrencySymbol = (currency: string): string => {
   const code = currency.toUpperCase();
@@ -31,7 +38,7 @@ export const formatDate = (
 ): string => {
   const parsed = typeof date === "string" ? parseISO(date) : date;
   if (!isValid(parsed)) return "";
-  return dateFnsFormat(parsed, pattern, { locale: es });
+  return dateFnsFormat(parsed, pattern, { locale: esCapitalized });
 };
 
 export const formatMonth = (date: Date): string =>
@@ -54,16 +61,23 @@ export const formatAmountWithSign = (
   return type === "income" ? `+ ${formatted}` : `- ${formatted}`;
 };
 
-export const getPreviousMonthRange = (anchor: Date): { from: string; to: string } => {
+export const getPreviousMonthRange = (
+  anchor: Date,
+): { from: string; to: string } => {
   const prev = subMonths(anchor, 1);
   const first = new Date(prev.getFullYear(), prev.getMonth(), 1);
   const last = new Date(prev.getFullYear(), prev.getMonth() + 1, 0);
-  return { from: dateFnsFormat(first, "yyyy-MM-dd"), to: dateFnsFormat(last, "yyyy-MM-dd") };
+  return {
+    from: dateFnsFormat(first, "yyyy-MM-dd"),
+    to: dateFnsFormat(last, "yyyy-MM-dd"),
+  };
 };
 
 export const getPreviousMonth = (currentMonth: string): string => {
-  const date = parse(currentMonth, 'MMMM yyyy', new Date(), { locale: es });
+  const date = parse(currentMonth, "MMMM yyyy", new Date(), { locale: es });
   const prev = subMonths(date, 1);
-  const prevMonthFormatted = dateFnsFormat(prev, 'MMM yyyy', { locale: es });
-  return prevMonthFormatted.charAt(0).toUpperCase() + prevMonthFormatted.slice(1)
-}
+  const prevMonthFormatted = dateFnsFormat(prev, "MMM yyyy", { locale: es });
+  return (
+    prevMonthFormatted.charAt(0).toUpperCase() + prevMonthFormatted.slice(1)
+  );
+};

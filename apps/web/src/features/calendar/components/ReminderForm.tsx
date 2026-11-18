@@ -112,7 +112,6 @@ export const ReminderForm = ({
                 name="title"
                 label="Título"
                 placeholder="Ej: Alquiler"
-                autoFocus
               />
 
               <DesktopDatePicker
