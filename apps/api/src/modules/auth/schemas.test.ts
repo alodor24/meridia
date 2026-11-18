@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { registerSchema, updateProfileSchema } from './auth.schemas';
+import {
+  forgotPasswordSchema,
+  registerSchema,
+  resetPasswordSchema,
+  updateProfileSchema,
+} from './auth.schemas';
 import { createAccountSchema, updateAccountSchema } from '../accounts/accounts.schemas';
 import {
   createTransactionSchema,
@@ -14,7 +19,7 @@ describe('registerSchema', () => {
     const result = registerSchema.safeParse({
       name: '  Ana  ',
       email: '  Ana@TEST.com ',
-      password: 'Segura123',
+      password: 'Meridia2026!Segura',
       country: 'ar',
       currency: 'ars',
     });
@@ -32,22 +37,101 @@ describe('registerSchema', () => {
     const result = registerSchema.safeParse({
       name: 'Ana',
       email: 'ana@test.com',
-      password: 'Segura123',
+      password: 'Meridia2026!Segura',
       country: 'XX',
       currency: 'ARS',
     });
     expect(result.success).toBe(false);
   });
 
-  it('rechaza contraseña de menos de 8 caracteres', () => {
+  it('acepta una contraseña fuerte', () => {
     const result = registerSchema.safeParse({
       name: 'Ana',
       email: 'ana@test.com',
-      password: 'corta',
+      password: 'Meridia2026!Segura',
       country: 'AR',
       currency: 'ARS',
     });
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
+  });
+
+  it('rechaza contraseñas que no cumplen la política', () => {
+    const base = {
+      name: 'Ana',
+      email: 'ana@test.com',
+      country: 'AR',
+      currency: 'ARS',
+    };
+    const invalidPasswords = [
+      'corta',
+      'Meridia2026',
+      'meridia2026!segura',
+      'MERIDIA2026!SEGURA',
+      'Meridia!Segura',
+      'Meridia2026Segura',
+      'Meridia1!    ',
+      'Meridia2026!Segura'.repeat(4),
+    ];
+
+    for (const password of invalidPasswords) {
+      const result = registerSchema.safeParse({ ...base, password });
+      expect(result.success, password).toBe(false);
+    }
+  });
+});
+
+describe('forgotPasswordSchema', () => {
+  it('normaliza el email a minúsculas', () => {
+    const result = forgotPasswordSchema.safeParse({
+      email: '  Ana@TEST.com ',
+    });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.email).toBe('ana@test.com');
+    }
+  });
+
+  it('rechaza un email inválido', () => {
+    expect(
+      forgotPasswordSchema.safeParse({ email: 'no-es-email' }).success,
+    ).toBe(false);
+  });
+});
+
+describe('resetPasswordSchema', () => {
+  const token = 'token-de-restablecimiento-suficientemente-largo';
+
+  it('acepta token y contraseña fuerte', () => {
+    expect(
+      resetPasswordSchema.safeParse({
+        token,
+        password: 'Meridia2026!Segura',
+      }).success,
+    ).toBe(true);
+  });
+
+  it('rechaza token corto y contraseñas débiles', () => {
+    expect(
+      resetPasswordSchema.safeParse({
+        token: 'corto',
+        password: 'Meridia2026!Segura',
+      }).success,
+    ).toBe(false);
+
+    for (const password of [
+      'Meridia2026',
+      'meridia2026!segura',
+      'MERIDIA2026!SEGURA',
+      'Meridia!Segura',
+      'Meridia2026Segura',
+      'Meridia1!    ',
+    ]) {
+      expect(
+        resetPasswordSchema.safeParse({ token, password }).success,
+        password,
+      ).toBe(false);
+    }
   });
 });
 

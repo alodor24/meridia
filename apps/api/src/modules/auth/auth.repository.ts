@@ -22,6 +22,36 @@ export interface CreateRefreshTokenInput {
   expiresAt: Date;
 }
 
+export interface EmailVerificationTokenRow {
+  id: string;
+  user_id: string;
+  token_hash: string;
+  expires_at: Date;
+  used_at: Date | null;
+  created_at: Date;
+}
+
+export interface CreateEmailVerificationTokenInput {
+  userId: UserId;
+  tokenHash: string;
+  expiresAt: Date;
+}
+
+export interface PasswordResetTokenRow {
+  id: string;
+  user_id: string;
+  token_hash: string;
+  expires_at: Date;
+  used_at: Date | null;
+  created_at: Date;
+}
+
+export interface CreatePasswordResetTokenInput {
+  userId: UserId;
+  tokenHash: string;
+  expiresAt: Date;
+}
+
 export const createRefreshToken = async (
   db: Db,
   input: CreateRefreshTokenInput,
@@ -54,11 +84,13 @@ export const findValidRefreshToken = async (
     currency: string;
     avatar: string | null;
     avatar_public_id: string | null;
+    email_verified_at: Date | null;
     user_created_at: Date;
     user_updated_at: Date;
   }>(
     `SELECT rt.id AS refresh_token_id, rt.user_id, rt.token_hash, rt.expires_at, rt.revoked_at, rt.created_at,
             u.id, u.email, u.password_hash, u.name, u.country, u.currency, u.avatar, u.avatar_public_id,
+            u.email_verified_at,
             u.created_at AS user_created_at, u.updated_at AS user_updated_at
      FROM refresh_tokens rt
      JOIN users u ON u.id = rt.user_id
@@ -87,6 +119,7 @@ export const findValidRefreshToken = async (
       currency: row.currency,
       avatar: row.avatar,
       avatar_public_id: row.avatar_public_id,
+      email_verified_at: row.email_verified_at,
       created_at: row.user_created_at,
       updated_at: row.user_updated_at,
     },
@@ -149,6 +182,135 @@ export const deleteExpiredRefreshTokensByUser = async (
     `,
     [userId],
   );
+};
+
+export const revokeAllRefreshTokensByUser = async (
+  db: Db,
+  userId: UserId,
+): Promise<void> => {
+  await db.query(
+    `UPDATE refresh_tokens
+     SET revoked_at = now()
+     WHERE user_id = $1
+       AND revoked_at IS NULL`,
+    [userId],
+  );
+};
+
+export const createEmailVerificationToken = async (
+  db: Db,
+  input: CreateEmailVerificationTokenInput,
+): Promise<EmailVerificationTokenRow> => {
+  const result = await db.query<EmailVerificationTokenRow>(
+    `INSERT INTO email_verification_tokens (user_id, token_hash, expires_at)
+     VALUES ($1, $2, $3)
+     RETURNING *`,
+    [input.userId, input.tokenHash, input.expiresAt],
+  );
+  return result.rows[0]!;
+};
+
+export const deleteUnusedEmailVerificationTokens = async (
+  db: Db,
+  userId: UserId,
+): Promise<void> => {
+  await db.query(
+    `DELETE FROM email_verification_tokens
+     WHERE user_id = $1
+       AND used_at IS NULL`,
+    [userId],
+  );
+};
+
+export const findLatestEmailVerificationToken = async (
+  db: Db,
+  userId: UserId,
+): Promise<EmailVerificationTokenRow | undefined> => {
+  const result = await db.query<EmailVerificationTokenRow>(
+    `SELECT *
+     FROM email_verification_tokens
+     WHERE user_id = $1
+     ORDER BY created_at DESC
+     LIMIT 1`,
+    [userId],
+  );
+  return result.rows[0];
+};
+
+export const consumeEmailVerificationToken = async (
+  db: Db,
+  tokenHash: string,
+): Promise<UserId | undefined> => {
+  const result = await db.query<{ user_id: string }>(
+    `UPDATE email_verification_tokens
+     SET used_at = now()
+     WHERE token_hash = $1
+       AND used_at IS NULL
+       AND expires_at > now()
+     RETURNING user_id`,
+    [tokenHash],
+  );
+
+  const row = result.rows[0];
+  return row ? (row.user_id as UserId) : undefined;
+};
+
+export const createPasswordResetToken = async (
+  db: Db,
+  input: CreatePasswordResetTokenInput,
+): Promise<PasswordResetTokenRow> => {
+  const result = await db.query<PasswordResetTokenRow>(
+    `INSERT INTO password_reset_tokens (user_id, token_hash, expires_at)
+     VALUES ($1, $2, $3)
+     RETURNING *`,
+    [input.userId, input.tokenHash, input.expiresAt],
+  );
+  return result.rows[0]!;
+};
+
+export const deleteUnusedPasswordResetTokens = async (
+  db: Db,
+  userId: UserId,
+): Promise<void> => {
+  await db.query(
+    `DELETE FROM password_reset_tokens
+     WHERE user_id = $1
+       AND used_at IS NULL`,
+    [userId],
+  );
+};
+
+export const findLatestPasswordResetToken = async (
+  db: Db,
+  userId: UserId,
+): Promise<PasswordResetTokenRow | undefined> => {
+  const result = await db.query<PasswordResetTokenRow>(
+    `SELECT *
+     FROM password_reset_tokens
+     WHERE user_id = $1
+     ORDER BY created_at DESC
+     LIMIT 1`,
+    [userId],
+  );
+  return result.rows[0];
+};
+
+export const consumePasswordResetToken = async (
+  db: Db,
+  tokenHash: string,
+): Promise<UserId | undefined> => {
+  const result = await db.query<{ user_id: string }>(
+    `UPDATE password_reset_tokens
+     SET used_at = now()
+     WHERE token_hash = $1
+       AND used_at IS NULL
+       AND expires_at > now()
+     RETURNING user_id`,
+    [tokenHash],
+  );
+
+  const row = result.rows[0];
+  return row ? (row.user_id as UserId) : undefined;
 };
 
 const DEFAULT_CATEGORIES: Array<{ name: string; type: 'income' | 'expense'; color: string; icon?: string }> = [

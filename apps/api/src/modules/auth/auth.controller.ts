@@ -7,10 +7,36 @@ import { isAppError } from '../../shared/errors';
 import * as authService from './auth.service';
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
-  const { user, accessToken, refreshToken } = await authService.register(req.body);
-  setRefreshCookie(res, refreshToken);
-  sendSuccess(res, { user, accessToken }, 201);
+  const result = await authService.register(req.body);
+  sendSuccess(res, result, 201);
 });
+
+export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
+  const result = await authService.verifyEmail(req.body);
+  sendSuccess(res, result);
+});
+
+export const resendVerification = asyncHandler(
+  async (req: Request, res: Response) => {
+    await authService.resendVerification(req.body);
+    sendSuccess(res, { message: authService.GENERIC_RESEND_MESSAGE });
+  },
+);
+
+export const forgotPassword = asyncHandler(
+  async (req: Request, res: Response) => {
+    await authService.forgotPassword(req.body);
+    sendSuccess(res, { message: authService.GENERIC_FORGOT_PASSWORD_MESSAGE });
+  },
+);
+
+export const resetPassword = asyncHandler(
+  async (req: Request, res: Response) => {
+    await authService.resetPassword(req.body);
+    clearRefreshCookie(res);
+    sendSuccess(res, { reset: true });
+  },
+);
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const { user, accessToken, refreshToken } = await authService.login(req.body);

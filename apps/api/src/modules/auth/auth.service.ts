@@ -3,17 +3,63 @@ import jwt from 'jsonwebtoken';
 import { env } from '../../config/env';
 import { pool, withTransaction } from '../../database/pool';
 import type { Db } from '../../database/types';
-import { AuthenticationError, ConflictError, NotFoundError, ValidationError } from '../../shared/errors';
+import {
+  AuthenticationError,
+  ConflictError,
+  EmailNotVerifiedError,
+  InvalidPasswordResetTokenError,
+  InvalidVerificationTokenError,
+  NotFoundError,
+  ValidationError,
+} from '../../shared/errors';
+import {
+  sendPasswordResetEmail,
+  sendVerificationEmail,
+} from '../../shared/email/mailer';
+import {
+  generateEmailVerificationToken,
+  generatePasswordResetToken,
+  generateRefreshToken,
+  hashEmailVerificationToken,
+  hashPasswordResetToken,
+  hashRefreshToken,
+} from '../../shared/utils/tokens';
 import { expiresInToMs } from '../../shared/utils/time';
-import { generateRefreshToken, hashRefreshToken } from '../../shared/utils/tokens';
 import * as authRepository from './auth.repository';
 import * as usersRepository from '../users/users.repository';
 import { deleteCloudinaryAsset } from '../users/cloudinary';
 import type { TokenPair } from './auth.types';
-import type { LoginInput, RegisterInput, UpdateProfileInput } from './auth.schemas';
+import type {
+  ForgotPasswordInput,
+  LoginInput,
+  RegisterInput,
+  ResendVerificationInput,
+  ResetPasswordInput,
+  UpdateProfileInput,
+  VerifyEmailInput,
+} from './auth.schemas';
 import type { UserId } from '@meridia/shared';
 
 const BCRYPT_ROUNDS = 10;
+const EMAIL_VERIFICATION_TTL_MS =
+  env.EMAIL_VERIFICATION_TTL_HOURS * 60 * 60 * 1000;
+const VERIFICATION_RESEND_COOLDOWN_MS =
+  env.VERIFICATION_RESEND_COOLDOWN_SECONDS * 1000;
+const PASSWORD_RESET_TTL_MS = env.PASSWORD_RESET_TTL_MINUTES * 60 * 1000;
+const PASSWORD_RESET_COOLDOWN_MS =
+  env.PASSWORD_RESET_COOLDOWN_SECONDS * 1000;
+
+export const GENERIC_RESEND_MESSAGE =
+  'Si el email está registrado y aún no fue verificado, te enviamos un nuevo enlace.';
+
+export const GENERIC_FORGOT_PASSWORD_MESSAGE =
+  'Si el email está registrado, recibirás un enlace para restablecer tu contraseña.';
+
+interface EmailRecipient {
+  id: UserId;
+  email: string;
+  name: string;
+}
 
 const signAccessToken = (userId: UserId, email: string): string =>
   jwt.sign(
@@ -24,7 +70,7 @@ const signAccessToken = (userId: UserId, email: string): string =>
 
 const issueTokenPair = async (db: Db, userId: UserId, email: string): Promise<TokenPair> => {
   await authRepository.deleteExpiredRefreshTokensByUser(db, userId);
-  
+
   const accessToken = signAccessToken(userId, email);
   const refreshToken = generateRefreshToken();
 
@@ -34,6 +80,72 @@ const issueTokenPair = async (db: Db, userId: UserId, email: string): Promise<To
     expiresAt: new Date(Date.now() + expiresInToMs(env.JWT_REFRESH_EXPIRES_IN)),
   });
   return { accessToken, refreshToken };
+};
+
+const buildVerificationUrl = (token: string): string => {
+  const url = new URL('/verify-email', env.WEB_APP_URL);
+  url.searchParams.set('token', token);
+  return url.toString();
+};
+
+const createVerificationToken = async (
+  db: Db,
+  user: EmailRecipient,
+): Promise<string> => {
+  const token = generateEmailVerificationToken();
+
+  await authRepository.createEmailVerificationToken(db, {
+    userId: user.id,
+    tokenHash: hashEmailVerificationToken(token),
+    expiresAt: new Date(Date.now() + EMAIL_VERIFICATION_TTL_MS),
+  });
+
+  return token;
+};
+
+const sendVerification = async (
+  user: EmailRecipient,
+  token: string,
+): Promise<void> => {
+  await sendVerificationEmail({
+    to: user.email,
+    name: user.name,
+    url: buildVerificationUrl(token),
+    expiresInHours: env.EMAIL_VERIFICATION_TTL_HOURS,
+  });
+};
+
+const buildPasswordResetUrl = (token: string): string => {
+  const url = new URL('/reset-password', env.WEB_APP_URL);
+  url.searchParams.set('token', token);
+  return url.toString();
+};
+
+const createPasswordResetToken = async (
+  db: Db,
+  user: EmailRecipient,
+): Promise<string> => {
+  const token = generatePasswordResetToken();
+
+  await authRepository.createPasswordResetToken(db, {
+    userId: user.id,
+    tokenHash: hashPasswordResetToken(token),
+    expiresAt: new Date(Date.now() + PASSWORD_RESET_TTL_MS),
+  });
+
+  return token;
+};
+
+const sendPasswordReset = async (
+  user: EmailRecipient,
+  token: string,
+): Promise<void> => {
+  await sendPasswordResetEmail({
+    to: user.email,
+    name: user.name,
+    url: buildPasswordResetUrl(token),
+    expiresInMinutes: env.PASSWORD_RESET_TTL_MINUTES,
+  });
 };
 
 export const register = async (input: RegisterInput) => {
@@ -46,7 +158,7 @@ export const register = async (input: RegisterInput) => {
 
   const passwordHash = await bcrypt.hash(input.password, BCRYPT_ROUNDS);
 
-  const user = await withTransaction(async (client) => {
+  const { user, token } = await withTransaction(async (client) => {
     const created = await usersRepository.create(client, {
       name: input.name.trim(),
       email,
@@ -54,13 +166,149 @@ export const register = async (input: RegisterInput) => {
       country: input.country,
       currency: input.currency,
     });
-    await authRepository.createDefaultCategories(client, created.id as UserId);
-    return created;
+
+    const recipient: EmailRecipient = {
+      id: created.id as UserId,
+      email: created.email,
+      name: created.name,
+    };
+    const verificationToken = await createVerificationToken(client, recipient);
+
+    return { user: created, token: verificationToken };
   });
 
-  const tokens = await issueTokenPair(pool, user.id as UserId, user.email);
+  await sendVerification(
+    { id: user.id as UserId, email: user.email, name: user.name },
+    token,
+  );
 
-  return { user: usersRepository.mapUserRow(user), ...tokens };
+  return {
+    user: usersRepository.mapUserRow(user),
+    message: 'Te enviamos un correo para verificar tu cuenta.',
+  };
+};
+
+export const verifyEmail = async (input: VerifyEmailInput) => {
+  const tokenHash = hashEmailVerificationToken(input.token);
+
+  await withTransaction(async (client) => {
+    const userId = await authRepository.consumeEmailVerificationToken(
+      client,
+      tokenHash,
+    );
+
+    if (!userId) {
+      throw new InvalidVerificationTokenError();
+    }
+
+    const user = await usersRepository.findById(client, userId);
+    if (!user) {
+      throw new InvalidVerificationTokenError();
+    }
+
+    if (!user.email_verified_at) {
+      await usersRepository.markEmailVerified(client, userId);
+      await authRepository.createDefaultCategories(client, userId);
+    }
+  });
+
+  return { verified: true as const };
+};
+
+export const resendVerification = async (
+  input: ResendVerificationInput,
+): Promise<void> => {
+  const email = input.email.trim().toLowerCase();
+  const user = await usersRepository.findByEmail(pool, email);
+
+  if (!user || user.email_verified_at) {
+    return;
+  }
+
+  const userId = user.id as UserId;
+  const latest = await authRepository.findLatestEmailVerificationToken(pool, userId);
+
+  if (
+    latest &&
+    Date.now() - latest.created_at.getTime() < VERIFICATION_RESEND_COOLDOWN_MS
+  ) {
+    return;
+  }
+
+  const token = await withTransaction(async (client) => {
+    await authRepository.deleteUnusedEmailVerificationTokens(client, userId);
+    return createVerificationToken(client, {
+      id: userId,
+      email: user.email,
+      name: user.name,
+    });
+  });
+
+  await sendVerification(
+    { id: userId, email: user.email, name: user.name },
+    token,
+  );
+};
+
+export const forgotPassword = async (
+  input: ForgotPasswordInput,
+): Promise<void> => {
+  const email = input.email.trim().toLowerCase();
+  const user = await usersRepository.findByEmail(pool, email);
+
+  if (!user || !user.email_verified_at) {
+    return;
+  }
+
+  const userId = user.id as UserId;
+  const latest = await authRepository.findLatestPasswordResetToken(pool, userId);
+
+  if (
+    latest &&
+    Date.now() - latest.created_at.getTime() < PASSWORD_RESET_COOLDOWN_MS
+  ) {
+    return;
+  }
+
+  const recipient: EmailRecipient = {
+    id: userId,
+    email: user.email,
+    name: user.name,
+  };
+
+  const token = await withTransaction(async (client) => {
+    await authRepository.deleteUnusedPasswordResetTokens(client, userId);
+    return createPasswordResetToken(client, recipient);
+  });
+
+  void sendPasswordReset(recipient, token);
+};
+
+export const resetPassword = async (
+  input: ResetPasswordInput,
+): Promise<void> => {
+  const tokenHash = hashPasswordResetToken(input.token);
+
+  await withTransaction(async (client) => {
+    const userId = await authRepository.consumePasswordResetToken(
+      client,
+      tokenHash,
+    );
+
+    if (!userId) {
+      throw new InvalidPasswordResetTokenError();
+    }
+
+    const user = await usersRepository.findById(client, userId);
+    if (!user) {
+      throw new InvalidPasswordResetTokenError();
+    }
+
+    const passwordHash = await bcrypt.hash(input.password, BCRYPT_ROUNDS);
+    await usersRepository.updatePasswordHash(client, userId, passwordHash);
+    await authRepository.deleteUnusedPasswordResetTokens(client, userId);
+    await authRepository.revokeAllRefreshTokensByUser(client, userId);
+  });
 };
 
 export const login = async (input: LoginInput) => {
@@ -73,6 +321,12 @@ export const login = async (input: LoginInput) => {
 
   if (!user || !passwordValid) {
     throw new AuthenticationError('Credenciales inválidas', 'INVALID_CREDENTIALS');
+  }
+
+  if (!user.email_verified_at) {
+    throw new EmailNotVerifiedError(
+      'Tu cuenta aún no está verificada. Revisa tu correo o solicita un nuevo enlace.',
+    );
   }
 
   const tokens = await issueTokenPair(pool, user.id as UserId, user.email);
@@ -88,6 +342,12 @@ export const refresh = async (refreshToken: string) => {
 
   if (!record) {
     throw new AuthenticationError('Refresh token inválido o expirado', 'INVALID_REFRESH_TOKEN');
+  }
+
+  if (!record.user.email_verified_at) {
+    throw new EmailNotVerifiedError(
+      'Tu cuenta aún no está verificada. Revisa tu correo o solicita un nuevo enlace.',
+    );
   }
 
   try {

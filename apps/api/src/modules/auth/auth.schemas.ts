@@ -3,6 +3,19 @@ import { COUNTRIES } from '@meridia/shared';
 
 const countryCodes = COUNTRIES.map((c) => c.code);
 
+const passwordSchema = z
+  .string({ error: 'La contraseña es requerida' })
+  .min(12, 'La contraseña debe tener al menos 12 caracteres')
+  .max(64, 'La contraseña no puede superar los 64 caracteres')
+  .regex(/[a-z]/, 'La contraseña debe incluir al menos una minúscula')
+  .regex(/[A-Z]/, 'La contraseña debe incluir al menos una mayúscula')
+  .regex(/[0-9]/, 'La contraseña debe incluir al menos un número')
+  .regex(/[^A-Za-z0-9\s]/, 'La contraseña debe incluir al menos un símbolo')
+  .refine(
+    (value) => value.replace(/\s/g, '').length >= 12,
+    'La contraseña debe tener al menos 12 caracteres',
+  );
+
 export const registerSchema = z.object({
   name: z
     .string({ error: 'El nombre es requerido' })
@@ -15,10 +28,7 @@ export const registerSchema = z.object({
     .toLowerCase()
     .email('Email inválido')
     .max(254, 'Email demasiado largo'),
-  password: z
-    .string({ error: 'La contraseña es requerida' })
-    .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .max(128, 'La contraseña no puede superar los 128 caracteres'),
+  password: passwordSchema,
   country: z
     .string({ error: 'El país es requerido' })
     .trim()
@@ -36,6 +46,41 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
   email: z.string().trim().toLowerCase().email('Email inválido'),
   password: z.string().min(1, 'La contraseña es requerida'),
+});
+
+export const verifyEmailSchema = z.object({
+  token: z
+    .string({ error: 'El token es requerido' })
+    .trim()
+    .min(20, 'Token inválido')
+    .max(200, 'Token inválido'),
+});
+
+export const resendVerificationSchema = z.object({
+  email: z
+    .string({ error: 'El email es requerido' })
+    .trim()
+    .toLowerCase()
+    .email('Email inválido')
+    .max(254, 'Email demasiado largo'),
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string({ error: 'El email es requerido' })
+    .trim()
+    .toLowerCase()
+    .email('Email inválido')
+    .max(254, 'Email demasiado largo'),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z
+    .string({ error: 'El token es requerido' })
+    .trim()
+    .min(20, 'Token inválido')
+    .max(200, 'Token inválido'),
+  password: passwordSchema,
 });
 
 const isCloudinaryAvatarUrl = (value: string): boolean => {
@@ -101,3 +146,7 @@ export const updateProfileSchema = z
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
+export type ResendVerificationInput = z.infer<typeof resendVerificationSchema>;
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
