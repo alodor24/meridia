@@ -4,6 +4,7 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import TrendDownIcon from "@mui/icons-material/TrendingDown";
 import TrendUpIcon from "@mui/icons-material/TrendingUp";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import SavingsIcon from "@mui/icons-material/Savings";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatCard } from "@/components/ui/StatCard";
 import { LoadingState, ErrorState } from "@/components/ui/States";
@@ -103,10 +104,8 @@ const DashboardPage = () => {
               <StatCard
                 title="Balance del mes"
                 value={formatCurrency(data.periodBalance, currency)}
-                icon={
-                  data.periodBalance >= 0 ? <TrendUpIcon /> : <TrendDownIcon />
-                }
-                color={data.periodBalance >= 0 ? "success" : "error"}
+                icon={<SavingsIcon />}
+                color="primary"
                 subtitle={monthStatCard}
                 comparison={periodBalanceComparison}
                 amountVisibility={isVisible}

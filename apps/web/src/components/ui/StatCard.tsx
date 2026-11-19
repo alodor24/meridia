@@ -122,8 +122,8 @@ export const StatCard = ({
 
           <IconButton
             aria-label="visibility"
-            color="secondary"
             size="small"
+            sx={{ color: "text.primary" }}
             onClick={toggleAmountVisibility}>
             {amountVisibility ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </IconButton>
@@ -144,7 +144,10 @@ export const StatCard = ({
                   alignItems: "center",
                   color: trendColor,
                 }}>
-                {trendIconMap[trend]}
+                {trendIconMap[trend]}{" "}
+                <Typography variant="caption" sx={{ fontWeight: 700 }}>
+                  {comparison.label}
+                </Typography>
               </Box>
             )}
 
@@ -153,8 +156,7 @@ export const StatCard = ({
               sx={{
                 color: main ? "#cfd8dc" : "text.secondary",
               }}>
-              {comparison?.label ?? subtitle}
-              {comparison && subtitle ? ` ${subtitle}` : ""}
+              {subtitle}
             </Typography>
           </Box>
         )}
