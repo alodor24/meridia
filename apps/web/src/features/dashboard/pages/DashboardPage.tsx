@@ -43,7 +43,10 @@ const DashboardPage = () => {
       <PageHeader title="Dashboard" subtitle={`Resumen de ${month}`} />
 
       {isLoading && <LoadingState />}
-      {error && <ErrorState message={error.message} onRetry={refetch} />}
+
+      {!isLoading && error && (
+        <ErrorState message={error.message} onRetry={refetch} />
+      )}
 
       {data && (
         <>
