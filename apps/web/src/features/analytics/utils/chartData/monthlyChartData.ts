@@ -19,6 +19,7 @@ export const MONTH_LABELS = [
 interface MonthlyChartColors {
   income: string;
   expenses: string;
+  balance: string;
 }
 
 export const buildMonthlyChartData = (
@@ -40,6 +41,13 @@ export const buildMonthlyChartData = (
       label: "Gastos",
       data: items.map((item) => item.expenses),
       backgroundColor: colors.expenses,
+      borderRadius: 4,
+      maxBarThickness: 24,
+    },
+    {
+      label: "Balance",
+      data: items.map((item) => item.balance),
+      backgroundColor: colors.balance,
       borderRadius: 4,
       maxBarThickness: 24,
     },

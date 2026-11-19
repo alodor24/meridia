@@ -31,6 +31,7 @@ const IncomeExpenseMonthlyChart = ({
       buildMonthlyChartData(items, {
         income: theme.palette.success.main,
         expenses: theme.palette.error.main,
+        balance: theme.palette.primary.main,
       }),
     [items, theme],
   );

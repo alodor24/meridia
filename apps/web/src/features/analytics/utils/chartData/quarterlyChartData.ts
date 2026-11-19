@@ -4,6 +4,7 @@ import type { AnalyticsQuarterlyTotal } from "@meridia/shared";
 interface QuarterlyChartColors {
   income: string;
   expenses: string;
+  balance: string;
 }
 
 export const buildQuarterlyChartData = (
@@ -23,6 +24,13 @@ export const buildQuarterlyChartData = (
       label: "Gastos",
       data: items.map((item) => item.expenses),
       backgroundColor: colors.expenses,
+      borderRadius: 4,
+      maxBarThickness: 56,
+    },
+    {
+      label: "Balance",
+      data: items.map((item) => item.balance),
+      backgroundColor: colors.balance,
       borderRadius: 4,
       maxBarThickness: 56,
     },

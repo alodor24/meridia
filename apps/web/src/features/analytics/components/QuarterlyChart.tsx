@@ -29,6 +29,7 @@ const QuarterlyChart = ({ items, currency, year }: QuarterlyChartProps) => {
       buildQuarterlyChartData(items, {
         income: theme.palette.success.main,
         expenses: theme.palette.error.main,
+        balance: theme.palette.primary.main,
       }),
     [items, theme],
   );

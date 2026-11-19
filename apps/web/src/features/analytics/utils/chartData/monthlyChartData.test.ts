@@ -15,6 +15,7 @@ const monthly: AnalyticsMonthlyTotal[] = Array.from(
 const colors = {
   income: "#4caf50",
   expenses: "#e53935",
+  balance: "#0050de",
 };
 
 describe("buildMonthlyChartData", () => {
@@ -35,5 +36,15 @@ describe("buildMonthlyChartData", () => {
     expect(chartData.datasets[1]?.data).toEqual(
       monthly.map((item) => item.expenses),
     );
+  });
+
+  it("incluye el balance mensual como dataset", () => {
+    const chartData = buildMonthlyChartData(monthly, colors);
+
+    expect(chartData.datasets[2]?.label).toBe("Balance");
+    expect(chartData.datasets[2]?.data).toEqual(
+      monthly.map((item) => item.balance),
+    );
+    expect(chartData.datasets[2]?.backgroundColor).toBe(colors.balance);
   });
 });

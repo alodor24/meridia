@@ -12,6 +12,7 @@ const quarterly: AnalyticsQuarterlyTotal[] = [
 const colors = {
   income: "#4caf50",
   expenses: "#e53935",
+  balance: "#0050de",
 };
 
 describe("buildQuarterlyChartData", () => {
@@ -26,5 +27,13 @@ describe("buildQuarterlyChartData", () => {
 
     expect(chartData.datasets[0]?.data).toEqual([1000, 500, 0, 0]);
     expect(chartData.datasets[1]?.data).toEqual([400, 100, 0, 200]);
+  });
+
+  it("incluye el balance trimestral como dataset", () => {
+    const chartData = buildQuarterlyChartData(quarterly, colors);
+
+    expect(chartData.datasets[2]?.label).toBe("Balance");
+    expect(chartData.datasets[2]?.data).toEqual([600, 400, 0, -200]);
+    expect(chartData.datasets[2]?.backgroundColor).toBe(colors.balance);
   });
 });

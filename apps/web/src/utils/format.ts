@@ -4,6 +4,7 @@ import {
   parse,
   parseISO,
   subMonths,
+  subYears,
 } from "date-fns";
 import { esCapitalized } from "./esCapitalized";
 
@@ -81,4 +82,11 @@ export const getPreviousMonth = (currentMonth: string): string => {
     locale: esCapitalized,
   });
   return prevMonthFormatted;
+};
+
+export const getPreviousYear = (currentYear: string): string => {
+  const year = parse(currentYear, "yyyy", new Date());
+  const prev = subYears(year, 1);
+  const prevYearFormatted = dateFnsFormat(prev, "yyyy");
+  return prevYearFormatted;
 };

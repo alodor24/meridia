@@ -1,13 +1,9 @@
 import { useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
-import LinearProgress from "@mui/material/LinearProgress";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/States";
 import useGetUserCurrency from "@/hooks/useGetUserCurrency";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
-import { SHADOW } from "@/theme/globalStyles";
 import AnalyticsSummaryCards from "../components/AnalyticsSummaryCards";
 import CategoryBreakdownTabs from "../components/CategoryBreakdownTabs";
 import IncomeExpenseMonthlyCard from "../components/IncomeExpenseMonthlyCard";
@@ -20,11 +16,10 @@ const AnalyticsPage = () => {
   const { currency } = useGetUserCurrency();
   const [year, setYear] = useState(new Date().getFullYear());
 
-  const { data, isLoading, isFetching, error, refetch } =
-    useAnalyticsSummary(year);
+  const { data, isLoading, error, refetch } = useAnalyticsSummary(year);
 
   const isEmpty =
-    data !== undefined && data.totalIncome === 0 && data.totalExpenses === 0;
+    data != null && data.totalIncome === 0 && data.totalExpenses === 0;
 
   return (
     <>
@@ -34,9 +29,9 @@ const AnalyticsPage = () => {
         secondaryAction={<YearSwitcher year={year} onChange={setYear} />}
       />
 
-      {isFetching && data && <LinearProgress sx={{ mb: 2 }} />}
-      {isLoading && !data && <LoadingState />}
-      {error && !data && (
+      {isLoading && <LoadingState />}
+
+      {!isLoading && error && (
         <ErrorState message={error.message} onRetry={refetch} />
       )}
 
@@ -44,15 +39,7 @@ const AnalyticsPage = () => {
         <>
           <AnalyticsSummaryCards data={data} />
 
-          {isEmpty ? (
-            <Card sx={{ boxShadow: SHADOW }}>
-              <CardContent>
-                <EmptyState
-                  message={`No hay movimientos registrados en ${year}.`}
-                />
-              </CardContent>
-            </Card>
-          ) : (
+          {!isEmpty ? (
             <Grid container spacing={2}>
               <Grid size={{ xs: 12 }}>
                 <IncomeExpenseMonthlyCard
@@ -79,6 +66,10 @@ const AnalyticsPage = () => {
                 />
               </Grid>
             </Grid>
+          ) : (
+            <EmptyState
+              message={`No hay movimientos registrados en ${year}.`}
+            />
           )}
         </>
       )}

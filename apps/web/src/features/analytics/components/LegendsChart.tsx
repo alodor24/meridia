@@ -7,6 +7,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 const legends = [
   { title: "Ingresos", color: "success" },
   { title: "Gastos", color: "error" },
+  { title: "Balance", color: "primary" },
 ] as const;
 
 const LegendsChart = () => {
