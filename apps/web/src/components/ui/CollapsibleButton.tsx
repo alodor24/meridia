@@ -11,7 +11,7 @@ const CollapsibleButton = () => {
   return (
     <CustomTooltip
       title={collapsed ? "Expandir menú" : "Contraer menú"}
-      placement="bottom">
+      placement="right">
       <IconButton
         onClick={toggleDrawerCollapsed}
         aria-label={collapsed ? "Expandir menú" : "Contraer menú"}
