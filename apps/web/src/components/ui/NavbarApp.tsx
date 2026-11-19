@@ -6,6 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { NAVBAR_DARK, NAVBAR_LIGHT, SHADOW } from "@/theme/globalStyles";
 import { useUiStore } from "@/stores/uiStore";
 import LogoApp from "./LogoApp";
+import CollapsibleButton from "./CollapsibleButton";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { NotificationsBell } from "@/features/notifications/components/NotificationsBell";
 import SayHello from "./SayHello";
@@ -41,9 +42,11 @@ const NavbarApp = () => {
             flexGrow: 1,
             width: "fit-content",
             alignItems: "center",
+            gap: 1,
             py: 1,
           }}>
           <LogoApp />
+          <CollapsibleButton />
         </Box>
 
         <SayHello user={user} isLoading={isLoading} />
