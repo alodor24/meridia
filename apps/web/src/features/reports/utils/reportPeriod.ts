@@ -1,13 +1,15 @@
 import { endOfMonth, format, startOfMonth } from "date-fns";
-import { es } from "date-fns/locale";
 import type { ReportFormat, ReportParams, ReportSelection } from "../types";
+import { esCapitalized } from "@/utils/esCapitalized";
 
 const capitalize = (value: string): string =>
   value.charAt(0).toUpperCase() + value.slice(1);
 
 export const MONTH_OPTIONS = Array.from({ length: 12 }, (_, index) => ({
   value: index + 1,
-  label: capitalize(format(new Date(2026, index, 1), "LLLL", { locale: es })),
+  label: capitalize(
+    format(new Date(2026, index, 1), "LLLL", { locale: esCapitalized }),
+  ),
 }));
 
 export const defaultReportSelection = (now = new Date()): ReportSelection => ({

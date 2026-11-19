@@ -1,4 +1,3 @@
-import { es } from "date-fns/locale";
 import {
   format as dateFnsFormat,
   isValid,
@@ -42,7 +41,7 @@ export const formatDate = (
 };
 
 export const formatMonth = (date: Date): string =>
-  dateFnsFormat(date, "LLLL yyyy", { locale: es });
+  dateFnsFormat(date, "LLLL yyyy", { locale: esCapitalized });
 
 export const today = (): string => dateFnsFormat(new Date(), "yyyy-MM-dd");
 
@@ -74,10 +73,12 @@ export const getPreviousMonthRange = (
 };
 
 export const getPreviousMonth = (currentMonth: string): string => {
-  const date = parse(currentMonth, "MMMM yyyy", new Date(), { locale: es });
+  const date = parse(currentMonth, "MMMM yyyy", new Date(), {
+    locale: esCapitalized,
+  });
   const prev = subMonths(date, 1);
-  const prevMonthFormatted = dateFnsFormat(prev, "MMM yyyy", { locale: es });
-  return (
-    prevMonthFormatted.charAt(0).toUpperCase() + prevMonthFormatted.slice(1)
-  );
+  const prevMonthFormatted = dateFnsFormat(prev, "MMM yyyy", {
+    locale: esCapitalized,
+  });
+  return prevMonthFormatted;
 };

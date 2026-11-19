@@ -57,7 +57,7 @@ export const MonthSwitcher = ({ anchor, onChange }: MonthSwitcherProps) => {
             gap: 1,
           }}>
           <CalendarMonthIcon fontSize="small" />
-          {label.charAt(0).toUpperCase() + label.slice(1)}
+          {label}
         </Typography>
 
         {!isCurrentMonth && (

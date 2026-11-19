@@ -39,10 +39,7 @@ const DashboardPage = () => {
 
   return (
     <>
-      <PageHeader
-        title="Dashboard"
-        subtitle={`Resumen de ${month.charAt(0).toUpperCase() + month.slice(1)}`}
-      />
+      <PageHeader title="Dashboard" subtitle={`Resumen de ${month}`} />
 
       {isLoading && <LoadingState />}
       {error && <ErrorState message={error.message} onRetry={refetch} />}

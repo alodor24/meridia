@@ -7,8 +7,8 @@ import {
   startOfMonth,
   subMonths,
 } from "date-fns";
-import { es } from "date-fns/locale";
 import { monthRangeFor } from "../utils/monthRange";
+import { esCapitalized } from "@/utils/esCapitalized";
 
 const useMonthSwitcher = ({
   anchor,
@@ -21,7 +21,7 @@ const useMonthSwitcher = ({
 
   const currentDate = new Date();
   const registrationDate = new Date(user?.createdAt ?? currentDate);
-  const label = format(anchor, "LLLL yyyy", { locale: es });
+  const label = format(anchor, "LLLL yyyy", { locale: esCapitalized });
   const isCurrentMonth = isSameMonth(anchor, currentDate);
 
   const isPreviousDisabled =

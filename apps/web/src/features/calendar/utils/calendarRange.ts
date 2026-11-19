@@ -7,8 +7,8 @@ import {
   startOfMonth,
   startOfWeek,
 } from "date-fns";
-import { es } from "date-fns/locale";
 import type { ReminderFilters, SchedulerView } from "../types";
+import { esCapitalized } from "@/utils/esCapitalized";
 
 export const schedulerRange = (
   visibleDate: Date,
@@ -23,11 +23,11 @@ export const schedulerRange = (
 
   return {
     from: format(
-      startOfWeek(startOfMonth(visibleDate), { locale: es }),
+      startOfWeek(startOfMonth(visibleDate), { locale: esCapitalized }),
       "yyyy-MM-dd",
     ),
     to: format(
-      endOfWeek(endOfMonth(visibleDate), { locale: es }),
+      endOfWeek(endOfMonth(visibleDate), { locale: esCapitalized }),
       "yyyy-MM-dd",
     ),
   };
