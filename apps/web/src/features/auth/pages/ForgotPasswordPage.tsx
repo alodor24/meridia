@@ -12,7 +12,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <AuthLayout
-      title="Recuperar contraseña"
+      title="Restablecer acceso"
       subtitle="Te enviaremos un enlace para que puedas crear una nueva.">
       <FormForgotPassword />
 

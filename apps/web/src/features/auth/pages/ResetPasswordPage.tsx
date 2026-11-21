@@ -85,7 +85,7 @@ const ResetPasswordPage = () => {
     return (
       <AuthLayout
         title="Contraseña actualizada"
-        subtitle="Ya podés usar tu nueva contraseña para ingresar.">
+        subtitle="Ya puedes usar tu nueva contraseña para ingresar.">
         <Alert severity="success" sx={{ mb: 2 }}>
           Tu contraseña fue actualizada correctamente.
         </Alert>
@@ -111,7 +111,7 @@ const ResetPasswordPage = () => {
         title="Enlace inválido"
         subtitle="El enlace para restablecer tu contraseña ya no es válido.">
         <Alert severity="error" sx={{ mb: 2 }}>
-          Solicitá un nuevo enlace para continuar con el cambio de contraseña.
+          Solicita un nuevo enlace para continuar con el cambio de contraseña.
         </Alert>
 
         <Button
@@ -136,7 +136,7 @@ const ResetPasswordPage = () => {
   return (
     <AuthLayout
       title="Restablecer contraseña"
-      subtitle="Creá una contraseña nueva y segura para tu cuenta.">
+      subtitle="Crea una contraseña nueva y segura para tu cuenta.">
       <Formik
         initialValues={initialValues}
         validationSchema={resetPasswordValidationSchema}
