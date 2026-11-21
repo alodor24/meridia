@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import type { PaletteMode } from "@mui/material/styles";
+import type {} from "@mui/x-date-pickers/themeAugmentation";
 
 const fontFamily = "'Mulish', sans-serif";
 
@@ -41,6 +42,20 @@ const createAppTheme = (themeMode: PaletteMode) => {
       fontFamily: fontFamily,
     },
     components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            backgroundColor: theme.palette.background.paper,
+          }),
+        },
+      },
+      MuiPickersOutlinedInput: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            backgroundColor: theme.palette.background.paper,
+          }),
+        },
+      },
       MuiTableCell: {
         styleOverrides: {
           root: ({ theme }) => ({
