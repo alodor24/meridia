@@ -1,10 +1,10 @@
-import type { Request, Response } from 'express';
-import { env } from '../../config/env';
-import { sendNoContent, sendSuccess } from '../../shared/http/http';
-import { expiresInToMs } from '../../shared/utils/time';
-import { asyncHandler } from '../../shared/utils/asyncHandler';
-import { isAppError } from '../../shared/errors';
-import * as authService from './auth.service';
+import type { CookieOptions, Request, Response } from "express";
+import { env } from "../../config/env";
+import { sendNoContent, sendSuccess } from "../../shared/http/http";
+import { expiresInToMs } from "../../shared/utils/time";
+import { asyncHandler } from "../../shared/utils/asyncHandler";
+import { isAppError } from "../../shared/errors";
+import * as authService from "./auth.service";
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const result = await authService.register(req.body);
@@ -63,7 +63,10 @@ export const refresh = asyncHandler(async (req: Request, res: Response) => {
     } else {
       res.status(500).json({
         success: false,
-        error: { code: 'INTERNAL_ERROR', message: 'Error interno del servidor' },
+        error: {
+          code: "INTERNAL_ERROR",
+          message: "Error interno del servidor",
+        },
       });
     }
   }
@@ -80,31 +83,31 @@ export const me = asyncHandler(async (req: Request, res: Response) => {
   sendSuccess(res, { user });
 });
 
-export const updateProfile = asyncHandler(async (req: Request, res: Response) => {
-  const user = await authService.updateProfile(req.user!.id, req.body);
-  sendSuccess(res, { user });
-});
+export const updateProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user = await authService.updateProfile(req.user!.id, req.body);
+    sendSuccess(res, { user });
+  },
+);
 
 const readRefreshCookie = (req: Request): string =>
-  (req.cookies as Record<string, string> | undefined)?.[env.COOKIE_NAME] ?? '';
+  (req.cookies as Record<string, string> | undefined)?.[env.COOKIE_NAME] ?? "";
+
+const refreshCookieOptions = (): CookieOptions => ({
+  httpOnly: true,
+  secure: env.COOKIE_SECURE,
+  sameSite: env.COOKIE_SAME_SITE,
+  path: "/",
+  ...(env.COOKIE_DOMAIN ? { domain: env.COOKIE_DOMAIN } : {}),
+});
 
 const setRefreshCookie = (res: Response, token: string): void => {
   res.cookie(env.COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: env.COOKIE_SECURE,
-    sameSite: env.COOKIE_SAME_SITE,
-    path: '/',
-    domain: env.COOKIE_DOMAIN,
+    ...refreshCookieOptions(),
     maxAge: expiresInToMs(env.JWT_REFRESH_EXPIRES_IN),
   });
 };
 
 const clearRefreshCookie = (res: Response): void => {
-  res.clearCookie(env.COOKIE_NAME, {
-    httpOnly: true,
-    secure: env.COOKIE_SECURE,
-    sameSite: env.COOKIE_SAME_SITE,
-    path: '/',
-    domain: env.COOKIE_DOMAIN,
-  });
+  res.clearCookie(env.COOKIE_NAME, refreshCookieOptions());
 };

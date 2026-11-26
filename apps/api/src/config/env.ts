@@ -25,7 +25,7 @@ const envSchema = z
     COOKIE_SECURE: booleanFromString.default(false),
     COOKIE_SAME_SITE: z.enum(["lax", "strict", "none"]).default("lax"),
     COOKIE_NAME: z.string().default("meridia_refresh"),
-    COOKIE_DOMAIN: z.string().default(".localhost"),
+    COOKIE_DOMAIN: z.string().trim().optional(),
     CLOUDINARY_CLOUD_NAME: z.string().trim().optional(),
     CLOUDINARY_API_KEY: z.string().trim().optional(),
     CLOUDINARY_API_SECRET: z.string().trim().optional(),
@@ -94,6 +94,13 @@ const envSchema = z
         code: "custom",
         path: ["FEEDBACK_TO_EMAIL"],
         message: "FEEDBACK_TO_EMAIL es requerido en producción",
+      });
+    }
+    if (data.COOKIE_SAME_SITE === "none" && !data.COOKIE_SECURE) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["COOKIE_SAME_SITE"],
+        message: "COOKIE_SAME_SITE=none requiere COOKIE_SECURE=true",
       });
     }
   });
