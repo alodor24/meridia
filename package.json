@@ -2,6 +2,7 @@
   "name": "meridia",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "description": "Meridia — aplicación web de finanzas personales",
   "workspaces": [
     "apps/*",

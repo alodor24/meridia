@@ -13,6 +13,10 @@
   Versión 1.0.0 · Monorepo TypeScript · Interfaz en español
 </p>
 
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/Licencia-MIT-yellow.svg" alt="Licencia: MIT" /></a>
+</p>
+
 ---
 
 ## Tabla de contenidos
@@ -41,6 +45,7 @@
 - [Despliegue](#despliegue)
 - [Capturas de pantalla](#capturas-de-pantalla)
 - [Autoría y licencia](#autoría-y-licencia)
+  - [Licencia](#licencia)
 - [Estado del proyecto](#estado-del-proyecto)
 
 ---
@@ -874,7 +879,11 @@ Ingeniero de Software
 
 ### Licencia
 
-El repositorio no incluye un archivo `LICENSE` ni declara un campo `license` en los `package.json`. Por lo tanto, **no se especifica una licencia** en este documento.
+Este proyecto se distribuye bajo la **Licencia MIT**. El texto completo está disponible en el archivo [`LICENSE`](LICENSE).
+
+Copyright (c) 2026 José Alejandro Méndez Sánchez.
+
+La licencia permite usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y/o vender copias del software, siempre que se incluya el aviso de copyright y el texto de la licencia en todas las copias o partes sustanciales del software. El software se proporciona **«tal cual»**, sin garantías de ningún tipo, y los autores no se hacen responsables de reclamaciones, daños u otras responsabilidades derivadas de su uso.
 
 ---
 
@@ -894,12 +903,12 @@ El repositorio no incluye un archivo `LICENSE` ni declara un campo `license` en 
 - ✅ Formulario de feedback con notificación por email cuando SMTP está configurado.
 - ✅ Tema claro/oscuro y diseño responsive.
 - ✅ Pruebas automatizadas para API y frontend.
+- ✅ Licencia MIT.
 
 ### Pendiente de completar en el repositorio
 
 - ⚠️ Configuración de despliegue para producción (Docker, plataforma cloud, CI/CD).
 - ⚠️ Capturas de pantalla de las vistas principales.
-- ⚠️ Archivo de licencia.
 - ⚠️ URL oficial del repositorio remoto.
 
 ---
